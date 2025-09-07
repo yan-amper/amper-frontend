@@ -4,34 +4,34 @@ import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import * as S from "./styled";
 
-const slides = [
-  "https://images.pexels.com/photos/159293/car-engine-motor-clean-159293.jpeg",
-  "https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg",
-  "https://images.pexels.com/photos/13065690/pexels-photo-13065690.jpeg",
-];
+const SLIDES_COUNT = 5;
 
 export const Slider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      setCurrentSlide((prev) => (prev + 1) % SLIDES_COUNT);
     }, 4000);
 
     return () => clearInterval(timer);
   }, []);
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
-
   const prevSlide = () =>
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    setCurrentSlide((prev) => (prev - 1 + SLIDES_COUNT) % SLIDES_COUNT);
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % SLIDES_COUNT);
 
   return (
     <S.SliderContainer>
       <S.SlideWrapper>
-        {slides.map((slide, index) => (
-          <S.Slide key={index} isActive={index === currentSlide}>
-            <S.SlideImage src={slide} alt={`Slide ${index + 1}`} />
+        {Array.from({ length: SLIDES_COUNT }).map((_, i) => (
+          <S.Slide key={i} isActive={i === currentSlide}>
+            <S.SlideImage
+              src={`/slides/${i + 1}.webp`}
+              alt={"акция Ампер"}
+              fill
+            />
             <S.SlideOverlay />
           </S.Slide>
         ))}
@@ -45,11 +45,11 @@ export const Slider = () => {
         </S.NextButton>
 
         <S.DotsContainer>
-          {slides.map((_, index) => (
+          {Array.from({ length: SLIDES_COUNT }).map((_, i) => (
             <S.Dot
-              key={index}
-              isActive={index === currentSlide}
-              onClick={() => setCurrentSlide(index)}
+              key={i}
+              isActive={i === currentSlide}
+              onClick={() => setCurrentSlide(i)}
             />
           ))}
         </S.DotsContainer>

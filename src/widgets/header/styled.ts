@@ -27,22 +27,6 @@ export const LogoContainer = styled.div`
   gap: 0.5rem;
 `;
 
-export const LogoIcon = styled.div`
-  width: 2.5rem;
-  height: 2.5rem;
-  background: #dc2626;
-  border-radius: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const LogoText = styled.span`
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #111827;
-`;
-
 export const HeaderActions = styled.div`
   display: flex;
   align-items: center;

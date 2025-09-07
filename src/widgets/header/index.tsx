@@ -1,14 +1,17 @@
-import { Phone, Battery } from "lucide-react";
+import { Phone } from "lucide-react";
 import * as S from "./styled";
+import Image from "next/image";
 
 export const Header = () => (
   <S.HeaderContainer>
     <S.HeaderContent>
       <S.LogoContainer>
-        <S.LogoIcon>
-          <Battery size={24} color="white" />
-        </S.LogoIcon>
-        <S.LogoText>Ампер</S.LogoText>
+        <Image
+          width={150}
+          height={75}
+          src={"/header-logo.svg"}
+          alt="логотип Ампер"
+        />
       </S.LogoContainer>
 
       <S.HeaderActions>

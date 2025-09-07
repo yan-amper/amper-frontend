@@ -1,9 +1,11 @@
+import Image from "next/image";
 import styled from "styled-components";
 
 export const SliderContainer = styled.section`
   position: relative;
-  height: 80vh;
+  height: 90vh;
   overflow: hidden;
+  margin-top: 5rem;
 `;
 
 export const SlideWrapper = styled.div`
@@ -19,16 +21,14 @@ export const Slide = styled.div<{ isActive: boolean }>`
   opacity: ${(props) => (props.isActive ? 1 : 0)};
 `;
 
-export const SlideImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+export const SlideImage = styled(Image)`
+  object-fit: contain;
 `;
 
 export const SlideOverlay = styled.div`
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.2);
 `;
 
 export const NavigationButton = styled.button`

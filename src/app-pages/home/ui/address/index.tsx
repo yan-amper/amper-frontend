@@ -21,7 +21,9 @@ export const Address = () => (
 
         <S.InfoContainer>
           <S.StoreImage
-            src="https://images.pexels.com/photos/1267338/pexels-photo-1267338.jpeg"
+            width={550}
+            height={255}
+            src="/shop.jpg"
             alt="Наш магазин"
           />
 
@@ -53,8 +55,7 @@ export const Address = () => (
               <p>
                 <strong>Режим работы:</strong>
               </p>
-              <p>Пн-Пт: 9:00 - 20:00</p>
-              <p>Сб-Вс: 10:00 - 18:00</p>
+              <p>Каждый день 8:30 - 18:30</p>
             </S.WorkingHours>
           </S.ContactCard>
         </S.InfoContainer>

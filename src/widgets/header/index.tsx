@@ -5,7 +5,7 @@ import Image from "next/image";
 export const Header = () => (
   <S.HeaderContainer>
     <S.HeaderContent>
-      <S.LogoContainer>
+      <S.LogoContainer href={"/"}>
         <Image
           width={150}
           height={75}
@@ -19,7 +19,7 @@ export const Header = () => (
           <Phone size={16} />
           <S.PhoneText href="tel:79897228095">+7 (989) 722-80-95</S.PhoneText>
         </S.PhoneContainer>
-        <S.AddressButton href="#address">Наши адреса</S.AddressButton>
+        <S.AddressButton href="/#address">Наши адреса</S.AddressButton>
       </S.HeaderActions>
     </S.HeaderContent>
   </S.HeaderContainer>

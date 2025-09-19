@@ -1,18 +1,5 @@
-"use client";
-
 import { Zap } from "lucide-react";
-import {
-  Section,
-  Container,
-  SectionHeader,
-  SectionTitle,
-  SectionDivider,
-  CatalogGrid,
-  CategoryCard,
-  CategoryContent,
-  CategoryIcon,
-  CategoryTitle,
-} from "./styled";
+import * as S from "./styled";
 
 const catalogCategories = [
   "35-42 Ah",
@@ -26,25 +13,25 @@ const catalogCategories = [
 ];
 
 export const Catalog = () => (
-  <Section>
-    <Container>
-      <SectionHeader>
-        <SectionTitle>Каталог</SectionTitle>
-        <SectionDivider />
-      </SectionHeader>
+  <S.Section>
+    <S.Container>
+      <S.SectionHeader>
+        <S.SectionTitle>Каталог</S.SectionTitle>
+        <S.SectionDivider />
+      </S.SectionHeader>
 
-      <CatalogGrid>
+      <S.CatalogGrid>
         {catalogCategories.map((category) => (
-          <CategoryCard key={category}>
-            <CategoryContent>
-              <CategoryIcon>
+          <S.CategoryCard key={category} href={`filtred-products/${category}`}>
+            <S.CategoryContent>
+              <S.CategoryIcon>
                 <Zap size={24} color="#dc2626" />
-              </CategoryIcon>
-              <CategoryTitle>{category}</CategoryTitle>
-            </CategoryContent>
-          </CategoryCard>
+              </S.CategoryIcon>
+              <S.CategoryTitle>{category}</S.CategoryTitle>
+            </S.CategoryContent>
+          </S.CategoryCard>
         ))}
-      </CatalogGrid>
-    </Container>
-  </Section>
+      </S.CatalogGrid>
+    </S.Container>
+  </S.Section>
 );

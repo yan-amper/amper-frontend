@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import styled from "styled-components";
 
 export const Section = styled.section`
@@ -42,10 +43,11 @@ export const CatalogGrid = styled.div`
   }
 `;
 
-export const CategoryCard = styled.div`
+export const CategoryCard = styled(Link)`
   background: white;
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  text-decoration: none;
   cursor: pointer;
   transition: all 0.3s;
 

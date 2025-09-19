@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import styled from "styled-components";
 
 export const Section = styled.section`
@@ -59,7 +60,7 @@ export const InfoContainer = styled.div`
   gap: 1.5rem;
 `;
 
-export const StoreImage = styled.img`
+export const StoreImage = styled(Image)`
   width: 100%;
   height: 16rem;
   object-fit: cover;

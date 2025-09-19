@@ -3,33 +3,40 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import * as S from "./styled";
+import { Banner } from "@/entities";
+import { createImagePath } from "@/shared";
 
-const SLIDES_COUNT = 5;
+type SliderProps = {
+  banners: Banner[];
+};
 
-export const Slider = () => {
+export const Slider = ({ banners }: SliderProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  const bannersCount = banners.length;
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % SLIDES_COUNT);
+      setCurrentSlide((prev) => (prev + 1) % bannersCount);
     }, 4000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [bannersCount]);
 
   const prevSlide = () =>
-    setCurrentSlide((prev) => (prev - 1 + SLIDES_COUNT) % SLIDES_COUNT);
+    setCurrentSlide((prev) => (prev - 1 + bannersCount) % bannersCount);
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % SLIDES_COUNT);
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % bannersCount);
 
   return (
     <S.SliderContainer>
       <S.SlideWrapper>
-        {Array.from({ length: SLIDES_COUNT }).map((_, i) => (
-          <S.Slide key={i} isActive={i === currentSlide}>
+        {banners.map((banner, i) => (
+          <S.Slide key={banner.id} $isActive={i === currentSlide}>
             <S.SlideImage
-              src={`/slides/${i + 1}.webp`}
+              src={createImagePath(banner.image)}
               alt={"акция Ампер"}
+              priority
               fill
             />
             <S.SlideOverlay />
@@ -45,10 +52,10 @@ export const Slider = () => {
         </S.NextButton>
 
         <S.DotsContainer>
-          {Array.from({ length: SLIDES_COUNT }).map((_, i) => (
+          {banners.map((_, i) => (
             <S.Dot
               key={i}
-              isActive={i === currentSlide}
+              $isActive={i === currentSlide}
               onClick={() => setCurrentSlide(i)}
             />
           ))}

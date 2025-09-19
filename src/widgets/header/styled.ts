@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import styled from "styled-components";
 
 export const HeaderContainer = styled.header`
@@ -21,7 +22,7 @@ export const HeaderContent = styled.div`
   justify-content: space-between;
 `;
 
-export const LogoContainer = styled.div`
+export const LogoContainer = styled(Link)`
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -45,7 +46,7 @@ export const PhoneText = styled.a`
   color: black;
 `;
 
-export const AddressButton = styled.a`
+export const AddressButton = styled(Link)`
   background: #dc2626;
   color: white;
   padding: 0.5rem 1.5rem;

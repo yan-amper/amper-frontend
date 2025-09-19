@@ -14,11 +14,11 @@ export const SlideWrapper = styled.div`
   height: 100%;
 `;
 
-export const Slide = styled.div<{ isActive: boolean }>`
+export const Slide = styled.div<{ $isActive: boolean }>`
   position: absolute;
   inset: 0;
   transition: opacity 1s;
-  opacity: ${(props) => (props.isActive ? 1 : 0)};
+  opacity: ${({ $isActive }) => ($isActive ? 1 : 0)};
 `;
 
 export const SlideImage = styled(Image)`
@@ -65,13 +65,13 @@ export const DotsContainer = styled.div`
   gap: 0.5rem;
 `;
 
-export const Dot = styled.button<{ isActive: boolean }>`
+export const Dot = styled.button<{ $isActive: boolean }>`
   width: 0.75rem;
   height: 0.75rem;
   border-radius: 50%;
   border: none;
   cursor: pointer;
   transition: all 0.2s;
-  background: ${(props) =>
-    props.isActive ? "white" : "rgba(255, 255, 255, 0.5)"};
+  background: ${({ $isActive }) =>
+    $isActive ? "white" : "rgba(255, 255, 255, 0.5)"};
 `;

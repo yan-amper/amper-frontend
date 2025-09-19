@@ -2,6 +2,8 @@ import { GlobalStyles } from "@/shared";
 import { Footer, Header } from "@/widgets";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +20,7 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
     <html lang="ru">
       <body className={inter.className}>
         <GlobalStyles />
+        <ToastContainer position="top-right" autoClose={3000} />
         <Header />
         {children}
         <Footer />

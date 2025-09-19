@@ -1,17 +1,13 @@
-"use client";
-
 import Image from "next/image";
-import Link from "next/link";
 import styled from "styled-components";
 
-export const BatteryCard = styled(Link)`
+export const BatteryCard = styled.div`
   display: flex;
   flex-direction: column;
   background: white;
   border-radius: 0.5rem;
   overflow: hidden;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  text-decoration: none;
   transition: box-shadow 0.3s;
 
   &:hover {

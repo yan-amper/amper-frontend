@@ -35,7 +35,7 @@ export class ProductsApi {
   static async getFiltredProduct({
     params,
     type,
-  }: GetFiltredProductPayload): Promise<Product[]> {
+  }: GetFiltredProductPayload): Promise<Product | Product[]> {
     const is = params.capacityRange === "90-110";
     if (is) params.capacityRange = "";
 

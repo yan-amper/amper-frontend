@@ -1,60 +1,73 @@
-import { createImagePath } from "@/shared";
+"use client";
+
+import { createImagePath, Query } from "@/shared";
 import { Product } from "../../api";
 import * as S from "./styled";
+import { useUnit } from "effector-react";
+import { productsModel } from "../../model";
 
 type ProductCardProps = {
   product: Product;
 };
 
-export const ProductCard = ({ product }: ProductCardProps) => (
-  <S.BatteryCard key={product.id} href={`product/${product.id}`}>
-    <S.BatteryImageContainer>
-      <S.BatteryImage
-        width={370}
-        height={370}
-        src={createImagePath(product.image)}
-        alt={product.title}
-      />
-    </S.BatteryImageContainer>
+export const ProductCard = ({ product }: ProductCardProps) => {
+  const setSelectedProduct = useUnit(productsModel.setSelectedProduct);
 
-    <S.BatteryContent>
-      <S.BatteryName>{product.title}</S.BatteryName>
+  const onProductClick = () => {
+    setSelectedProduct(product);
+    Query.set("product", product.id.toString());
+  };
 
-      <S.SpecsList>
-        <S.SpecItem>
-          <S.SpecLabel>Ёмкость:</S.SpecLabel>
-          <S.SpecValue>{product.capacity}</S.SpecValue>
-        </S.SpecItem>
-        <S.SpecItem>
-          <S.SpecLabel>Пусковой ток:</S.SpecLabel>
-          <S.SpecValue>{product.current}</S.SpecValue>
-        </S.SpecItem>
-        <S.SpecItem>
-          <S.SpecLabel>Полярность:</S.SpecLabel>
-          <S.SpecValue>{product.polarity}</S.SpecValue>
-        </S.SpecItem>
-        <S.SpecItem>
-          <S.SpecLabel>Габариты:</S.SpecLabel>
-          <S.SpecValue>
-            {product.longitude}x{product.width}x{product.height}
-          </S.SpecValue>
-        </S.SpecItem>
-        <S.SpecItem>
-          <S.SpecLabel>Изготовитель:</S.SpecLabel>
-          <S.SpecValue>{product.manufacturer}</S.SpecValue>
-        </S.SpecItem>
-      </S.SpecsList>
+  return (
+    <S.BatteryCard key={product.id}>
+      <S.BatteryImageContainer>
+        <S.BatteryImage
+          width={370}
+          height={370}
+          src={createImagePath(product.image)}
+          alt={product.title}
+        />
+      </S.BatteryImageContainer>
 
-      <S.PriceSection>
-        <S.PriceContainer>
-          <S.PriceInfo>
-            <S.OriginalPrice>{product.priceWithChange} ₽</S.OriginalPrice>
-            <S.CurrentPrice>{product.standardPrice} ₽</S.CurrentPrice>
-            <S.PriceNote>со сдачей старого</S.PriceNote>
-          </S.PriceInfo>
-          <S.BuyButton>Купить</S.BuyButton>
-        </S.PriceContainer>
-      </S.PriceSection>
-    </S.BatteryContent>
-  </S.BatteryCard>
-);
+      <S.BatteryContent>
+        <S.BatteryName>{product.title}</S.BatteryName>
+
+        <S.SpecsList>
+          <S.SpecItem>
+            <S.SpecLabel>Ёмкость:</S.SpecLabel>
+            <S.SpecValue>{product.capacity}</S.SpecValue>
+          </S.SpecItem>
+          <S.SpecItem>
+            <S.SpecLabel>Пусковой ток:</S.SpecLabel>
+            <S.SpecValue>{product.current}</S.SpecValue>
+          </S.SpecItem>
+          <S.SpecItem>
+            <S.SpecLabel>Полярность:</S.SpecLabel>
+            <S.SpecValue>{product.polarity}</S.SpecValue>
+          </S.SpecItem>
+          <S.SpecItem>
+            <S.SpecLabel>Габариты:</S.SpecLabel>
+            <S.SpecValue>
+              {product.longitude}x{product.width}x{product.height}
+            </S.SpecValue>
+          </S.SpecItem>
+          <S.SpecItem>
+            <S.SpecLabel>Изготовитель:</S.SpecLabel>
+            <S.SpecValue>{product.manufacturer}</S.SpecValue>
+          </S.SpecItem>
+        </S.SpecsList>
+
+        <S.PriceSection>
+          <S.PriceContainer>
+            <S.PriceInfo>
+              <S.OriginalPrice>{product.priceWithChange} ₽</S.OriginalPrice>
+              <S.CurrentPrice>{product.standardPrice} ₽</S.CurrentPrice>
+              <S.PriceNote>со сдачей старого</S.PriceNote>
+            </S.PriceInfo>
+            <S.BuyButton onClick={onProductClick}>Купить</S.BuyButton>
+          </S.PriceContainer>
+        </S.PriceSection>
+      </S.BatteryContent>
+    </S.BatteryCard>
+  );
+};

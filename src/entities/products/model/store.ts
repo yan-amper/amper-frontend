@@ -6,10 +6,11 @@ import {
   Product,
   ProductsApi,
 } from "../api";
-import { $api } from "@/shared";
+import { $api, Query } from "@/shared";
 import { notificationsModel, ToastTypes } from "@/entities/notifications";
 import { ProductsState } from "./types";
 
+export const setSelectedProduct = createEvent<Product | null>();
 export const getProductsData = createEvent();
 export const getPopularProduct = createEvent();
 export const createProduct = createEvent<FormData>();
@@ -38,12 +39,12 @@ export const getRecommendedProductsFx = createEffect<void, Product[]>(
 );
 
 export const getPopularProductFx = createEffect<void, Product[]>(
-  ProductsApi.getPopularProduct
+  ProductsApi.getPopularProducts
 );
 
 export const getFiltredProductFx = createEffect<
   GetFiltredProductPayload,
-  Product[]
+  Product | Product[]
 >(ProductsApi.getFiltredProduct);
 
 export const deleteProductFx = createEffect<DeleteProductPayload, number>(
@@ -63,6 +64,13 @@ export const editProductFx = createEffect(
     return data.data as Product;
   }
 );
+
+export const $selectedProduct = createStore<Product | null>(null)
+  .on(setSelectedProduct, (_, data) => data)
+  .on(getFiltredProductFx.doneData, (state, value) => {
+    if (Array.isArray(value) || !Query.get("product")) return state;
+    return value;
+  });
 
 const initialState: ProductsState = {
   productsData: [],
@@ -138,6 +146,7 @@ sample({
 
 sample({
   clock: getCurrentProductData,
+  fn: (params) => ({ ...params, type: "productById" }),
   target: getFiltredProductFx,
 });
 
@@ -194,3 +203,11 @@ editProductFx.done.watch(() =>
     type: ToastTypes.SUCCESS,
   })
 );
+
+setSelectedProduct.watch((value) => {
+  if (value) {
+    Query.set("product", value.id.toString());
+  } else {
+    Query.remove("product");
+  }
+});

@@ -50,10 +50,6 @@ export const MapContainer = styled.div`
   overflow: hidden;
 `;
 
-export const MapFrame = styled.iframe`
-  border-radius: 0.5rem;
-`;
-
 export const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;

@@ -11,10 +11,10 @@ export const Address = () => (
 
       <S.ContentGrid>
         <S.MapContainer>
-          <S.MapFrame
-            src="https://yandex.ru/map-widget/v1/?z=12&ol=biz"
-            width="100%"
-            height="100%"
+          <iframe
+            src="https://yandex.ru/map-widget/v1/?um=constructor%3A0a053060028f1b7f5fc3df72ee7b2e5b3fdcca77247ef4556d26f42228c4eb88&amp;source=constructor"
+            width="573"
+            height="434"
             frameBorder="0"
           />
         </S.MapContainer>

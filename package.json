@@ -15,6 +15,7 @@
     "effector-react": "^23.3.0",
     "lucide-react": "^0.542.0",
     "next": "15.5.2",
+    "nprogress": "^0.2.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-toastify": "^11.0.5",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/node": "^20",
+    "@types/nprogress": "^0.2.3",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-styled-components": "^2.1.4",

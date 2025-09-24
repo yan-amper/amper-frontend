@@ -30,4 +30,18 @@ export const GlobalStyles = createGlobalStyle`
     max-width: 100%;
     height: auto;
   }
+
+  #nprogress {
+    pointer-events: none;
+  }
+
+  #nprogress .bar {
+    background: #dc2626;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+  }
 `;

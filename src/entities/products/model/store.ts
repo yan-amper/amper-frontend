@@ -12,7 +12,7 @@ import { ProductsState } from "./types";
 
 export const setSelectedProduct = createEvent<Product | null>();
 export const getProductsData = createEvent();
-export const getPopularProduct = createEvent();
+export const getPopularProducts = createEvent();
 export const createProduct = createEvent<FormData>();
 export const getRecommendedProducts = createEvent();
 export const getFiltredProduct = createEvent<{
@@ -38,7 +38,7 @@ export const getRecommendedProductsFx = createEffect<void, Product[]>(
   ProductsApi.getRecommendedProducts
 );
 
-export const getPopularProductFx = createEffect<void, Product[]>(
+export const getPopularProductsFx = createEffect<void, Product[]>(
   ProductsApi.getPopularProducts
 );
 
@@ -98,7 +98,7 @@ export const $products = createStore<ProductsState>(initialState)
     recommedationProducts,
     isLoadingRec: false,
   }))
-  .on(getPopularProductFx.doneData, (state, popularProducts) => ({
+  .on(getPopularProductsFx.doneData, (state, popularProducts) => ({
     ...state,
     popularProducts,
     isLoadingPopular: false,
@@ -135,8 +135,8 @@ sample({
 });
 
 sample({
-  clock: getPopularProduct,
-  target: getPopularProductFx,
+  clock: getPopularProducts,
+  target: getPopularProductsFx,
 });
 
 sample({
@@ -172,7 +172,7 @@ createProductFx.fail.watch(() =>
 getRecommendedProductsFx.fail.watch(() =>
   handleError("Упс... Запрос не прошел, попробуйте позже")
 );
-getPopularProductFx.fail.watch(() =>
+getPopularProductsFx.fail.watch(() =>
   handleError("Упс... Запрос не прошел, попробуйте позже")
 );
 getFiltredProductFx.fail.watch(() =>

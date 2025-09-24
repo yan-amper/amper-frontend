@@ -19,6 +19,8 @@ export type Product = {
   updated_at: string;
 };
 
+export type ProductValues = keyof Product;
+
 export type DataValue = string | number | boolean;
 
 export type GetFiltredProductPayload = {

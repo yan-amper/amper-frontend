@@ -1,4 +1,4 @@
-import { ProductModal } from "@/features";
+import { ProductModal, TopLoader } from "@/features";
 import { GlobalStyles } from "@/shared";
 import { Footer, Header } from "@/widgets";
 import type { Metadata } from "next";
@@ -23,10 +23,11 @@ export default async function RootLayout({
     <html lang="ru">
       <body className={inter.className}>
         <GlobalStyles />
+        <TopLoader />
         <ToastContainer position="top-right" autoClose={3000} />
         <ProductModal />
         <Header />
-        {children}
+        <main>{children}</main>
         <Footer />
       </body>
     </html>

@@ -3,6 +3,7 @@ import { GlobalStyles } from "@/shared";
 import { Footer, Header } from "@/widgets";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Suspense } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -23,7 +24,9 @@ export default async function RootLayout({
     <html lang="ru">
       <body className={inter.className}>
         <GlobalStyles />
-        <TopLoader />
+        <Suspense>
+          <TopLoader />
+        </Suspense>
         <ToastContainer position="top-right" autoClose={3000} />
         <ProductModal />
         <Header />

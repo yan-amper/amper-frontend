@@ -3,7 +3,7 @@
 import styled from "styled-components";
 
 export const FooterStyled = styled.footer`
-  background: #111827;
+  background: #b7bece;
   color: white;
   padding: 2rem 0;
 `;
@@ -26,6 +26,6 @@ export const FooterLogo = styled.div`
 
 export const FooterCopyright = styled.p`
   text-align: center;
-  color: #9ca3af;
+  color: black;
   margin: 0;
 `;

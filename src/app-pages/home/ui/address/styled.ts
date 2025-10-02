@@ -44,10 +44,18 @@ export const ContentGrid = styled.div`
 `;
 
 export const MapContainer = styled.div`
-  aspect-ratio: 16/9;
-  background: #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+
+  @media (max-width: 1024px) {
+    gap: 1.5rem;
+  }
+`;
+
+export const Map = styled.iframe`
   border-radius: 0.5rem;
-  overflow: hidden;
+  width: 100%;
 `;
 
 export const InfoContainer = styled.div`

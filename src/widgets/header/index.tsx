@@ -7,7 +7,7 @@ export const Header = () => (
   <S.HeaderContainer>
     <S.HeaderContent>
       <S.LogoContainer href={"/"}>
-        <Image
+        <S.Logo
           width={150}
           height={75}
           src={"/header-logo.svg"}

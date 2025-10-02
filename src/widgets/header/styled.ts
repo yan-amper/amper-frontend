@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
 
@@ -32,6 +33,14 @@ export const HeaderActions = styled.div`
   display: flex;
   align-items: center;
   gap: 1.5rem;
+
+  @media (max-width: 550px) {
+    gap: 0.5rem;
+  }
+
+   @media (max-width: 450px) {
+    flex-direction: column-reverse;
+  }
 `;
 
 export const PhoneContainer = styled.div`
@@ -44,6 +53,10 @@ export const PhoneContainer = styled.div`
 export const PhoneText = styled.a`
   font-weight: 500;
   color: black;
+
+  @media (max-width: 550px) {
+    font-size: 14px;
+  }
 `;
 
 export const AddressButton = styled(Link)`
@@ -59,5 +72,17 @@ export const AddressButton = styled(Link)`
 
   &:hover {
     background: #b91c1c;
+  }
+
+  @media (max-width: 550px) {
+    padding: 0.4rem 1.2rem;
+    font-size: 14px;
+  }
+`;
+
+export const Logo = styled(Image)`
+  @media (max-width: 550px) {
+    width: 120px;
+    height: 60px;
   }
 `;

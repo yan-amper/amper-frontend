@@ -1,5 +1,6 @@
 import { ProductCard, ProductsApi } from "@/entities";
 import * as S from "./styled";
+import { CatalogLink } from "@/features";
 
 export const RecommendedBatteries = async () => {
   const recProducts = await ProductsApi.getRecommendedProducts();
@@ -19,6 +20,8 @@ export const RecommendedBatteries = async () => {
             <ProductCard key={battery.id} product={battery} />
           ))}
         </S.BatteriesGrid>
+
+        <CatalogLink />
       </S.Container>
     </S.Section>
   );

@@ -1,5 +1,6 @@
 import { ProductCard, ProductsApi } from "@/entities";
 import * as S from "./styled";
+import { CatalogLink } from "@/features";
 
 export const PopularBatteries = async () => {
   const popularProducts = await ProductsApi.getPopularProducts();
@@ -26,6 +27,8 @@ export const PopularBatteries = async () => {
           ))}
         </S.SecondRow>
       </S.Container>
+
+      <CatalogLink />
     </S.Section>
   );
 };

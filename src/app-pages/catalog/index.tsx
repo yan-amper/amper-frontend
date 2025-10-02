@@ -7,17 +7,25 @@ export type CatalogPageProps = {
 };
 
 export const CatalogPage = async ({ searchParams }: CatalogPageProps) => {
-  const selectedFilters = await searchParams;
+  const { capacity, ...selectedFilters } = await searchParams;
 
-  const products = (await ProductsApi.getFiltredProduct({
+  let products = (await ProductsApi.getFiltredProduct({
     params: selectedFilters,
     type: "filtredList",
   })) as Product[];
 
+  if (capacity) {
+    const [min, max] = capacity.split("-").map(Number);
+    products = products.filter((product) => {
+      const capacity = +product.capacity;
+      return capacity >= min && capacity <= max;
+    });
+  }
+
   return (
     <S.ContentContainer>
       <S.MainContent>
-        <CatalogFilters selectedFilters={selectedFilters} />
+        <CatalogFilters selectedFilters={{ capacity, ...selectedFilters }} />
         <CatalogProducts products={products} />
       </S.MainContent>
     </S.ContentContainer>

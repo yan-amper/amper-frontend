@@ -1,16 +1,6 @@
 import { Zap } from "lucide-react";
 import * as S from "./styled";
-
-const catalogCategories = [
-  "35-42 Ah",
-  "45-50 Ah",
-  "55-65 Ah",
-  "70-85 Ah",
-  "90-110 Ah",
-  "130-230 Ah",
-  "SPS",
-  "MOTO",
-];
+import { CAPACITY_RANGES } from "@/shared";
 
 export const Catalog = () => (
   <S.Section>
@@ -21,13 +11,13 @@ export const Catalog = () => (
       </S.SectionHeader>
 
       <S.CatalogGrid>
-        {catalogCategories.map((category) => (
-          <S.CategoryCard key={category} href={`filtred-products/${category}`}>
+        {CAPACITY_RANGES.map((capacity) => (
+          <S.CategoryCard key={capacity} href={`catalog?capacity=${capacity}`}>
             <S.CategoryContent>
               <S.CategoryIcon>
                 <Zap size={24} color="#dc2626" />
               </S.CategoryIcon>
-              <S.CategoryTitle>{category}</S.CategoryTitle>
+              <S.CategoryTitle>{capacity} Ah</S.CategoryTitle>
             </S.CategoryContent>
           </S.CategoryCard>
         ))}

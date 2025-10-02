@@ -11,7 +11,7 @@ export const HeaderContainer = styled.header`
   background: white;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   z-index: 50;
-  border-bottom: 1px solid #fecaca;
+  border-bottom: 1px solid #dc2626;
 `;
 
 export const HeaderContent = styled.div`
@@ -38,7 +38,7 @@ export const HeaderActions = styled.div`
     gap: 0.5rem;
   }
 
-   @media (max-width: 450px) {
+  @media (max-width: 450px) {
     flex-direction: column-reverse;
   }
 `;

@@ -5,30 +5,26 @@ import * as S from "./styled";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useUnit } from "effector-react";
 import { productsModel, ProductValues } from "@/entities";
+import { CAPACITY_RANGES } from "@/shared";
 
 const filterProperties: {
   name: ProductValues;
-  label: string;
+  title: string;
   placeholder: string;
 }[] = [
   {
-    name: "capacity",
-    label: "Ёмкость",
-    placeholder: "Укажите емкость",
-  },
-  {
     name: "polarity",
-    label: "Полярность",
+    title: "Полярность",
     placeholder: "Укажите полярность",
   },
   {
     name: "manufacturer",
-    label: "Изготовитель",
+    title: "Изготовитель",
     placeholder: "Укажите изготовителя",
   },
   {
     name: "current",
-    label: "Сила тока",
+    title: "Сила тока",
     placeholder: "Укажите силу тока",
   },
 ];
@@ -46,21 +42,6 @@ export type CatalogFiltersProps = {
 
 export const CatalogFilters = ({ selectedFilters }: CatalogFiltersProps) => {
   const productsData = useUnit(productsModel.$products).productsData;
-
-  const getPropertyValues = (key: ProductValues): Option[] => {
-    const unique = new Map<string, Option>();
-
-    productsData.forEach((product) => {
-      const value = String(product[key]);
-      if (!unique.has(value)) {
-        unique.set(value, { label: value, value });
-      }
-    });
-
-    return [...unique.values()].sort((a, b) =>
-      a.label.localeCompare(b.label, "ru", { numeric: true })
-    );
-  };
 
   const pathname = usePathname();
   const router = useRouter();
@@ -80,15 +61,43 @@ export const CatalogFilters = ({ selectedFilters }: CatalogFiltersProps) => {
     setParam(key, value);
   };
 
+  const getPropertyValues = (key: ProductValues): Option[] => {
+    const unique = new Map<string, Option>();
+
+    productsData.forEach((product) => {
+      const value = String(product[key]);
+      if (!unique.has(value)) {
+        unique.set(value, { label: value, value });
+      }
+    });
+
+    return [...unique.values()].sort((a, b) =>
+      a.label.localeCompare(b.label, "ru", { numeric: true })
+    );
+  };
+
+  const capacityRanges = CAPACITY_RANGES.map((range) => ({
+    value: range,
+    label: `${range} Ah`,
+  }));
+
   return (
     <S.FiltersContainer>
       <S.FiltersTitle>Фильтры</S.FiltersTitle>
 
+      <MultiSelect
+        title="Ёмкость"
+        value={selectedFilters["capacity"] || ""}
+        options={capacityRanges}
+        placeholder="Укажите емкость"
+        onChange={onSelectChange("capacity")}
+      />
+
       {filterProperties.map((filter) => (
         <MultiSelect
           key={filter.name}
-          title={filter.label}
-          value={selectedFilters[filter.name]}
+          title={filter.title}
+          value={selectedFilters[filter.name] || ""}
           options={getPropertyValues(filter.name)}
           placeholder={filter.placeholder}
           onChange={onSelectChange(filter.name)}
@@ -97,7 +106,7 @@ export const CatalogFilters = ({ selectedFilters }: CatalogFiltersProps) => {
 
       <MultiSelect
         title="Сортировка"
-        value={selectedFilters["sort"]}
+        value={selectedFilters["sort"] || ""}
         options={sortOptions}
         placeholder="По умолчанию"
         onChange={onSelectChange("sort")}

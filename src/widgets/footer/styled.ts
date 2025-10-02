@@ -3,9 +3,9 @@
 import styled from "styled-components";
 
 export const FooterStyled = styled.footer`
-  background: #b7bece;
   color: white;
   padding: 2rem 0;
+  border-top: 1px solid #dc2626;
 `;
 
 export const FooterContent = styled.div`

@@ -1,6 +1,6 @@
 "use client";
 
-import { MultiSelect, Option } from "@/features";
+import { Select, Option } from "@/features";
 import * as S from "./styled";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useUnit } from "effector-react";
@@ -85,7 +85,7 @@ export const CatalogFilters = ({ selectedFilters }: CatalogFiltersProps) => {
     <S.FiltersContainer>
       <S.FiltersTitle>Фильтры</S.FiltersTitle>
 
-      <MultiSelect
+      <Select
         title="Ёмкость"
         value={selectedFilters["capacity"]}
         options={capacityRanges}
@@ -94,7 +94,7 @@ export const CatalogFilters = ({ selectedFilters }: CatalogFiltersProps) => {
       />
 
       {filterProperties.map((filter) => (
-        <MultiSelect
+        <Select
           key={filter.name}
           title={filter.title}
           value={selectedFilters[filter.name]}
@@ -104,7 +104,7 @@ export const CatalogFilters = ({ selectedFilters }: CatalogFiltersProps) => {
         />
       ))}
 
-      <MultiSelect
+      <Select
         title="Сортировка"
         value={selectedFilters["sort"]}
         options={sortOptions}

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 
 export type Option = { value: string; label: string };
 
-type MultiSelectProps = {
+type SelectProps = {
   title: string;
   value?: string;
   options: Option[];
@@ -13,13 +13,13 @@ type MultiSelectProps = {
   onChange(value: string): void;
 };
 
-export const MultiSelect = ({
+export const Select = ({
   title,
   value,
   options,
   placeholder,
   onChange,
-}: MultiSelectProps) => {
+}: SelectProps) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 

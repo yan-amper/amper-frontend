@@ -7,11 +7,11 @@ export const BatteryCard = styled.div`
   background: white;
   border-radius: 0.5rem;
   overflow: hidden;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 10px 20px 0px rgba(8, 9, 9, 0.2);
   transition: box-shadow 0.3s;
 
   &:hover {
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 10px 20px 8px rgba(8, 9, 9, 0.2);
   }
 `;
 

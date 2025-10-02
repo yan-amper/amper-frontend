@@ -5,7 +5,51 @@ export const SliderContainer = styled.section`
   position: relative;
   height: 80vh;
   overflow: hidden;
-  margin-top: 5rem;
+  margin-top: 5.5rem;
+
+  @media (max-width: 1200px) {
+    height: 75vh;
+  }
+
+  @media (max-width: 1050px) {
+    height: 65vh;
+  }
+
+  @media (max-width: 970px) {
+    height: 60vh;
+  }
+
+  @media (max-width: 900px) {
+    height: 55vh;
+  }
+
+  @media (max-width: 820px) {
+    height: 50vh;
+  }
+
+  @media (max-width: 740px) {
+    height: 45vh;
+  }
+
+  @media (max-width: 670px) {
+    height: 40vh;
+  }
+
+  @media (max-width: 600px) {
+    height: 35vh;
+  }
+
+  @media (max-width: 520px) {
+    height: 30vh;
+  }
+
+  @media (max-width: 450px) {
+    height: 25vh;
+  }
+
+  @media (max-width: 370px) {
+    height: 20vh;
+  }
 `;
 
 export const SlideWrapper = styled.div`
@@ -28,7 +72,7 @@ export const SlideImage = styled(Image)`
 export const SlideOverlay = styled.div`
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.25);
 `;
 
 export const NavigationButton = styled.button`

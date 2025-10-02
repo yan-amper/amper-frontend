@@ -27,5 +27,3 @@ export type GetFiltredProductPayload = {
   params: Record<string, DataValue>;
   type?: string;
 };
-
-export type DeleteProductPayload = { id: number };

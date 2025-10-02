@@ -41,7 +41,7 @@ export type CatalogFiltersProps = {
 };
 
 export const CatalogFilters = ({ selectedFilters }: CatalogFiltersProps) => {
-  const productsData = useUnit(productsModel.$products).productsData;
+  const products = useUnit(productsModel.$products);
 
   const pathname = usePathname();
   const router = useRouter();
@@ -64,7 +64,7 @@ export const CatalogFilters = ({ selectedFilters }: CatalogFiltersProps) => {
   const getPropertyValues = (key: ProductValues): Option[] => {
     const unique = new Map<string, Option>();
 
-    productsData.forEach((product) => {
+    products.forEach((product) => {
       const value = String(product[key]);
       if (!unique.has(value)) {
         unique.set(value, { label: value, value });

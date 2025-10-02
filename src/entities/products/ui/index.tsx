@@ -1,10 +1,10 @@
 "use client";
 
 import { createImagePath, Query } from "@/shared";
-import { Product } from "../../api";
 import * as S from "./styled";
 import { useUnit } from "effector-react";
-import { productsModel } from "../../model";
+import { productsModel } from "../model";
+import { Product } from "../api";
 
 type ProductCardProps = {
   product: Product;

@@ -1,9 +1,5 @@
 import { $api } from "@/shared";
-import {
-  DeleteProductPayload,
-  GetFiltredProductPayload,
-  Product,
-} from "./types";
+import { GetFiltredProductPayload, Product } from "./types";
 
 export class ProductsApi {
   static async getProducts(): Promise<Product[]> {
@@ -13,13 +9,6 @@ export class ProductsApi {
       recommendations: item.recommendations !== 0,
       relevance: item.relevance !== 0,
     }));
-  }
-
-  static async createProduct(payload: FormData): Promise<Product> {
-    const { data } = await $api.post("/products/create", payload, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    return data.data as Product;
   }
 
   static async getRecommendedProducts(): Promise<Product[]> {
@@ -51,10 +40,5 @@ export class ProductsApi {
       }
       return arr.filter((p: Product) => p.relevance);
     }
-  }
-
-  static async deleteProduct({ id }: DeleteProductPayload): Promise<number> {
-    await $api.delete(`/products/${id}`);
-    return id;
   }
 }

@@ -1,12 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import styled from "styled-components";
 
 export const CatalogLinkStyled = styled.div`
   text-align: center;
 `;
 
-export const ViewAllButton = styled.a`
+export const ViewAllButton = styled(Link)`
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;

@@ -1,5 +1,6 @@
 import { MapPin, Phone } from "lucide-react";
 import * as S from "./styled";
+import { yandexId } from "@/shared";
 
 export const Address = () => (
   <S.Section id="address">
@@ -17,12 +18,14 @@ export const Address = () => (
             height="255"
             frameBorder="0"
           />
-          <iframe
-            src="https://yandex.ru/sprav/widget/rating-badge/207765729717?type=rating"
-            width="150"
-            height="50"
-            frameBorder="0"
-          />
+          {yandexId && (
+            <iframe
+              src={`https://yandex.ru/sprav/widget/rating-badge/${yandexId}?type=rating`}
+              width="150"
+              height="50"
+              frameBorder="0"
+            />
+          )}
         </S.MapContainer>
 
         <S.InfoContainer>

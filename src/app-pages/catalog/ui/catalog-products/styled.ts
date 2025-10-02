@@ -3,7 +3,7 @@
 import styled from "styled-components";
 
 export const ProductsContainer = styled.div`
-  height: 70vh;
+  min-height: 70vh;
   background: white;
   border-radius: 0.75rem;
   padding: 1.5rem;

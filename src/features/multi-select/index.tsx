@@ -6,7 +6,7 @@ export type Option = { value: string; label: string };
 
 type MultiSelectProps = {
   title: string;
-  value: string;
+  value?: string;
   options: Option[];
   placeholder?: string;
   onChange(value: string): void;
@@ -14,7 +14,7 @@ type MultiSelectProps = {
 
 export const MultiSelect = ({
   title,
-  value,
+  value = "",
   options,
   placeholder,
   onChange,

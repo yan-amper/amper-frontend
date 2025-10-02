@@ -87,7 +87,7 @@ export const CatalogFilters = ({ selectedFilters }: CatalogFiltersProps) => {
 
       <MultiSelect
         title="Ёмкость"
-        value={selectedFilters["capacity"] || ""}
+        value={selectedFilters["capacity"]}
         options={capacityRanges}
         placeholder="Укажите емкость"
         onChange={onSelectChange("capacity")}
@@ -97,7 +97,7 @@ export const CatalogFilters = ({ selectedFilters }: CatalogFiltersProps) => {
         <MultiSelect
           key={filter.name}
           title={filter.title}
-          value={selectedFilters[filter.name] || ""}
+          value={selectedFilters[filter.name]}
           options={getPropertyValues(filter.name)}
           placeholder={filter.placeholder}
           onChange={onSelectChange(filter.name)}
@@ -106,7 +106,7 @@ export const CatalogFilters = ({ selectedFilters }: CatalogFiltersProps) => {
 
       <MultiSelect
         title="Сортировка"
-        value={selectedFilters["sort"] || ""}
+        value={selectedFilters["sort"]}
         options={sortOptions}
         placeholder="По умолчанию"
         onChange={onSelectChange("sort")}

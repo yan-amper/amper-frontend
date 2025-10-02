@@ -23,7 +23,7 @@ export const Address = () => (
           <S.StoreImage
             width={550}
             height={255}
-            src="/shop.jpg"
+            src="/shop.webp"
             alt="Наш магазин"
           />
 

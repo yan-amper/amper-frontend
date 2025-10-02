@@ -53,6 +53,7 @@ export const SpecItem = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.5rem;
+  gap: 0.5rem;
 `;
 
 export const SpecLabel = styled.span`
@@ -62,6 +63,7 @@ export const SpecLabel = styled.span`
 export const SpecValue = styled.span`
   color: #111827;
   font-weight: 500;
+  text-align: end;
 `;
 
 export const PriceSection = styled.div`

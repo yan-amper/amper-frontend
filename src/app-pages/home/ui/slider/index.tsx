@@ -21,7 +21,7 @@ export const Slider = ({ banners }: SliderProps) => {
     }, 4000);
 
     return () => clearInterval(timer);
-  }, [bannersCount]);
+  }, [currentSlide, bannersCount]);
 
   const prevSlide = () =>
     setCurrentSlide((prev) => (prev - 1 + bannersCount) % bannersCount);

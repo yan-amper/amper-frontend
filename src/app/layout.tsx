@@ -1,4 +1,4 @@
-import { ProductModal, TopLoader, YandexMetrika } from "@/features";
+import { AppLoader, ProductModal, TopLoader, YandexMetrika } from "@/features";
 import { GlobalStyles } from "@/shared";
 import { Footer, Header } from "@/widgets";
 import type { Metadata } from "next";
@@ -25,6 +25,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <YandexMetrika />
         <GlobalStyles />
+        <AppLoader />
         <Suspense>
           <TopLoader />
         </Suspense>

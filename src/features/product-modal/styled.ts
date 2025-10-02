@@ -82,6 +82,15 @@ export const ModalBody = styled.div<{ $isLoading: boolean }>`
   overflow-x: hidden;
   align-items: start;
 
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #e60000;
+    border-radius: 5px;
+  }
+
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 0.75rem;

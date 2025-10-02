@@ -3,6 +3,7 @@
 import styled from "styled-components";
 
 export const ProductsContainer = styled.div`
+  height: 70vh;
   background: white;
   border-radius: 0.75rem;
   padding: 1.5rem;
@@ -16,12 +17,17 @@ export const ProductsHeader = styled.div`
   margin-bottom: 1.5rem;
   padding-bottom: 0.75rem;
   border-bottom: 2px solid #dc2626;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export const ProductsTitle = styled.h2`
   font-size: 1.25rem;
   font-weight: bold;
   color: #111827;
+  text-align: center;
 `;
 
 export const ProductsCount = styled.span`

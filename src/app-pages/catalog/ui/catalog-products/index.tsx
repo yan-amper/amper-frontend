@@ -16,23 +16,6 @@ export const CatalogProducts = ({ products }: CatalogProductsProps) => {
     getProductsFx();
   }, [getProductsFx]);
 
-  if (products.length === 0) {
-    return (
-      <S.ProductsContainer>
-        <S.ProductsHeader>
-          <S.ProductsTitle>Каталог аккумуляторов</S.ProductsTitle>
-          <S.ProductsCount>Найдено: 0 товаров</S.ProductsCount>
-        </S.ProductsHeader>
-        <S.NoResults>
-          <S.NoResultsTitle>Товары не найдены</S.NoResultsTitle>
-          <S.NoResultsText>
-            Попробуйте изменить параметры фильтрации или сбросить фильтры
-          </S.NoResultsText>
-        </S.NoResults>
-      </S.ProductsContainer>
-    );
-  }
-
   return (
     <S.ProductsContainer>
       <S.ProductsHeader>
@@ -40,11 +23,20 @@ export const CatalogProducts = ({ products }: CatalogProductsProps) => {
         <S.ProductsCount>Найдено: {products.length} товаров</S.ProductsCount>
       </S.ProductsHeader>
 
-      <S.ProductsGrid>
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </S.ProductsGrid>
+      {products.length === 0 ? (
+        <S.NoResults>
+          <S.NoResultsTitle>Товары не найдены</S.NoResultsTitle>
+          <S.NoResultsText>
+            Попробуйте изменить параметры фильтрации или сбросить фильтры
+          </S.NoResultsText>
+        </S.NoResults>
+      ) : (
+        <S.ProductsGrid>
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </S.ProductsGrid>
+      )}
     </S.ProductsContainer>
   );
 };

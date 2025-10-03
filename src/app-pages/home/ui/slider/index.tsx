@@ -34,10 +34,11 @@ export const Slider = ({ banners }: SliderProps) => {
         {banners.map((banner, i) => (
           <S.Slide key={banner.id} $isActive={i === currentSlide}>
             <S.SlideImage
+              width={1600}
+              height={900}
               src={createImagePath(banner.image)}
               alt={"акция Ампер"}
               priority
-              fill
             />
             <S.SlideOverlay />
           </S.Slide>

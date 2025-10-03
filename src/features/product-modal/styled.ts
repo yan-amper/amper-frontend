@@ -93,7 +93,7 @@ export const ModalBody = styled.div<{ $isLoading: boolean }>`
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 0.75rem;
+    gap: 2rem;
     padding: 0.75rem;
     max-height: calc(95vh - 1.5rem);
   }

@@ -16,7 +16,7 @@ export const SlideWrapper = styled.div`
 `;
 
 export const Slide = styled.div<{ $isActive: boolean }>`
-  display: ${({ $isActive }) => ($isActive ? 'block' : 'none')};
+  display: ${({ $isActive }) => ($isActive ? "block" : "none")};
 `;
 
 export const SlideImage = styled(Image)``;

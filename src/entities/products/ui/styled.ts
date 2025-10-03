@@ -26,7 +26,7 @@ export const BatteryImage = styled(Image)`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border: 3px solid red;
+  border: 3px solid #dc2626;
   border-radius: 10px;
 `;
 

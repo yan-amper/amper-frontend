@@ -93,7 +93,7 @@ export const ModalBody = styled.div<{ $isLoading: boolean }>`
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 0.75rem;
     padding: 0.75rem;
     max-height: calc(95vh - 1.5rem);
   }
@@ -103,29 +103,18 @@ export const ImageSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
 `;
 
 export const BatteryImage = styled(Image)`
   object-fit: contain;
-  border: 3px solid #dc2626;
-  border-radius: 10px;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 
   @media (max-width: 768px) {
     max-width: 275px;
   }
 `;
 
-export const CardLogo = styled(Image)`
-  width: 100px;
-  height: 50px;
-  position: absolute;
-  bottom: -25px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #fff;
-  padding: 4px;
-`;
 export const DetailsSection = styled.div`
   display: flex;
   flex-direction: column;

@@ -27,12 +27,6 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           src={createImagePath(product.image)}
           alt={product.title}
         />
-        <S.CardLogo
-          width={100}
-          height={50}
-          src={"/header-logo.svg"}
-          alt="логотип Ампер"
-        />
       </S.BatteryImageContainer>
 
       <S.BatteryContent>

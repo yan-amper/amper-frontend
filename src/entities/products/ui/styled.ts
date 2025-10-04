@@ -18,27 +18,17 @@ export const BatteryCard = styled.div`
 export const BatteryImageContainer = styled.div`
   aspect-ratio: 1;
   overflow: hidden;
-  padding: 30px;
-  position: relative;
 `;
 
 export const BatteryImage = styled(Image)`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border: 3px solid #dc2626;
-  border-radius: 10px;
-`;
+  transition: transform 0.3s;
 
-export const CardLogo = styled(Image)`
-  width: 100px;
-  height: 50px;
-  position: absolute;
-  bottom: 5px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #fff;
-  padding: 4px;
+  ${BatteryCard}:hover & {
+    transform: scale(1.05);
+  }
 `;
 
 export const BatteryContent = styled.div`

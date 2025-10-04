@@ -40,16 +40,15 @@ export const Slider = ({ banners }: SliderProps) => {
               alt={"акция Ампер"}
               priority
             />
-            <S.SlideOverlay />
           </S.Slide>
         ))}
 
         <S.PrevButton onClick={prevSlide}>
-          <ChevronLeft size={24} />
+          <ChevronLeft size={24} stroke="gray" />
         </S.PrevButton>
 
         <S.NextButton onClick={nextSlide}>
-          <ChevronRight size={24} />
+          <ChevronRight size={24} stroke="gray" />
         </S.NextButton>
 
         <S.DotsContainer>

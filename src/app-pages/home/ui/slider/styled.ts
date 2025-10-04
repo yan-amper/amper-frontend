@@ -21,27 +21,17 @@ export const Slide = styled.div<{ $isActive: boolean }>`
 
 export const SlideImage = styled(Image)``;
 
-export const SlideOverlay = styled.div`
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.25);
-`;
-
 export const NavigationButton = styled.button`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.2);
+  background: rgb(255, 255, 255);
   color: white;
   padding: 0.5rem;
   border-radius: 50%;
   border: none;
   cursor: pointer;
   transition: background-color 0.2s;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.3);
-  }
 `;
 
 export const PrevButton = styled(NavigationButton)`
@@ -68,6 +58,5 @@ export const Dot = styled.button<{ $isActive: boolean }>`
   border: none;
   cursor: pointer;
   transition: all 0.2s;
-  background: ${({ $isActive }) =>
-    $isActive ? "white" : "rgba(255, 255, 255, 0.5)"};
+  background: ${({ $isActive }) => ($isActive ? "gray" : "white")};
 `;

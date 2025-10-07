@@ -64,7 +64,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
               <S.CurrentPrice>{product.priceWithChange} ₽</S.CurrentPrice>
               <S.PriceNote>при сдаче АКБ {product.capacity}Ач</S.PriceNote>
             </S.PriceInfo>
-            <S.BuyButton onClick={onProductClick}>Купить</S.BuyButton>
+            <S.BuyButton onClick={onProductClick}>Подробнее</S.BuyButton>
           </S.PriceContainer>
         </S.PriceSection>
       </S.BatteryContent>

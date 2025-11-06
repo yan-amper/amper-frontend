@@ -5,6 +5,8 @@ import { CatalogLink } from "@/features";
 export const PopularBatteries = async () => {
   const popularProducts = await ProductsApi.getPopularProducts();
 
+  console.log(popularProducts);
+
   return (
     <S.Section>
       <S.Container>

@@ -23,6 +23,7 @@ export const Address = () => (
               src={`https://yandex.ru/sprav/widget/rating-badge/${yandexId}?type=rating`}
               width="150"
               height="50"
+              allow="encrypted-media"
               frameBorder="0"
             />
           )}

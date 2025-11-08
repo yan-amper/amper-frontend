@@ -35,11 +35,13 @@ export const SectionDivider = styled.div`
 `;
 
 export const BatteriesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
 
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(3, 1fr);
+  & > div {
+    max-width: 400px;
   }
 `;

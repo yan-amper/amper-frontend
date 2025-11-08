@@ -4,7 +4,6 @@ import { CatalogLink } from "@/features";
 
 export const PopularBatteries = async () => {
   const popularProducts = await ProductsApi.getPopularProducts();
-  console.log(popularProducts);
 
   return (
     <S.Section>
@@ -16,17 +15,11 @@ export const PopularBatteries = async () => {
           <S.SectionDivider />
         </S.SectionHeader>
 
-        <S.FirstRow>
-          {popularProducts.slice(0, 3).map((product) => (
+        <S.Products>
+          {popularProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
-        </S.FirstRow>
-
-        <S.SecondRow>
-          {popularProducts.slice(3).map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </S.SecondRow>
+        </S.Products>
       </S.Container>
 
       <CatalogLink />

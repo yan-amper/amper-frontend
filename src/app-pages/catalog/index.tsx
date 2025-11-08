@@ -2,6 +2,8 @@ import { Product, ProductsApi } from "@/entities";
 import * as S from "./styled";
 import { CatalogFilters, CatalogProducts, SelectedFilters } from "./ui";
 
+export const dynamic = "force-dynamic";
+
 export type CatalogPageProps = {
   searchParams: SelectedFilters;
 };

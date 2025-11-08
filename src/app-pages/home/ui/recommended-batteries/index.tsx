@@ -2,6 +2,8 @@ import { ProductCard, ProductsApi } from "@/entities";
 import * as S from "./styled";
 import { CatalogLink } from "@/features";
 
+export const dynamic = "force-dynamic";
+
 export const RecommendedBatteries = async () => {
   const recProducts = await ProductsApi.getRecommendedProducts();
 

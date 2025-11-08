@@ -7,8 +7,6 @@ import {
   Slider,
 } from "./ui";
 
-export const dynamic = "force-dynamic";
-
 export const HomePage = async () => {
   const banners = await BannersApi.getBanners();
 

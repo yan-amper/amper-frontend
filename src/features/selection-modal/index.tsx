@@ -9,11 +9,11 @@ import { appState } from "@/entities";
 import { submitForm } from "./actions";
 
 export type FormData = {
-  brand: string;
-  model: string;
-  engine: string;
-  year: string;
-  delivery: string;
+  car_brand: string;
+  car_model: string;
+  engine_type: string;
+  production_year: string;
+  delivery_method: string;
   phone: string;
 };
 
@@ -22,12 +22,12 @@ type FormErrors = Record<string, string>;
 const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 30 }, (_, i) => currentYear - i);
 
-const formInitial = {
-  brand: "",
-  model: "",
-  engine: "",
-  year: "",
-  delivery: "",
+const formInitial: FormData = {
+  car_brand: "",
+  car_model: "",
+  engine_type: "",
+  production_year: "",
+  delivery_method: "",
   phone: "",
 };
 
@@ -54,7 +54,10 @@ export const SelectionModal = () => {
 
   const closeModal = () => {
     setForm({ open: false });
-    setIsSubmitted(false);
+
+    setTimeout(() => {
+      setIsSubmitted(false);
+    }, 300);
   };
 
   const handleOverlayClick = (e: React.MouseEvent) => {
@@ -86,23 +89,23 @@ export const SelectionModal = () => {
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    if (!formData.brand.trim()) {
+    if (!formData.car_brand.trim()) {
       newErrors.brand = "Укажите марку автомобиля";
     }
 
-    if (!formData.model.trim()) {
+    if (!formData.car_model.trim()) {
       newErrors.model = "Укажите модель автомобиля";
     }
 
-    if (!formData.engine) {
+    if (!formData.engine_type) {
       newErrors.engine = "Выберите тип двигателя";
     }
 
-    if (!formData.year) {
+    if (!formData.production_year) {
       newErrors.year = "Выберите год выпуска";
     }
 
-    if (!formData.delivery) {
+    if (!formData.delivery_method) {
       newErrors.delivery = "Выберите способ получения";
     }
 
@@ -121,12 +124,16 @@ export const SelectionModal = () => {
 
     if (validateForm()) {
       startTransition(async () => {
-        await submitForm(formData);
-      });
+        const response = await submitForm(formData);
 
-      setIsSubmitted(true);
-      setErrors({});
-      setFormData(formInitial);
+        if (response.ok) {
+          setIsSubmitted(true);
+          setErrors({});
+          setFormData(formInitial);
+        } else {
+          setErrors({ form: response.message });
+        }
+      });
     }
   };
 
@@ -183,8 +190,8 @@ export const SelectionModal = () => {
               <S.Input
                 type="text"
                 placeholder="Например: Toyota, BMW, Lada"
-                value={formData.brand}
-                onChange={(e) => handleInputChange("brand", e.target.value)}
+                value={formData.car_brand}
+                onChange={(e) => handleInputChange("car_brand", e.target.value)}
                 $hasError={!!errors.brand}
                 $disabled={isPending}
               />
@@ -196,8 +203,8 @@ export const SelectionModal = () => {
               <S.Input
                 type="text"
                 placeholder="Например: Camry, X5, Granta"
-                value={formData.model}
-                onChange={(e) => handleInputChange("model", e.target.value)}
+                value={formData.car_model}
+                onChange={(e) => handleInputChange("car_model", e.target.value)}
                 $hasError={!!errors.model}
                 $disabled={isPending}
               />
@@ -213,11 +220,11 @@ export const SelectionModal = () => {
                 >
                   <S.RadioInput
                     type="radio"
-                    name="engine"
+                    name="engine_type"
                     value="petrol"
-                    checked={formData.engine === "petrol"}
+                    checked={formData.engine_type === "petrol"}
                     onChange={(e) =>
-                      handleInputChange("engine", e.target.value)
+                      handleInputChange("engine_type", e.target.value)
                     }
                   />
                   <S.RadioLabel>Бензин</S.RadioLabel>
@@ -230,9 +237,9 @@ export const SelectionModal = () => {
                     type="radio"
                     name="engine"
                     value="diesel"
-                    checked={formData.engine === "diesel"}
+                    checked={formData.engine_type === "diesel"}
                     onChange={(e) =>
-                      handleInputChange("engine", e.target.value)
+                      handleInputChange("engine_type", e.target.value)
                     }
                   />
                   <S.RadioLabel>Дизель</S.RadioLabel>
@@ -246,8 +253,10 @@ export const SelectionModal = () => {
             <S.FormGroup>
               <S.Label>Год выпуска *</S.Label>
               <S.Select
-                value={formData.year}
-                onChange={(e) => handleInputChange("year", e.target.value)}
+                value={formData.production_year}
+                onChange={(e) =>
+                  handleInputChange("production_year", e.target.value)
+                }
                 $hasError={!!errors.year}
                 $disabled={isPending}
               >
@@ -272,9 +281,9 @@ export const SelectionModal = () => {
                     type="radio"
                     name="delivery"
                     value="delivery"
-                    checked={formData.delivery === "delivery"}
+                    checked={formData.delivery_method === "delivery"}
                     onChange={(e) =>
-                      handleInputChange("delivery", e.target.value)
+                      handleInputChange("delivery_method", e.target.value)
                     }
                   />
                   <S.RadioLabel>С доставкой и установкой</S.RadioLabel>
@@ -287,9 +296,9 @@ export const SelectionModal = () => {
                     type="radio"
                     name="delivery"
                     value="pickup"
-                    checked={formData.delivery === "pickup"}
+                    checked={formData.delivery_method === "pickup"}
                     onChange={(e) =>
-                      handleInputChange("delivery", e.target.value)
+                      handleInputChange("delivery_method", e.target.value)
                     }
                   />
                   <S.RadioLabel>Самовывоз</S.RadioLabel>
@@ -312,6 +321,8 @@ export const SelectionModal = () => {
               />
               {errors.phone && <S.ErrorMessage>{errors.phone}</S.ErrorMessage>}
             </S.FormGroup>
+
+            {errors.form && <S.ErrorMessage>{errors.form}</S.ErrorMessage>}
 
             <S.SubmitButton disabled={isPending} type="submit">
               Подобрать аккумулятор

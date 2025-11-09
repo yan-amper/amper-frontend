@@ -3,4 +3,5 @@ export * from "./select";
 export * from "./top-loader";
 export * from "./catalog-link";
 export * from "./yandex-metrika";
-export * from "./app-loader";
+export * from "./battery-selection-button";
+export * from "./selection-modal";

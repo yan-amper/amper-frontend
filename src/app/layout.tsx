@@ -1,9 +1,15 @@
-import { ProductModal, YandexMetrika } from "@/features";
+import {
+  ProductModal,
+  SelectionModal,
+  TopLoader,
+  YandexMetrika,
+} from "@/features";
 import { GlobalStyles } from "@/shared";
 import { StyledComponentsRegistry } from "@/shared/lib/styled-components-registry";
 import { Footer, Header } from "@/widgets";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,9 +30,10 @@ export default async function RootLayout({
         <StyledComponentsRegistry>
           <YandexMetrika />
           <GlobalStyles />
-          {/* <Suspense>
+          <Suspense>
             <TopLoader />
-          </Suspense> */}
+          </Suspense>
+          <SelectionModal />
           <ProductModal />
           <Header />
           <main>{children}</main>

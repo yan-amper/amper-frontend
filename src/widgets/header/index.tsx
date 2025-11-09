@@ -1,7 +1,9 @@
+"use client";
+
 import { Phone } from "lucide-react";
 import * as S from "./styled";
-import Image from "next/image";
 import { formattedPhoneNumber, phoneNumber } from "@/shared";
+import { BatterySelectionButton } from "@/features";
 
 export const Header = () => (
   <S.HeaderContainer>
@@ -16,6 +18,7 @@ export const Header = () => (
       </S.LogoContainer>
 
       <S.HeaderActions>
+        <BatterySelectionButton />
         <S.PhoneContainer>
           <Phone size={16} />
           <S.PhoneText href={`tel:${phoneNumber}`}>

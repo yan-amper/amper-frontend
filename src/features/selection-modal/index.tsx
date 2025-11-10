@@ -40,7 +40,7 @@ export const SelectionModal = () => {
   const form = useUnit(appState.$form);
   const setForm = useUnit(appState.setForm);
 
-  useHideScroll(form.open)
+  useHideScroll(form.open);
 
   const closeModal = () => {
     setForm({ open: false });

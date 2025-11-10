@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const PageContainer = styled.div`
   min-height: 100vh;
@@ -69,7 +69,7 @@ export const RequestNumber = styled.h3`
 `;
 
 export const RequestStatus = styled.span<{ $color: string }>`
-  background: ${props => props.$color};
+  background: ${(props) => props.$color};
   color: white;
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
@@ -79,11 +79,69 @@ export const RequestStatus = styled.span<{ $color: string }>`
   letter-spacing: 0.05em;
 `;
 
+export const RequestInfo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+`;
+
+export const DeliveryInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  background: #f3f4f6;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: #374151;
+`;
+
+export const DeliveryIcon = styled.div<{ $isDelivery: boolean }>`
+  color: ${(props) => (props.$isDelivery ? "#dc2626" : "#059669")};
+  display: flex;
+  align-items: center;
+`;
+
 export const RequestDescription = styled.p`
   color: #6b7280;
   margin: 0;
   line-height: 1.5;
   font-size: 0.875rem;
+`;
+
+export const FilterContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+`;
+
+export const FilterButton = styled.button<{ $isActive: boolean }>`
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: 2px solid ${(props) => (props.$isActive ? "#dc2626" : "#e5e7eb")};
+  background: ${(props) => (props.$isActive ? "#dc2626" : "white")};
+  color: ${(props) => (props.$isActive ? "white" : "#374151")};
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    border-color: #dc2626;
+    background: ${(props) => (props.$isActive ? "#b91c1c" : "#fef2f2")};
+    color: ${(props) => (props.$isActive ? "white" : "#dc2626")};
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
 `;
 
 export const NoRequests = styled.div`

@@ -1,22 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import {
-  PageContainer,
-  ContentContainer,
-  MainContent,
-  PageTitle,
-  RequestsGrid,
-  RequestCard,
-  RequestHeader,
-  RequestNumber,
-  RequestStatus,
-  RequestDescription,
-  NoRequests,
-} from "./styled";
+import * as S from "./styled";
 import { RequestModal } from "@/features";
-import { getStatusColor, getStatusText, Request } from "@/entities";
+import { getDeliveryText, getStatusColor, getStatusText, Request } from "@/entities";
 import { SubmitFormReturn, supabase } from "@/shared";
+import { CheckCircle, Clock, Home, Truck } from "lucide-react";
+
+type FilterType = "all" | "active" | "completed";
 
 export type RequestsPageProps = {
   requests: Request[];
@@ -27,6 +18,7 @@ export default function RequestsPage({
 }: RequestsPageProps) {
   const [requests, setRequests] = useState<Request[]>(initialRequests);
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
+  const [filter, setFilter] = useState<FilterType>("all");
 
   const handleRequestClick = (request: Request) => {
     setSelectedRequest(request);
@@ -57,44 +49,103 @@ export default function RequestsPage({
     }
   };
 
-  return (
-    <PageContainer>
-      <ContentContainer>
-        <MainContent>
-          <PageTitle>Заявки пользователей</PageTitle>
+  const filteredRequests = requests.filter((request) => {
+    if (filter === "active") {
+      return request.status === "new" || request.status === "in_progress";
+    }
+    if (filter === "completed") {
+      return request.status === "completed" || request.status === "cancelled";
+    }
+    return true;
+  });
 
-          {requests.length === 0 ? (
-            <NoRequests>
+  return (
+    <S.PageContainer>
+      <S.ContentContainer>
+        <S.MainContent>
+          <S.PageTitle>Заявки пользователей</S.PageTitle>
+
+          <S.FilterContainer>
+            <S.FilterButton
+              $isActive={filter === "all"}
+              onClick={() => setFilter("all")}
+            >
+              Все заявки ({requests.length})
+            </S.FilterButton>
+            <S.FilterButton
+              $isActive={filter === "active"}
+              onClick={() => setFilter("active")}
+            >
+              <Clock size={16} />В работе (
+              {
+                requests.filter(
+                  (r) => r.status === "new" || r.status === "in_progress"
+                ).length
+              }
+              )
+            </S.FilterButton>
+            <S.FilterButton
+              $isActive={filter === "completed"}
+              onClick={() => setFilter("completed")}
+            >
+              <CheckCircle size={16} />
+              Готовые (
+              {
+                requests.filter(
+                  (r) => r.status === "completed" || r.status === "cancelled"
+                ).length
+              }
+              )
+            </S.FilterButton>
+          </S.FilterContainer>
+
+          {filteredRequests.length === 0 ? (
+            <S.NoRequests>
               <h3>Заявок пока нет</h3>
               <p>
                 Когда пользователи начнут оставлять заявки на подбор
                 аккумуляторов, они появятся здесь
               </p>
-            </NoRequests>
+            </S.NoRequests>
           ) : (
-            <RequestsGrid>
-              {requests.map((request) => (
-                <RequestCard
+            <S.RequestsGrid>
+              {filteredRequests.map((request) => (
+                <S.RequestCard
                   key={request.id}
                   onClick={() => handleRequestClick(request)}
                 >
-                  <RequestHeader>
-                    <RequestNumber># {request.id}</RequestNumber>
-                    <RequestStatus $color={getStatusColor(request.status)}>
+                  <S.RequestHeader>
+                    <S.RequestNumber># {request.id}</S.RequestNumber>
+                    <S.RequestStatus $color={getStatusColor(request.status)}>
                       {getStatusText(request.status)}
-                    </RequestStatus>
-                  </RequestHeader>
+                    </S.RequestStatus>
+                  </S.RequestHeader>
 
-                  <RequestDescription>
+                  <S.RequestInfo>
+                    <S.DeliveryInfo>
+                      <S.DeliveryIcon
+                        $isDelivery={request.delivery_method === "delivery"}
+                      >
+                        {request.delivery_method === "delivery" ? (
+                          <Truck size={16} />
+                        ) : (
+                          <Home size={16} />
+                        )}
+                      </S.DeliveryIcon>
+                      {getDeliveryText(request.delivery_method)}
+                    </S.DeliveryInfo>
+                  </S.RequestInfo>
+
+                  <S.RequestDescription>
                     {request.description ||
                       `${request.car_brand} ${request.car_model} (${request.production_year})`}
-                  </RequestDescription>
-                </RequestCard>
+                  </S.RequestDescription>
+                </S.RequestCard>
               ))}
-            </RequestsGrid>
+            </S.RequestsGrid>
           )}
-        </MainContent>
-      </ContentContainer>
+        </S.MainContent>
+      </S.ContentContainer>
 
       <RequestModal
         request={selectedRequest}
@@ -102,6 +153,6 @@ export default function RequestsPage({
         onClose={handleCloseModal}
         onUpdate={handleUpdateRequest}
       />
-    </PageContainer>
+    </S.PageContainer>
   );
 }

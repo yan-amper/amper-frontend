@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { X, CircleCheck as CheckCircle, Phone } from "lucide-react";
 import * as S from "./styled";
-import { formattedPhoneNumber, phoneNumber } from "@/shared";
+import { formattedPhoneNumber, phoneNumber, useHideScroll } from "@/shared";
 import { useUnit } from "effector-react";
 import { appState } from "@/entities";
 import { submitForm } from "./actions";
@@ -40,17 +40,7 @@ export const SelectionModal = () => {
   const form = useUnit(appState.$form);
   const setForm = useUnit(appState.setForm);
 
-  useEffect(() => {
-    if (form.open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [form.open]);
+  useHideScroll(form.open)
 
   const closeModal = () => {
     setForm({ open: false });

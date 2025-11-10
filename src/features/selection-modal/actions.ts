@@ -1,16 +1,7 @@
 "use server";
 
-import { supabase } from "@/shared";
+import { SubmitFormReturn, supabase } from "@/shared";
 import { FormData } from ".";
-
-type SubmitFormReturn =
-  | {
-      ok: true;
-    }
-  | {
-      ok: false;
-      message: string;
-    };
 
 export const submitForm = async (
   formData: FormData

@@ -1,0 +1,13 @@
+export type Request = {
+  id: number;
+  car_brand: string;
+  car_model: string;
+  engine_type: "petrol" | "diesel";
+  description: string;
+  production_year: number;
+  delivery_method: "delivery" | "pickup";
+  phone: string;
+  status: "new" | "in_progress" | "completed" | "cancelled";
+  source: "website" | "tg";
+  created_at: string;
+};

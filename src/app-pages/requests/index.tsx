@@ -10,7 +10,7 @@ import {
   Product,
   Request,
 } from "@/entities";
-import { SubmitFormReturn, supabase } from "@/shared";
+import { formatDate, SubmitFormReturn, supabase } from "@/shared";
 import { CheckCircle, Clock, Home, Truck } from "lucide-react";
 
 type FilterType = "all" | "active" | "completed";
@@ -151,6 +151,10 @@ export default function RequestsPage({
                   <S.RequestDescription>
                     {request.description ||
                       `${request.car_brand} ${request.car_model} (${request.production_year})`}
+                  </S.RequestDescription>
+
+                  <S.RequestDescription>
+                    {formatDate(request.created_at)}
                   </S.RequestDescription>
                 </S.RequestCard>
               ))}

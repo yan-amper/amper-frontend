@@ -12,14 +12,6 @@ export const sendProductsAction = async (
   products: Product[]
 ): Promise<SubmitFormReturn> => {
   try {
-    await bot.telegram.sendMessage(
-      request.phone,
-      escapeMarkdownV2("Вот варианты по вашей заявке"),
-      {
-        parse_mode: "MarkdownV2",
-      }
-    );
-
     for (const p of products) {
       const text = `${p.title}
 
@@ -36,6 +28,14 @@ export const sendProductsAction = async (
         parse_mode: "MarkdownV2",
       });
     }
+
+    await bot.telegram.sendMessage(
+      request.phone,
+      `Подбор завершён! ⚡️
+Ян проверил лично — вот аккумуляторы, которые подойдут вашему автомобилю.
+    
+Если остались вопросы или нужна консультация — 89897228095 📞`
+    );
 
     return { ok: true };
   } catch (err) {

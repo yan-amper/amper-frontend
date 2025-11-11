@@ -3,7 +3,12 @@
 import { useState } from "react";
 import * as S from "./styled";
 import { RequestModal } from "@/features";
-import { getDeliveryText, getStatusColor, getStatusText, Request } from "@/entities";
+import {
+  getDeliveryText,
+  getStatusColor,
+  getStatusText,
+  Request,
+} from "@/entities";
 import { SubmitFormReturn, supabase } from "@/shared";
 import { CheckCircle, Clock, Home, Truck } from "lucide-react";
 
@@ -58,6 +63,8 @@ export default function RequestsPage({
     }
     return true;
   });
+
+  filteredRequests.reverse();
 
   return (
     <S.PageContainer>

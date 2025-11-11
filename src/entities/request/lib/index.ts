@@ -41,7 +41,7 @@ export const getStatusText = (status: Request["status"]) => {
 export const getSource = (source: Request["source"]) => {
   switch (source) {
     case "tg":
-      return "Тг";
+      return "Телеграм";
     case "website":
       return "Сайт";
     default:

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
 import { X } from "lucide-react";
 import * as S from "./styled";
 import {
@@ -8,12 +8,15 @@ import {
   getEngineText,
   getSource,
   getStatusColor,
+  Product,
   Request,
 } from "@/entities";
 import { formatDate, SubmitFormReturn, useHideScroll } from "@/shared";
+import { sendProductsAction } from "./actions";
 
 interface RequestModalProps {
   request: Request | null;
+  products: Product[];
   isOpen: boolean;
   onClose: () => void;
   onUpdate: (request: Request) => Promise<SubmitFormReturn>;
@@ -28,6 +31,7 @@ const statusOptions = [
 
 export const RequestModal = ({
   request,
+  products,
   isOpen,
   onClose,
   onUpdate,
@@ -37,6 +41,10 @@ export const RequestModal = ({
   const [hasChanges, setHasChanges] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isPending, setIsPending] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedBatteries, setSelectedBatteries] = useState<Product[]>([]);
+  const [isSending, startTransition] = useTransition();
+  const [sendError, setSendError] = useState("");
 
   useHideScroll(isOpen);
 
@@ -99,6 +107,36 @@ export const RequestModal = ({
     }
   };
 
+  const sendProductsToUser = () => {
+    setSendError("");
+    startTransition(async () => {
+      const result = await sendProductsAction(request, selectedBatteries);
+      if (!result.ok) {
+        setSendError(result.message);
+      }
+    });
+  };
+
+  const handleBatterySelect = (battery: Product) => {
+    const alreadySelected = selectedBatteries.some((b) => b.id === battery.id);
+    if (!alreadySelected) {
+      setSelectedBatteries((prev) => [...prev, battery]);
+    }
+  };
+
+  const handleBatteryRemove = (battery: Product) => {
+    setSelectedBatteries((prev) => prev.filter((b) => b.id !== battery.id));
+  };
+
+  const filteredBatteries = products.filter((battery) => {
+    const alreadySelected = selectedBatteries.some((b) => b.id === battery.id);
+
+    return (
+      battery.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      !alreadySelected
+    );
+  });
+
   return (
     <S.ModalOverlay $isOpen={isOpen} onClick={handleOverlayClick}>
       <S.ModalContent>
@@ -139,24 +177,26 @@ export const RequestModal = ({
                   {getDeliveryText(request.delivery_method)}
                 </S.InfoValue>
               </S.InfoItem>
+              {request.source === "website" && (
+                <S.InfoItem>
+                  <S.InfoLabel>Телефон:</S.InfoLabel>
+                  <S.InfoValue>
+                    <a
+                      href={`tel:${request.phone}`}
+                      style={{ color: "#dc2626", textDecoration: "none" }}
+                    >
+                      {request.phone}
+                    </a>
+                  </S.InfoValue>
+                </S.InfoItem>
+              )}
               <S.InfoItem>
-                <S.InfoLabel>Телефон:</S.InfoLabel>
-                <S.InfoValue>
-                  <a
-                    href={`tel:${request.phone}`}
-                    style={{ color: "#dc2626", textDecoration: "none" }}
-                  >
-                    {request.phone}
-                  </a>
-                </S.InfoValue>
+                <S.InfoLabel>Откуда</S.InfoLabel>
+                <S.InfoValue>{getSource(request.source)}</S.InfoValue>
               </S.InfoItem>
               <S.InfoItem>
                 <S.InfoLabel>Дата создания:</S.InfoLabel>
                 <S.InfoValue>{formatDate(request.created_at)}</S.InfoValue>
-              </S.InfoItem>
-              <S.InfoItem>
-                <S.InfoLabel>Откуда</S.InfoLabel>
-                <S.InfoValue>{getSource(request.source)}</S.InfoValue>
               </S.InfoItem>
             </S.InfoGrid>
           </S.InfoSection>
@@ -196,6 +236,71 @@ export const RequestModal = ({
 
             {errorMessage && <S.ErrorMessage>{errorMessage}</S.ErrorMessage>}
           </S.EditableSection>
+
+          {request.source === "tg" && (
+            <S.BatterySelectionSection>
+              <h3>Подбор аккумуляторов</h3>
+
+              <S.FormGroup>
+                <S.Label>Поиск аккумуляторов</S.Label>
+                <S.SearchInput
+                  type="text"
+                  placeholder="Введите название аккумулятора..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </S.FormGroup>
+
+              {filteredBatteries.length > 0 ? (
+                <S.BatteryList>
+                  {filteredBatteries.map((p) => (
+                    <S.BatteryItem
+                      key={p.id}
+                      $isSelected={false}
+                      onClick={() => handleBatterySelect(p)}
+                    >
+                      {p.title}
+                    </S.BatteryItem>
+                  ))}
+                </S.BatteryList>
+              ) : searchTerm ? (
+                <S.NoBatteriesMessage>
+                  Аккумуляторы не найдены
+                </S.NoBatteriesMessage>
+              ) : null}
+
+              {selectedBatteries.length > 0 && (
+                <>
+                  <S.FormGroup>
+                    <S.Label>
+                      Выбранные аккумуляторы ({selectedBatteries.length})
+                    </S.Label>
+                    <S.SelectedBatteriesContainer>
+                      {selectedBatteries.map((p) => (
+                        <S.SelectedBatteryTag key={p.id}>
+                          {p.title}
+                          <S.RemoveBatteryButton
+                            onClick={() => handleBatteryRemove(p)}
+                          >
+                            <X size={12} />
+                          </S.RemoveBatteryButton>
+                        </S.SelectedBatteryTag>
+                      ))}
+                    </S.SelectedBatteriesContainer>
+                  </S.FormGroup>
+
+                  <S.SaveButton
+                    onClick={sendProductsToUser}
+                    disabled={isSending}
+                  >
+                    Отправить пользователю
+                  </S.SaveButton>
+
+                  {sendError && <S.ErrorMessage>{sendError}</S.ErrorMessage>}
+                </>
+              )}
+            </S.BatterySelectionSection>
+          )}
         </S.ModalBody>
       </S.ModalContent>
     </S.ModalOverlay>

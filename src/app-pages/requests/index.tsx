@@ -7,6 +7,7 @@ import {
   getDeliveryText,
   getStatusColor,
   getStatusText,
+  Product,
   Request,
 } from "@/entities";
 import { SubmitFormReturn, supabase } from "@/shared";
@@ -16,10 +17,12 @@ type FilterType = "all" | "active" | "completed";
 
 export type RequestsPageProps = {
   requests: Request[];
+  products: Product[];
 };
 
 export default function RequestsPage({
   requests: initialRequests,
+  products,
 }: RequestsPageProps) {
   const [requests, setRequests] = useState<Request[]>(initialRequests);
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
@@ -156,6 +159,7 @@ export default function RequestsPage({
 
       <RequestModal
         request={selectedRequest}
+        products={products}
         isOpen={!!selectedRequest}
         onClose={handleCloseModal}
         onUpdate={handleUpdateRequest}

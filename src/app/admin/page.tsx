@@ -1,5 +1,5 @@
 import { AdminPage } from "@/app-pages";
-import { Request } from "@/entities";
+import { ProductsApi, Request } from "@/entities";
 import { supabase } from "@/shared";
 
 export const dynamic = "force-dynamic";
@@ -10,5 +10,9 @@ export default async function Page() {
     .select("*")
     .returns<Request[]>();
 
-  return <AdminPage requests={data ?? []} />;
+  const products = await ProductsApi.getProducts();
+
+  const filteredProducts = products.filter((p) => p.relevance);
+
+  return <AdminPage requests={data ?? []} products={filteredProducts} />;
 }

@@ -225,3 +225,103 @@ export const ErrorMessage = styled.span`
   align-items: center;
   gap: 0.25rem;
 `;
+
+export const BatterySelectionSection = styled.div`
+  background: #f0f9ff;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid #e0f2fe;
+`;
+
+export const SearchInput = styled.input`
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  transition: all 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+  }
+
+  &::placeholder {
+    color: #9ca3af;
+  }
+`;
+
+export const BatteryList = styled.div`
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background: white;
+  margin-bottom: 1rem;
+`;
+
+export const BatteryItem = styled.div<{ $isSelected: boolean }>`
+  padding: 0.75rem;
+  cursor: pointer;
+  border-bottom: 1px solid #f3f4f6;
+  background: ${(props) => (props.$isSelected ? "#fef2f2" : "white")};
+  color: ${(props) => (props.$isSelected ? "#dc2626" : "#374151")};
+  font-weight: ${(props) => (props.$isSelected ? "600" : "400")};
+  transition: all 0.2s;
+
+  &:hover {
+    background: #f9fafb;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+export const SelectedBatteriesContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+`;
+
+export const SelectedBatteryTag = styled.div`
+  background: #dc2626;
+  color: white;
+  padding: 0.375rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+`;
+
+export const RemoveBatteryButton = styled.button`
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+`;
+
+export const NoBatteriesMessage = styled.div`
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+  padding: 2rem;
+  font-style: italic;
+`;

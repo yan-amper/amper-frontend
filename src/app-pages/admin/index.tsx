@@ -4,11 +4,11 @@ import { useState } from "react";
 import RequestsPage, { RequestsPageProps } from "../requests";
 import { LoginPage } from "../login";
 
-export const AdminPage = ({ requests }: RequestsPageProps) => {
+export const AdminPage = ({ requests, products }: RequestsPageProps) => {
   const [show, setShow] = useState(true);
 
   return show ? (
-    <RequestsPage requests={requests} />
+    <RequestsPage requests={requests} products={products} />
   ) : (
     <LoginPage setShow={setShow} />
   );

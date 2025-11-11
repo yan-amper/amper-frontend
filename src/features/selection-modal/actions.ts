@@ -14,7 +14,7 @@ export const submitForm = async (
         source: "website",
       },
     ])
-    .select("id")
+    .select()
     .single();
 
   if (error) {
@@ -31,7 +31,7 @@ export const submitForm = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ requestId: data.id }),
+      body: JSON.stringify({ request: data }),
     });
 
     return {

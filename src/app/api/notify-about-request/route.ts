@@ -11,25 +11,12 @@ const bot = new Telegraf(BOT_TOKEN);
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { requestId } = body;
+    const { request } = body;
 
-    if (!requestId || typeof requestId !== "number") {
+    if (!request) {
       return NextResponse.json(
         { success: false, error: "Missing or invalid requestId" },
         { status: 400 }
-      );
-    }
-
-    const { data: request, error } = await supabase
-      .from("battery_requests")
-      .select("*")
-      .eq("id", requestId)
-      .single<Request>();
-
-    if (error || !request) {
-      return NextResponse.json(
-        { success: false, error: "Request not found" },
-        { status: 404 }
       );
     }
 

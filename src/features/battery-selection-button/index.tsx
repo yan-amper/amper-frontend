@@ -4,7 +4,11 @@ import { useUnit } from "effector-react";
 import * as S from "./styled";
 import { appState } from "@/entities";
 
-export const BatterySelectionButton = () => {
+type Props = {
+  className?: string;
+};
+
+export const BatterySelectionButton = ({ className }: Props) => {
   const setForm = useUnit(appState.setForm);
 
   const handleSelectionClick = () => {
@@ -12,7 +16,7 @@ export const BatterySelectionButton = () => {
   };
 
   return (
-    <S.SelectionButton onClick={handleSelectionClick}>
+    <S.SelectionButton onClick={handleSelectionClick} className={className}>
       Подбор аккумулятора
     </S.SelectionButton>
   );

@@ -74,9 +74,8 @@ export const AddressButton = styled(Link)`
     background: #b91c1c;
   }
 
-  @media (max-width: 550px) {
-    padding: 0.4rem 1.2rem;
-    font-size: 14px;
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -84,5 +83,11 @@ export const Logo = styled(Image)`
   @media (max-width: 550px) {
     width: 120px;
     height: 60px;
+  }
+`;
+
+export const BatterySelectionButtonContainer = styled.div`
+  @media (max-width: 550px) {
+    display: none;
   }
 `;

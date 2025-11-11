@@ -6,6 +6,10 @@ import styled from "styled-components";
 export const Section = styled.section`
   padding: 4rem 0;
   background: #f9fafb;
+
+  @media (max-width: 550px) {
+    padding: 1rem 0;
+  }
 `;
 
 export const Container = styled.div`

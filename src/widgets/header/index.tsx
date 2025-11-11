@@ -18,7 +18,9 @@ export const Header = () => (
       </S.LogoContainer>
 
       <S.HeaderActions>
-        <BatterySelectionButton />
+        <S.BatterySelectionButtonContainer>
+          <BatterySelectionButton />
+        </S.BatterySelectionButtonContainer>
         <S.PhoneContainer>
           <Phone size={16} />
           <S.PhoneText href={`tel:${phoneNumber}`}>

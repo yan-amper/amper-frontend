@@ -57,15 +57,17 @@ export default function RequestsPage({
     }
   };
 
-  const filteredRequests = requests.filter((request) => {
-    if (filter === "active") {
-      return request.status === "new" || request.status === "in_progress";
-    }
-    if (filter === "completed") {
-      return request.status === "completed" || request.status === "cancelled";
-    }
-    return true;
-  });
+  const filteredRequests = requests
+    .filter((request) => {
+      if (filter === "active") {
+        return request.status === "new" || request.status === "in_progress";
+      }
+      if (filter === "completed") {
+        return request.status === "completed" || request.status === "cancelled";
+      }
+      return true;
+    })
+    .sort((a, b) => a.id - b.id);
 
   filteredRequests.reverse();
 

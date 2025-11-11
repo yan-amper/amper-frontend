@@ -46,7 +46,8 @@ export const submitForm = async (
         escapeMarkdownV2(messageText),
         { parse_mode: "MarkdownV2" }
       );
-    } catch (err: any) {
+    } catch (error: unknown) {
+      const err = error as Error;
       console.error(
         `Failed to send message to admin ${ADMIN_CHAT_ID}:`,
         err.message

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as S from "./styled";
 import { RequestModal } from "@/features";
 import {
@@ -27,6 +27,32 @@ export default function RequestsPage({
   const [requests, setRequests] = useState<Request[]>(initialRequests);
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
   const [filter, setFilter] = useState<FilterType>("all");
+
+  useEffect(() => {
+    const subscription = supabase
+      .channel("public:battery_requests")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "battery_requests" },
+        (payload) => {
+          const newRequest = payload.new as Request;
+
+          setRequests((prev) => {
+            const exists = prev.find((r) => r.id === newRequest.id);
+            if (exists) {
+              return prev.map((r) => (r.id === newRequest.id ? newRequest : r));
+            } else {
+              return [...prev, newRequest];
+            }
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(subscription);
+    };
+  }, []);
 
   const handleRequestClick = (request: Request) => {
     setSelectedRequest(request);

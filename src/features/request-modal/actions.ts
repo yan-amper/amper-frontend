@@ -35,8 +35,6 @@ export const sendProductsAction = async (
       );
     }
 
-    console.log(request.delivery_method);
-
     if (request.delivery_method === "delivery") {
       await bot.telegram.sendMessage(
         request.tg_user_id!,

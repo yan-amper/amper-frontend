@@ -177,7 +177,7 @@ export const RequestModal = ({
                   {getDeliveryText(request.delivery_method)}
                 </S.InfoValue>
               </S.InfoItem>
-              {request.source === "website" && (
+              {request.phone && (
                 <S.InfoItem>
                   <S.InfoLabel>Телефон:</S.InfoLabel>
                   <S.InfoValue>

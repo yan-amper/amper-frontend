@@ -23,14 +23,14 @@ export const sendProductsAction = async (
 Обычная цена: ${p.standardPrice} ₽
 Цена со сдачей: ${p.priceWithChange} ₽`;
 
-      await bot.telegram.sendPhoto(request.phone, createImagePath(p.image), {
+      await bot.telegram.sendPhoto(request.tg_user_id!, createImagePath(p.image), {
         caption: escapeMarkdownV2(text),
         parse_mode: "MarkdownV2",
       });
     }
 
     await bot.telegram.sendMessage(
-      request.phone,
+      request.tg_user_id!,
       `Подбор завершён! ⚡️
 Ян проверил лично — вот аккумуляторы, которые подойдут вашему автомобилю.
     
@@ -39,7 +39,6 @@ export const sendProductsAction = async (
 
     return { ok: true };
   } catch (err) {
-    console.log(err);
     return {
       ok: false,
       message: "Не удалось отправить аккумуляторы пользователю",

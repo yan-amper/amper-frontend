@@ -6,7 +6,8 @@ export type Request = {
   description: string;
   production_year: number;
   delivery_method: "delivery" | "pickup";
-  phone: string;
+  phone: string | null;
+  tg_user_id: string | null;
   status: "new" | "in_progress" | "completed" | "cancelled";
   source: "website" | "tg";
   created_at: string;

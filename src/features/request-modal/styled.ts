@@ -126,6 +126,7 @@ export const InfoValue = styled.span`
   font-size: 1rem;
   font-weight: 500;
   color: #111827;
+  white-space: pre-line;
 `;
 
 export const EditableSection = styled.div`

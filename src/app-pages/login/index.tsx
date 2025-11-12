@@ -82,7 +82,7 @@ export function LoginPage({ setShow }: { setShow(value: boolean): void }) {
               placeholder="Введите логин"
               value={formData.login}
               onChange={(e) => handleInputChange("login", e.target.value)}
-              hasError={!!errors.login}
+              $hasError={!!errors.login}
               disabled={isPending}
             />
             {errors.login && <S.ErrorMessage>{errors.login}</S.ErrorMessage>}
@@ -96,9 +96,9 @@ export function LoginPage({ setShow }: { setShow(value: boolean): void }) {
                 placeholder="Введите пароль"
                 value={formData.password}
                 onChange={(e) => handleInputChange("password", e.target.value)}
-                hasError={!!errors.password}
+                $hasError={!!errors.password}
                 disabled={isPending}
-                hasIcon
+                $hasIcon
               />
               <S.PasswordToggle
                 type="button"

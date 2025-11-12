@@ -198,6 +198,18 @@ export const RequestModal = ({
                 <S.InfoLabel>Дата создания:</S.InfoLabel>
                 <S.InfoValue>{formatDate(request.created_at)}</S.InfoValue>
               </S.InfoItem>
+              {request.address && (
+                <S.InfoItem>
+                  <S.InfoLabel>Адрес</S.InfoLabel>
+                  <S.InfoValue>{request.address}</S.InfoValue>
+                </S.InfoItem>
+              )}
+              {request.selected_battery && (
+                <S.InfoItem>
+                  <S.InfoLabel>Аккумулятор</S.InfoLabel>
+                  <S.InfoValue>{request.selected_battery}</S.InfoValue>
+                </S.InfoItem>
+              )}
             </S.InfoGrid>
           </S.InfoSection>
 

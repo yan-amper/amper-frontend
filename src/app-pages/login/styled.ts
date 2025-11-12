@@ -112,11 +112,11 @@ export const InputContainer = styled.div`
   align-items: center;
 `;
 
-export const Input = styled.input<{ hasError?: boolean; hasIcon?: boolean }>`
+export const Input = styled.input<{ $hasError?: boolean; $hasIcon?: boolean }>`
   width: 100%;
   padding: 0.875rem;
-  padding-right: ${(props) => (props.hasIcon ? "3rem" : "0.875rem")};
-  border: 2px solid ${(props) => (props.hasError ? "#ef4444" : "#e5e7eb")};
+  padding-right: ${(props) => (props.$hasIcon ? "3rem" : "0.875rem")};
+  border: 2px solid ${(props) => (props.$hasError ? "#ef4444" : "#e5e7eb")};
   border-radius: 0.5rem;
   font-size: 0.875rem;
   transition: all 0.2s;
@@ -124,10 +124,10 @@ export const Input = styled.input<{ hasError?: boolean; hasIcon?: boolean }>`
 
   &:focus {
     outline: none;
-    border-color: ${(props) => (props.hasError ? "#ef4444" : "#dc2626")};
+    border-color: ${(props) => (props.$hasError ? "#ef4444" : "#dc2626")};
     box-shadow: 0 0 0 3px
       ${(props) =>
-        props.hasError ? "rgba(239, 68, 68, 0.1)" : "rgba(220, 38, 38, 0.1)"};
+        props.$hasError ? "rgba(239, 68, 68, 0.1)" : "rgba(220, 38, 38, 0.1)"};
   }
 
   &:disabled {
@@ -141,7 +141,7 @@ export const Input = styled.input<{ hasError?: boolean; hasIcon?: boolean }>`
   }
 
   &:hover:not(:disabled) {
-    border-color: ${(props) => (props.hasError ? "#ef4444" : "#d1d5db")};
+    border-color: ${(props) => (props.$hasError ? "#ef4444" : "#d1d5db")};
   }
 `;
 

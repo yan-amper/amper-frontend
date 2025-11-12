@@ -10,5 +10,7 @@ export type Request = {
   tg_user_id: string | null;
   status: "new" | "in_progress" | "completed" | "cancelled";
   source: "website" | "tg";
+  selected_battery: string | null;
+  address: string | null;
   created_at: string;
 };

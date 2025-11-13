@@ -12,5 +12,6 @@ export type Request = {
   source: "website" | "tg";
   selected_battery: string | null;
   address: string | null;
+  admin_picked: boolean;
   created_at: string;
 };

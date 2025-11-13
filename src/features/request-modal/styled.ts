@@ -326,3 +326,7 @@ export const NoBatteriesMessage = styled.div`
   padding: 2rem;
   font-style: italic;
 `;
+
+export const BatteriesAlreadyPicked = styled.h4`
+  color: #dc2626;
+`;

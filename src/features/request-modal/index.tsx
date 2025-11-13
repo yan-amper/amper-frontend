@@ -257,6 +257,11 @@ export const RequestModal = ({
           {request.source === "tg" && (
             <S.BatterySelectionSection>
               <h3>Подбор аккумуляторов</h3>
+              {request.admin_picked && (
+                <S.BatteriesAlreadyPicked>
+                  Вы уже выбрали аккумуляторы для этой заявки
+                </S.BatteriesAlreadyPicked>
+              )}
 
               <S.FormGroup>
                 <S.Label>Поиск аккумуляторов</S.Label>

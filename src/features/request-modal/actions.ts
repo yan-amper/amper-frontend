@@ -1,7 +1,12 @@
 "use server";
 
 import { Product, Request } from "@/entities";
-import { createImagePath, escapeMarkdownV2, SubmitFormReturn } from "@/shared";
+import {
+  createImagePath,
+  escapeMarkdownV2,
+  SubmitFormReturn,
+  supabase,
+} from "@/shared";
 import { Telegraf } from "telegraf";
 
 const BOT_TOKEN = process.env.TG_BOT_TOKEN!;
@@ -37,7 +42,10 @@ export const sendProductsAction = async (
 
     const reply_markup = {
       inline_keyboard: products.map((p) => [
-        { text: p.title, callback_data: `select-battery-${request.id}-${p.id}` },
+        {
+          text: p.title,
+          callback_data: `select-battery-${request.id}-${p.id}`,
+        },
       ]),
     };
 
@@ -69,9 +77,13 @@ export const sendProductsAction = async (
       );
     }
 
+    await supabase
+      .from("battery_requests")
+      .update({ admin_picked: true })
+      .eq("id", request.id);
+
     return { ok: true };
   } catch (err) {
-    console.log(err);
     return {
       ok: false,
       message:

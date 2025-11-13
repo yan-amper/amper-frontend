@@ -45,6 +45,10 @@ export default function RequestsPage({
               return [...prev, newRequest];
             }
           });
+
+          setSelectedRequest((prev) =>
+            prev?.id === newRequest.id ? newRequest : prev
+          );
         }
       )
       .subscribe();

@@ -14,9 +14,13 @@ export const HomePage = async () => {
   return (
     <>
       <Slider banners={banners} />
-      <S.Button />
+      <S.ButtonContainer>
+        <S.Button />
+      </S.ButtonContainer>
       <RecommendedBatteries />
-      <S.Button />
+      <S.ButtonContainer>
+        <S.Button $anotherMargin />
+      </S.ButtonContainer>
       <Catalog />
       <PopularBatteries />
       <Address />

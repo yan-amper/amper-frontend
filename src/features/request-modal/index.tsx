@@ -29,6 +29,11 @@ const statusOptions = [
   { value: "cancelled", label: "Отменена" },
 ];
 
+const sendMessageInitial = {
+  error: false,
+  message: "",
+};
+
 export const RequestModal = ({
   request,
   products,
@@ -44,7 +49,7 @@ export const RequestModal = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedBatteries, setSelectedBatteries] = useState<Product[]>([]);
   const [isSending, startTransition] = useTransition();
-  const [sendError, setSendError] = useState("");
+  const [sendMessage, setSendMessage] = useState(sendMessageInitial);
 
   useHideScroll(isOpen);
 
@@ -54,7 +59,10 @@ export const RequestModal = ({
       setStatus(request.status);
       setHasChanges(false);
       setSelectedBatteries([]);
-      setSendError("");
+      setSendMessage({
+        error: false,
+        message: "",
+      });
       setSearchTerm("");
       setIsPending(false);
       setErrorMessage("");
@@ -113,11 +121,19 @@ export const RequestModal = ({
   };
 
   const sendProductsToUser = () => {
-    setSendError("");
+    setSendMessage(sendMessageInitial);
     startTransition(async () => {
       const result = await sendProductsAction(request, selectedBatteries);
-      if (!result.ok) {
-        setSendError(result.message);
+      if (result.ok) {
+        setSendMessage({
+          error: false,
+          message: "Аккумуляторы отправлены",
+        });
+      } else {
+        setSendMessage({
+          error: true,
+          message: result.message,
+        });
       }
     });
   };
@@ -246,12 +262,14 @@ export const RequestModal = ({
             </S.FormGroup>
 
             {hasChanges && (
-              <S.SaveButton onClick={handleSave} disabled={isPending}>
+              <S.SaveButton onClick={handleSave} $disabled={isPending}>
                 Сохранить изменения
               </S.SaveButton>
             )}
 
-            {errorMessage && <S.ErrorMessage>{errorMessage}</S.ErrorMessage>}
+            {errorMessage && (
+              <S.SendMessage $isError>{errorMessage}</S.SendMessage>
+            )}
           </S.EditableSection>
 
           {request.source === "tg" && (
@@ -313,12 +331,16 @@ export const RequestModal = ({
 
                   <S.SaveButton
                     onClick={sendProductsToUser}
-                    disabled={isSending}
+                    $disabled={isSending}
                   >
                     Отправить пользователю
                   </S.SaveButton>
 
-                  {sendError && <S.ErrorMessage>{sendError}</S.ErrorMessage>}
+                  {!!sendMessage.message && (
+                    <S.SendMessage $isError={sendMessage.error}>
+                      {sendMessage.message}
+                    </S.SendMessage>
+                  )}
                 </>
               )}
             </S.BatterySelectionSection>

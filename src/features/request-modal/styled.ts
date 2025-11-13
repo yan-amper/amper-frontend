@@ -194,7 +194,7 @@ export const Textarea = styled.textarea`
   }
 `;
 
-export const SaveButton = styled.button`
+export const SaveButton = styled.button<{ $disabled: boolean }>`
   background: #dc2626;
   color: white;
   padding: 0.875rem 1.5rem;
@@ -216,10 +216,17 @@ export const SaveButton = styled.button`
   &:active {
     transform: translateY(0);
   }
+
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      opacity: 0.5;
+      pointer-events: none;
+    `}
 `;
 
-export const ErrorMessage = styled.span`
-  color: #ef4444;
+export const SendMessage = styled.span<{ $isError: boolean }>`
+  color: ${({ $isError }) => ($isError ? "#ef4444" : "green")};
   font-size: 0.75rem;
   margin-top: 0.25rem;
   display: flex;

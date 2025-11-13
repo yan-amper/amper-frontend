@@ -84,6 +84,7 @@ export const sendProductsAction = async (
 
     return { ok: true };
   } catch (err) {
+    console.log(err);
     return {
       ok: false,
       message:

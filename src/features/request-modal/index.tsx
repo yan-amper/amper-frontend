@@ -53,6 +53,11 @@ export const RequestModal = ({
       setDescription(request.description);
       setStatus(request.status);
       setHasChanges(false);
+      setSelectedBatteries([]);
+      setSendError("");
+      setSearchTerm("");
+      setIsPending(false);
+      setErrorMessage("");
     }
   }, [request]);
 

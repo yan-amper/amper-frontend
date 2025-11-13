@@ -1,7 +1,14 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { X, CircleCheck as CheckCircle, Phone } from "lucide-react";
+import {
+  X,
+  CircleCheck as CheckCircle,
+  Phone,
+  Globe,
+  MessageCircle,
+  ArrowLeft,
+} from "lucide-react";
 import * as S from "./styled";
 import { formattedPhoneNumber, phoneNumber, useHideScroll } from "@/shared";
 import { useUnit } from "effector-react";
@@ -31,7 +38,10 @@ const formInitial: FormData = {
   phone: "",
 };
 
+type ModalStep = "choice" | "form" | "success";
+
 export const SelectionModal = () => {
+  const [currentStep, setCurrentStep] = useState<ModalStep>("choice");
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState<FormData>(formInitial);
@@ -54,6 +64,19 @@ export const SelectionModal = () => {
     if (e.target === e.currentTarget) {
       closeModal();
     }
+  };
+
+  const handleChoiceSelect = (choice: "website" | "telegram") => {
+    if (choice === "website") {
+      setCurrentStep("form");
+    } else {
+      window.open("https://t.me/amper_tgn_bot?start=start", "_blank");
+      closeModal();
+    }
+  };
+
+  const handleBackToChoice = () => {
+    setCurrentStep("choice");
   };
 
   const handleInputChange = (field: keyof FormData, value: string) => {
@@ -158,6 +181,60 @@ export const SelectionModal = () => {
     );
   }
 
+  if (currentStep === "choice") {
+    return (
+      <S.ModalOverlay $isOpen={form.open} onClick={handleOverlayClick}>
+        <S.ModalContent>
+          <S.CloseButton onClick={closeModal}>
+            <X size={20} />
+          </S.CloseButton>
+
+          <S.ModalHeader>
+            <S.ModalTitle>Подбор аккумулятора</S.ModalTitle>
+            <S.ModalSubtitle>
+              Выберите удобный для вас способ подбора аккумулятора
+            </S.ModalSubtitle>
+          </S.ModalHeader>
+
+          <S.ModalBody>
+            <S.ChoiceContainer>
+              <S.ChoiceOption onClick={() => handleChoiceSelect("website")}>
+                <S.ChoiceButton>
+                  <Globe
+                    size={20}
+                    style={{ display: "inline", marginRight: "0.5rem" }}
+                  />
+                  Подбор на сайте
+                </S.ChoiceButton>
+                <S.ChoiceTitle>Быстро и удобно</S.ChoiceTitle>
+                <S.ChoiceDescription>
+                  Заполните форму прямо на сайте. Наш специалист перезвонит вам
+                  и подберет идеальный аккумулятор для вашего автомобиля.
+                </S.ChoiceDescription>
+              </S.ChoiceOption>
+
+              <S.ChoiceOption onClick={() => handleChoiceSelect("telegram")}>
+                <S.ChoiceButton>
+                  <MessageCircle
+                    size={20}
+                    style={{ display: "inline", marginRight: "0.5rem" }}
+                  />
+                  Подбор в Telegram
+                </S.ChoiceButton>
+                <S.ChoiceTitle>Персональный консультант</S.ChoiceTitle>
+                <S.ChoiceDescription>
+                  Общайтесь с нашим ботом в Telegram. Получите персональные
+                  рекомендации, фото аккумуляторов и ответы на все вопросы в
+                  удобном мессенджере.
+                </S.ChoiceDescription>
+              </S.ChoiceOption>
+            </S.ChoiceContainer>
+          </S.ModalBody>
+        </S.ModalContent>
+      </S.ModalOverlay>
+    );
+  }
+
   return (
     <S.ModalOverlay $isOpen={form.open} onClick={handleOverlayClick}>
       <S.ModalContent>
@@ -174,6 +251,11 @@ export const SelectionModal = () => {
         </S.ModalHeader>
 
         <S.ModalBody>
+          <S.BackButton onClick={handleBackToChoice}>
+            <ArrowLeft size={16} />
+            Назад к выбору способа
+          </S.BackButton>
+
           <S.Form onSubmit={handleSubmit}>
             <S.FormGroup>
               <S.Label>Марка автомобиля *</S.Label>

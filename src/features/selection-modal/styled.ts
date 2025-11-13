@@ -281,3 +281,81 @@ export const PhoneLink = styled.a`
     color: #b91c1c;
   }
 `;
+
+export const ChoiceContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+`;
+
+export const ChoiceOption = styled.div`
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: white;
+
+  &:hover {
+    border-color: #dc2626;
+    background: #fef2f2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+export const ChoiceButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #dc2626;
+  color: white;
+  padding: 0.875rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  transition: all 0.2s;
+
+  ${ChoiceOption}:hover & {
+    background: #b91c1c;
+  }
+`;
+
+export const ChoiceTitle = styled.h3`
+  font-size: 1.125rem;
+  font-weight: bold;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+  text-align: center;
+`;
+
+export const ChoiceDescription = styled.p`
+  color: #6b7280;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: center;
+`;
+
+export const BackButton = styled.button`
+  background: transparent;
+  color: #6b7280;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+
+  &:hover {
+    background: #f9fafb;
+    color: #374151;
+    border-color: #9ca3af;
+  }
+`;

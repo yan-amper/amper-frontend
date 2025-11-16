@@ -25,6 +25,7 @@ export const submitForm = async (
     .single();
 
   if (error) {
+    console.log(error);
     return {
       ok: false,
       message: "Произошла ошибка при отправлении заявки. Попробуйте ещё раз.",

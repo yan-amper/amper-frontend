@@ -189,6 +189,10 @@ export const RequestModal = ({
                 <S.InfoValue>{getEngineText(request.engine_type)}</S.InfoValue>
               </S.InfoItem>
               <S.InfoItem>
+                <S.InfoLabel>Объём двигателя:</S.InfoLabel>
+                <S.InfoValue>{request.engine_volume} л</S.InfoValue>
+              </S.InfoItem>
+              <S.InfoItem>
                 <S.InfoLabel>Год выпуска:</S.InfoLabel>
                 <S.InfoValue>{request.production_year}</S.InfoValue>
               </S.InfoItem>

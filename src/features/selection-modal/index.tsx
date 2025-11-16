@@ -19,6 +19,7 @@ export type FormData = {
   car_brand: string;
   car_model: string;
   engine_type: string;
+  engine_volume: string;
   production_year: string;
   delivery_method: string;
   phone: string;
@@ -33,6 +34,7 @@ const formInitial: FormData = {
   car_brand: "",
   car_model: "",
   engine_type: "",
+  engine_volume: "",
   production_year: "",
   delivery_method: "",
   phone: "",
@@ -319,6 +321,31 @@ export const SelectionModal = () => {
               </S.RadioGroup>
               {errors.engine && (
                 <S.ErrorMessage>{errors.engine}</S.ErrorMessage>
+              )}
+            </S.FormGroup>
+
+            <S.FormGroup>
+              <S.Label>Объём двигателя *</S.Label>
+              <S.Select
+                value={formData.engine_volume}
+                onChange={(e) =>
+                  handleInputChange("engine_volume", e.target.value)
+                }
+                $hasError={!!errors.engine_volume}
+                $disabled={isPending}
+              >
+                <option value="">Выберите объём</option>
+                {Array.from({ length: 70 }, (_, i) => {
+                  const volume = ((i + 1) * 0.1).toFixed(1).replace(",", ".");
+                  return (
+                    <option key={volume} value={volume}>
+                      {volume} л
+                    </option>
+                  );
+                })}
+              </S.Select>
+              {errors.engineVolume && (
+                <S.ErrorMessage>{errors.engineVolume}</S.ErrorMessage>
               )}
             </S.FormGroup>
 

@@ -105,23 +105,23 @@ export const SelectionModal = () => {
     const newErrors: FormErrors = {};
 
     if (!formData.car_brand.trim()) {
-      newErrors.brand = "Укажите марку автомобиля";
+      newErrors.car_brand = "Укажите марку автомобиля";
     }
 
     if (!formData.car_model.trim()) {
-      newErrors.model = "Укажите модель автомобиля";
+      newErrors.car_model = "Укажите модель автомобиля";
     }
 
     if (!formData.engine_type) {
-      newErrors.engine = "Выберите тип двигателя";
+      newErrors.engine_type = "Выберите тип двигателя";
     }
 
     if (!formData.production_year) {
-      newErrors.year = "Выберите год выпуска";
+      newErrors.production_year = "Выберите год выпуска";
     }
 
     if (!formData.delivery_method) {
-      newErrors.delivery = "Выберите способ получения";
+      newErrors.delivery_method = "Выберите способ получения";
     }
 
     if (!formData.phone.trim()) {
@@ -266,10 +266,12 @@ export const SelectionModal = () => {
                 placeholder="Например: Toyota, BMW, Lada"
                 value={formData.car_brand}
                 onChange={(e) => handleInputChange("car_brand", e.target.value)}
-                $hasError={!!errors.brand}
+                $hasError={!!errors.car_brand}
                 $disabled={isPending}
               />
-              {errors.brand && <S.ErrorMessage>{errors.brand}</S.ErrorMessage>}
+              {errors.car_brand && (
+                <S.ErrorMessage>{errors.car_brand}</S.ErrorMessage>
+              )}
             </S.FormGroup>
 
             <S.FormGroup>
@@ -279,17 +281,19 @@ export const SelectionModal = () => {
                 placeholder="Например: Camry, X5, Granta"
                 value={formData.car_model}
                 onChange={(e) => handleInputChange("car_model", e.target.value)}
-                $hasError={!!errors.model}
+                $hasError={!!errors.car_model}
                 $disabled={isPending}
               />
-              {errors.model && <S.ErrorMessage>{errors.model}</S.ErrorMessage>}
+              {errors.car_model && (
+                <S.ErrorMessage>{errors.car_model}</S.ErrorMessage>
+              )}
             </S.FormGroup>
 
             <S.FormGroup>
               <S.Label>Тип двигателя *</S.Label>
               <S.RadioGroup>
                 <S.RadioOption
-                  $hasError={!!errors.engine}
+                  $hasError={!!errors.engine_type}
                   $disabled={isPending}
                 >
                   <S.RadioInput
@@ -304,7 +308,7 @@ export const SelectionModal = () => {
                   <S.RadioLabel>Бензин</S.RadioLabel>
                 </S.RadioOption>
                 <S.RadioOption
-                  $hasError={!!errors.engine}
+                  $hasError={!!errors.engine_type}
                   $disabled={isPending}
                 >
                   <S.RadioInput
@@ -319,33 +323,25 @@ export const SelectionModal = () => {
                   <S.RadioLabel>Дизель</S.RadioLabel>
                 </S.RadioOption>
               </S.RadioGroup>
-              {errors.engine && (
-                <S.ErrorMessage>{errors.engine}</S.ErrorMessage>
+              {errors.engine_type && (
+                <S.ErrorMessage>{errors.engine_type}</S.ErrorMessage>
               )}
             </S.FormGroup>
 
             <S.FormGroup>
-              <S.Label>Объём двигателя *</S.Label>
-              <S.Select
+              <S.Label>Объём двигателя</S.Label>
+              <S.Input
+                type="text"
+                placeholder="Например: 5.5л, 2л"
                 value={formData.engine_volume}
                 onChange={(e) =>
                   handleInputChange("engine_volume", e.target.value)
                 }
                 $hasError={!!errors.engine_volume}
                 $disabled={isPending}
-              >
-                <option value="">Выберите объём</option>
-                {Array.from({ length: 70 }, (_, i) => {
-                  const volume = ((i + 1) * 0.1).toFixed(1).replace(",", ".");
-                  return (
-                    <option key={volume} value={volume}>
-                      {volume} л
-                    </option>
-                  );
-                })}
-              </S.Select>
-              {errors.engineVolume && (
-                <S.ErrorMessage>{errors.engineVolume}</S.ErrorMessage>
+              />
+              {errors.engine_volume && (
+                <S.ErrorMessage>{errors.engine_volume}</S.ErrorMessage>
               )}
             </S.FormGroup>
 
@@ -356,7 +352,7 @@ export const SelectionModal = () => {
                 onChange={(e) =>
                   handleInputChange("production_year", e.target.value)
                 }
-                $hasError={!!errors.year}
+                $hasError={!!errors.production_year}
                 $disabled={isPending}
               >
                 <option value="">Выберите год</option>
@@ -366,19 +362,21 @@ export const SelectionModal = () => {
                   </option>
                 ))}
               </S.Select>
-              {errors.year && <S.ErrorMessage>{errors.year}</S.ErrorMessage>}
+              {errors.production_year && (
+                <S.ErrorMessage>{errors.production_year}</S.ErrorMessage>
+              )}
             </S.FormGroup>
 
             <S.FormGroup>
               <S.Label>Способ получения *</S.Label>
               <S.RadioGroup>
                 <S.RadioOption
-                  $hasError={!!errors.delivery}
+                  $hasError={!!errors.delivery_method}
                   $disabled={isPending}
                 >
                   <S.RadioInput
                     type="radio"
-                    name="delivery"
+                    name="delivery_method"
                     value="delivery"
                     checked={formData.delivery_method === "delivery"}
                     onChange={(e) =>
@@ -388,12 +386,12 @@ export const SelectionModal = () => {
                   <S.RadioLabel>С доставкой и установкой</S.RadioLabel>
                 </S.RadioOption>
                 <S.RadioOption
-                  $hasError={!!errors.delivery}
+                  $hasError={!!errors.delivery_method}
                   $disabled={isPending}
                 >
                   <S.RadioInput
                     type="radio"
-                    name="delivery"
+                    name="delivery_method"
                     value="pickup"
                     checked={formData.delivery_method === "pickup"}
                     onChange={(e) =>
@@ -403,8 +401,8 @@ export const SelectionModal = () => {
                   <S.RadioLabel>Самовывоз</S.RadioLabel>
                 </S.RadioOption>
               </S.RadioGroup>
-              {errors.delivery && (
-                <S.ErrorMessage>{errors.delivery}</S.ErrorMessage>
+              {errors.delivery_method && (
+                <S.ErrorMessage>{errors.delivery_method}</S.ErrorMessage>
               )}
             </S.FormGroup>
 

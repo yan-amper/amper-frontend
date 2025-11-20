@@ -37,8 +37,18 @@ export const CardLogo = styled(Image)`
   bottom: 5px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #fff;
   padding: 4px;
+  z-index: 1;
+`;
+
+export const CardLine = styled.div`
+  width: 100px;
+  height: 5px;
+  position: absolute;
+  bottom: 29px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
 `;
 
 export const BatteryContent = styled.div`

@@ -67,6 +67,7 @@ export const ProductModal = () => {
                   src={"/header-logo.svg"}
                   alt="логотип Ампер"
                 />
+                <S.CardLine />
               </S.ImageSection>
 
               <S.DetailsSection>

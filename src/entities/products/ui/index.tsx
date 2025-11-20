@@ -33,6 +33,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           src={"/header-logo.svg"}
           alt="логотип Ампер"
         />
+        <S.CardLine />
       </S.BatteryImageContainer>
 
       <S.BatteryContent>

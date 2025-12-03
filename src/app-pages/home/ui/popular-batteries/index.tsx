@@ -9,7 +9,7 @@ export const PopularBatteries = async () => {
     <S.Section>
       <S.Container>
         <S.SectionHeader>
-          <S.SectionTitle href={"/catalog?popular=true"}>
+          <S.SectionTitle href={"/catalog?sort=ASC&popular=true"}>
             Популярные аккумуляторы
           </S.SectionTitle>
           <S.SectionDivider />

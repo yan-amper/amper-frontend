@@ -9,7 +9,7 @@ export const RecommendedBatteries = async () => {
     <S.Section>
       <S.Container>
         <S.SectionHeader>
-          <S.SectionTitle href={"/catalog?recommended=true"}>
+          <S.SectionTitle href={"/catalog?sort=ASC&recommended=true"}>
             Рекомендуемые аккумуляторы
           </S.SectionTitle>
           <S.SectionDivider />

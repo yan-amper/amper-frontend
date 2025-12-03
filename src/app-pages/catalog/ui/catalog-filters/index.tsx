@@ -107,6 +107,10 @@ export const CatalogFilters = ({ selectedFilters }: CatalogFiltersProps) => {
       <Select
         title="Сортировка"
         value={selectedFilters["sort"]}
+        label={
+          sortOptions.find((option) => option.value === selectedFilters["sort"])
+            ?.label
+        }
         options={sortOptions}
         placeholder="По умолчанию"
         onChange={onSelectChange("sort")}

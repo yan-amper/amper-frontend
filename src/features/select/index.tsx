@@ -8,6 +8,7 @@ export type Option = { value: string; label: string };
 type SelectProps = {
   title: string;
   value?: string;
+  label?: string;
   options: Option[];
   placeholder: string;
   onChange(value: string): void;
@@ -16,6 +17,7 @@ type SelectProps = {
 export const Select = ({
   title,
   value,
+  label,
   options,
   placeholder,
   onChange,
@@ -47,7 +49,7 @@ export const Select = ({
 
       <S.SelectGroup>
         <S.Select onClick={toggleOpen}>
-          {value || placeholder}
+          {label || value || placeholder}
           <S.ArrowDown $open={open} />
         </S.Select>
 

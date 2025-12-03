@@ -95,7 +95,7 @@ export const ModalBody = styled.div<{ $isLoading: boolean }>`
     grid-template-columns: 1fr;
     gap: 2rem;
     padding: 0.75rem;
-    max-height: calc(95vh - 1.5rem);
+    padding-bottom: 4rem;
   }
 `;
 

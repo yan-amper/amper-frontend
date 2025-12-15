@@ -36,6 +36,7 @@ export const submitForm = async (
 Марка авто: ${data.car_brand}
 Модель авто: ${data.car_model}
 Тип двигателя: ${getEngineText(data.engine_type)}
+Объем двигателя: ${data.engine_volume}
 Год выпуска: ${data.production_year}
 Способ получения: ${getDeliveryText(data.delivery_method)}
 Телефон: ${data.phone}

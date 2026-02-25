@@ -7,6 +7,7 @@ import {
   Phone,
   Globe,
   MessageCircle,
+  Send,
   ArrowLeft,
 } from "lucide-react";
 import * as S from "./styled";
@@ -68,11 +69,14 @@ export const SelectionModal = () => {
     }
   };
 
-  const handleChoiceSelect = (choice: "website" | "telegram") => {
+  const handleChoiceSelect = (choice: "website" | "telegram" | "max") => {
     if (choice === "website") {
       setCurrentStep("form");
-    } else {
+    } else if (choice === "telegram") {
       window.open("https://t.me/amper_tgn_bot?start=start", "_blank");
+      closeModal();
+    } else {
+      window.open("https://max.ru/id615426315675_bot", "_blank");
       closeModal();
     }
   };
@@ -228,6 +232,21 @@ export const SelectionModal = () => {
                   Общайтесь с нашим ботом в Telegram. Получите персональные
                   рекомендации, фото аккумуляторов и ответы на все вопросы в
                   удобном мессенджере.
+                </S.ChoiceDescription>
+              </S.ChoiceOption>
+
+              <S.ChoiceOption onClick={() => handleChoiceSelect("max")}>
+                <S.ChoiceButton>
+                  <Send
+                    size={20}
+                    style={{ display: "inline", marginRight: "0.5rem" }}
+                  />
+                  Подбор в Макс
+                </S.ChoiceButton>
+                <S.ChoiceTitle>Персональный консультант</S.ChoiceTitle>
+                <S.ChoiceDescription>
+                  Общайтесь с нашим ботом в мессенджере Макс. Получите
+                  персональные рекомендации и ответы на все вопросы.
                 </S.ChoiceDescription>
               </S.ChoiceOption>
             </S.ChoiceContainer>

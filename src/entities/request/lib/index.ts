@@ -42,6 +42,8 @@ export const getSource = (source: Request["source"]) => {
   switch (source) {
     case "tg":
       return "Телеграм";
+    case "max":
+      return "Max";
     case "website":
       return "Сайт";
     default:

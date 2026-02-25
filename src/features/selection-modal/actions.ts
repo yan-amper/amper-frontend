@@ -3,12 +3,21 @@
 import { escapeMarkdownV2, SubmitFormReturn, supabase } from "@/shared";
 import { FormData } from ".";
 import { Telegraf } from "telegraf";
+import { Bot as MaxBot } from "@maxhub/max-bot-api";
 import { getDeliveryText, getEngineText, getSource } from "@/entities";
 
 const BOT_TOKEN = process.env.TG_BOT_TOKEN!;
 const ADMIN_CHAT_ID = process.env.TG_ADMIN_ID!;
 
 const bot = new Telegraf(BOT_TOKEN);
+
+const MAX_BOT_TOKEN = process.env.MAX_BOT_TOKEN!;
+const MAX_ADMIN_IDS = (process.env.MAX_ADMIN_IDS || "")
+  .split(",")
+  .map((id) => id.trim())
+  .filter(Boolean);
+
+const maxBot = new MaxBot(MAX_BOT_TOKEN);
 
 export const submitForm = async (
   formData: FormData
@@ -54,6 +63,18 @@ export const submitForm = async (
         `Failed to send message to admin ${ADMIN_CHAT_ID}:`,
         err.message
       );
+    }
+
+    for (const adminId of MAX_ADMIN_IDS) {
+      try {
+        await maxBot.api.sendMessageToUser(Number(adminId), messageText);
+      } catch (error: unknown) {
+        const err = error as Error;
+        console.error(
+          `Failed to send Max message to admin ${adminId}:`,
+          err.message
+        );
+      }
     }
 
     return {

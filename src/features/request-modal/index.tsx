@@ -278,7 +278,7 @@ export const RequestModal = ({
             )}
           </S.EditableSection>
 
-          {request.source === "tg" && (
+          {(request.source === "tg" || request.source === "max") && (
             <S.BatterySelectionSection>
               <h3>Подбор аккумуляторов</h3>
               {request.admin_picked && (

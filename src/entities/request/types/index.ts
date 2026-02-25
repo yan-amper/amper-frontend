@@ -9,8 +9,9 @@ export type Request = {
   delivery_method: "delivery" | "pickup";
   phone: string | null;
   tg_user_id: string | null;
+  max_user_id: string | null;
   status: "new" | "in_progress" | "completed" | "cancelled";
-  source: "website" | "tg";
+  source: "website" | "tg" | "max";
   selected_battery: string | null;
   address: string | null;
   admin_picked: boolean;

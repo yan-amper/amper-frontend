@@ -6,10 +6,9 @@ import {
   CircleCheck as CheckCircle,
   Phone,
   Globe,
-  MessageCircle,
-  Send,
   ArrowLeft,
 } from "lucide-react";
+import Image from "next/image";
 import * as S from "./styled";
 import { formattedPhoneNumber, phoneNumber, useHideScroll } from "@/shared";
 import { useUnit } from "effector-react";
@@ -221,8 +220,11 @@ export const SelectionModal = () => {
 
               <S.ChoiceOption onClick={() => handleChoiceSelect("telegram")}>
                 <S.ChoiceButton>
-                  <MessageCircle
-                    size={20}
+                  <Image
+                    src="/telegram_logo.webp"
+                    alt="Telegram"
+                    width={32}
+                    height={32}
                     style={{ display: "inline", marginRight: "0.5rem" }}
                   />
                   Подбор в Telegram
@@ -237,8 +239,11 @@ export const SelectionModal = () => {
 
               <S.ChoiceOption onClick={() => handleChoiceSelect("max")}>
                 <S.ChoiceButton>
-                  <Send
-                    size={20}
+                  <Image
+                    src="/max_logo.webp"
+                    alt="Макс"
+                    width={30}
+                    height={30}
                     style={{ display: "inline", marginRight: "0.5rem" }}
                   />
                   Подбор в Макс

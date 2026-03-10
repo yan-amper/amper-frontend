@@ -7,17 +7,41 @@ import {
   SubmitFormReturn,
   supabase,
 } from "@/shared";
-import { Telegraf } from "telegraf";
 import { Bot as MaxBot, ImageAttachment, Keyboard } from "@maxhub/max-bot-api";
+
+async function tgSendPhoto(token: string, chatId: string | number, photo: string, caption: string) {
+  const res = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chat_id: chatId, photo, caption, parse_mode: "MarkdownV2" }),
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`TG sendPhoto failed: ${res.status} ${err}`);
+  }
+}
+
+async function tgSendMessage(token: string, chatId: string | number, text: string, reply_markup?: object) {
+  const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chat_id: chatId, text, parse_mode: "MarkdownV2", reply_markup }),
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`TG sendMessage failed: ${res.status} ${err}`);
+  }
+}
 
 export const sendProductsAction = async (
   request: Request,
   products: Product[]
 ): Promise<SubmitFormReturn> => {
-  const bot = new Telegraf(process.env.TG_BOT_TOKEN!);
+  const TG_TOKEN = process.env.TG_BOT_TOKEN;
   const maxBot = new MaxBot(process.env.MAX_BOT_TOKEN!);
 
   console.log("max_user_id", request.max_user_id);
+  console.log("[sendProductsAction] TG_BOT_TOKEN present:", !!TG_TOKEN);
   try {
     console.log(`[sendProductsAction] Start. request.id: ${request.id}, source: ${request.source}`);
     if (request.source === "max" && request.max_user_id) {
@@ -63,6 +87,8 @@ export const sendProductsAction = async (
         attachments: [keyboard],
       });
     } else {
+      if (!TG_TOKEN) throw new Error("TG_BOT_TOKEN is not set in environment");
+
       console.log(`[sendProductsAction] Sending via Telegram bot to tg_user_id: ${request.tg_user_id}`);
       for (const p of products) {
         console.log(`[sendProductsAction] TG bot sending product: ${p.id}`);
@@ -78,14 +104,7 @@ export const sendProductsAction = async (
 
 Заявка #${request.id}`;
 
-        await bot.telegram.sendPhoto(
-          request.tg_user_id!,
-          createImagePath(p.image),
-          {
-            caption: escapeMarkdownV2(text),
-            parse_mode: "MarkdownV2",
-          }
-        );
+        await tgSendPhoto(TG_TOKEN, request.tg_user_id!, createImagePath(p.image), escapeMarkdownV2(text));
       }
 
       const reply_markup = {
@@ -99,7 +118,8 @@ export const sendProductsAction = async (
 
       console.log(`[sendProductsAction] TG bot sending summary. delivery_method: ${request.delivery_method}`);
       if (request.delivery_method === "delivery") {
-        await bot.telegram.sendMessage(
+        await tgSendMessage(
+          TG_TOKEN,
           request.tg_user_id!,
           escapeMarkdownV2(`*Подбор завершён!* ⚙️
 Ян лично проверил — вот аккумуляторы, которые подойдут вашему автомобилю.
@@ -108,10 +128,11 @@ export const sendProductsAction = async (
 После этого мы уточним адрес и номер для связи, чтобы всё было удобно для вас.
 
 Если остались вопросы или нужна консультация — звоните: *8-989-722-80-95*`),
-          { parse_mode: "MarkdownV2", reply_markup }
+          reply_markup
         );
       } else {
-        await bot.telegram.sendMessage(
+        await tgSendMessage(
+          TG_TOKEN,
           request.tg_user_id!,
           escapeMarkdownV2(`*Подбор завершён!* ⚙️
 Ян лично проверил — вот аккумуляторы, которые подойдут вашему автомобилю.
@@ -119,10 +140,7 @@ export const sendProductsAction = async (
 Подскажите, какой вариант вам понравился больше всего? *Выберите в меню ниже подходящий аккумулятор.*
 
 Если остались вопросы или нужна консультация — звоните: *8-989-722-80-95*`),
-          {
-            parse_mode: "MarkdownV2",
-            reply_markup,
-          }
+          reply_markup
         );
       }
     }

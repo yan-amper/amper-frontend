@@ -42,6 +42,7 @@ export const sendProductsAction = async (
 
   console.log("max_user_id", request.max_user_id);
   console.log("[sendProductsAction] TG_BOT_TOKEN present:", !!TG_TOKEN);
+  console.log("[sendProductsAction] TG_BOT_TOKEN preview:", TG_TOKEN ? `${TG_TOKEN.slice(0, 6)}...${TG_TOKEN.slice(-4)} (len: ${TG_TOKEN.length})` : "MISSING");
   try {
     console.log(`[sendProductsAction] Start. request.id: ${request.id}, source: ${request.source}`);
     if (request.source === "max" && request.max_user_id) {

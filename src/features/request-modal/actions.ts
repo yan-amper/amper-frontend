@@ -10,16 +10,13 @@ import {
 import { Telegraf } from "telegraf";
 import { Bot as MaxBot, ImageAttachment, Keyboard } from "@maxhub/max-bot-api";
 
-const BOT_TOKEN = process.env.TG_BOT_TOKEN!;
-const bot = new Telegraf(BOT_TOKEN);
-
-const MAX_BOT_TOKEN = process.env.MAX_BOT_TOKEN!;
-const maxBot = new MaxBot(MAX_BOT_TOKEN);
-
 export const sendProductsAction = async (
   request: Request,
   products: Product[]
 ): Promise<SubmitFormReturn> => {
+  const bot = new Telegraf(process.env.TG_BOT_TOKEN!);
+  const maxBot = new MaxBot(process.env.MAX_BOT_TOKEN!);
+
   console.log("max_user_id", request.max_user_id);
   try {
     console.log(`[sendProductsAction] Start. request.id: ${request.id}, source: ${request.source}`);

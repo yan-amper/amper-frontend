@@ -1,0 +1,50 @@
+---
+description: Project overview, architecture, stack and conventions for amper-frontend
+alwaysApply: true
+---
+
+# amper-frontend
+
+Next.js 16.1.0 (Turbopack) + React 19 + TypeScript frontend for Amper — a battery/auto parts shop with Supabase backend and Telegram/Max bot integration.
+
+## Architecture — Feature-Sliced Design (FSD)
+
+```
+src/
+  app/          # Next.js App Router pages (thin wrappers only)
+  app-pages/    # Actual page components (home, catalog, login, admin, requests)
+  entities/     # Domain models: products, banners, request, app
+  features/     # Interactive UI units: product-modal, request-modal, select, etc.
+  shared/       # Reusable infra: api, clients, config, constants, hooks, lib, styles, types
+  widgets/      # Composite UI blocks: header, footer
+  middleware.ts
+```
+
+Import rule: upper layers import from lower layers only. `app-pages` → `entities` → `shared`. Never the reverse.
+
+## Stack
+
+- **Styling**: styled-components (babel plugin enabled, SSR registry in `shared/lib/styled-components-registry.tsx`)
+- **State**: Effector + effector-react
+- **HTTP**: Axios client in `shared/clients/query.ts`
+- **Backend**: Supabase (`shared/config/supabase.ts`)
+- **Icons**: lucide-react
+- **Bots**: Telegraf (Telegram) + @maxhub/max-bot-api (Max)
+- **Package manager**: pnpm
+
+## Path Alias
+
+`@/` → `src/`
+
+## Env Variables
+
+See `.env.example`. Required for dev: `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_KEY`.
+
+## Dev
+
+```bash
+pnpm dev      # Turbopack dev server (port 3000)
+pnpm build    # Turbopack production build
+pnpm lint
+pnpm format
+```

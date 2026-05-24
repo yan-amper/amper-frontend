@@ -1,0 +1,53 @@
+---
+description: Code style and patterns for TypeScript/React files
+globs: src/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Code Style
+
+## Components
+
+- Functional components only, ES6 classes for non-React entities if needed
+- Styles live in `styled.ts` next to `index.tsx` — never inline styles
+- Export named, not default (except Next.js pages)
+
+## FSD Slice Structure
+
+Each slice: `index.ts` (public API) + internal files. Only import via the slice's `index.ts`, never deep-import internals.
+
+```
+features/product-modal/
+  index.tsx   ← public export
+  styled.ts
+  actions.ts  ← server actions if needed
+```
+
+## State (Effector)
+
+- Stores in `model/store.ts`, events/effects co-located
+- Use `useUnit` from `effector-react`
+
+## Styled Components
+
+```tsx
+// styled.ts
+export const Container = styled.div`...`
+
+// index.tsx
+import * as S from "./styled"
+<S.Container />
+```
+
+## Imports Order
+
+1. React / Next.js
+2. Third-party libs
+3. `@/shared` → `@/entities` → `@/features` → `@/widgets`
+4. Local (`./styled`, `./model`)
+
+## No
+
+- `any` without comment explaining why
+- Default exports outside of `app/` pages
+- Direct `fetch` — use Axios client from `@/shared`

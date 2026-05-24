@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# amper-frontend
 
-## Getting Started
+Frontend для Amper — интернет-магазина автозапчастей/аккумуляторов.
 
-First, run the development server:
+**Stack**: Next.js 16 (Turbopack) · React 19 · TypeScript · styled-components · Effector · Supabase
+
+---
+
+## Быстрый старт
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# 1. Установить зависимости
+pnpm install
+
+# 2. Настроить переменные окружения
+cp .env.example .env
+# Заполнить .env (см. раздел ниже)
+
+# 3. Запустить dev-сервер
+pnpm dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Скрипты
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Команда | Описание |
+|---------|---------|
+| `pnpm dev` | Dev-сервер с Turbopack |
+| `pnpm build` | Продакшн-сборка |
+| `pnpm start` | Запуск продакшн-сборки |
+| `pnpm lint` | ESLint |
+| `pnpm format` | Prettier |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Переменные окружения
 
-## Learn More
+| Переменная | Описание |
+|-----------|---------|
+| `NEXT_PUBLIC_API_URL` | URL бэкенда (HTTPS) |
+| `NEXT_PUBLIC_PHONE_NUMBER` | Телефон магазина (цифры без +, напр. `79001234567`) |
+| `NEXT_PUBLIC_SUPABASE_URL` | URL Supabase проекта |
+| `NEXT_PUBLIC_SUPABASE_KEY` | Anon key Supabase |
+| `TG_BOT_TOKEN` | Токен Telegram-бота |
+| `MAX_BOT_TOKEN` | Токен Max-бота |
+| `MAX_SUPABASE_URL` | Supabase URL для бота |
+| `MAX_SUPABASE_KEY` | Supabase key для бота |
+| `MAX_ADMIN_IDS` | ID администраторов через запятую |
 
-To learn more about Next.js, take a look at the following resources:
+## Архитектура
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Проект построен по [Feature-Sliced Design (FSD)](https://feature-sliced.design/).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+  app/          # Next.js App Router — только тонкие обёртки страниц
+  app-pages/    # Реальные компоненты страниц (home, catalog, login, admin, requests)
+  entities/     # Доменные модели: products, banners, request, app
+  features/     # Фичи: product-modal, request-modal, selection-modal, select, top-loader...
+  shared/       # Переиспользуемая инфраструктура: api, clients, config, hooks, lib, styles
+  widgets/      # Композитные блоки: header, footer
+  middleware.ts
+```
 
-## Deploy on Vercel
+**Правило импортов**: верхние слои импортируют из нижних, не наоборот.  
+`app-pages` → `entities` → `shared`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Каждый слайс экспортирует публичное API через свой `index.ts` — импортировать внутренние файлы напрямую нельзя.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Стек подробнее
+
+- **Стили** — styled-components с SSR-реестром. Стили живут в `styled.ts` рядом с компонентом, импортируются как `import * as S from "./styled"`.
+- **Стейт** — Effector. Сторы в `model/store.ts`, хук `useUnit`.
+- **HTTP** — Axios-клиент в `shared/clients/query.ts`. Голый `fetch` не используется.
+- **БД** — Supabase (`shared/config/supabase.ts`).
+- **Иконки** — lucide-react.
+- **Боты** — Telegraf (Telegram) + @maxhub/max-bot-api (Max).
+
+## Нюансы
+
+- `.npmrc` содержит `node-linker=hoisted` — обязательно для корректной работы pnpm с Next.js.
+- Алиас `@/` ведёт в `src/`.
+- Если `pnpm dev` падает с `unable to acquire lock` — убить предыдущий процесс Node.js на порту 3000.

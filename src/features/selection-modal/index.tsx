@@ -218,7 +218,7 @@ export const SelectionModal = () => {
                 </S.ChoiceDescription>
               </S.ChoiceOption>
 
-              <S.ChoiceOption onClick={() => handleChoiceSelect("telegram")}>
+              {/* <S.ChoiceOption onClick={() => handleChoiceSelect("telegram")}>
                 <S.ChoiceButton>
                   <Image
                     src="/telegram_logo.webp"
@@ -235,7 +235,7 @@ export const SelectionModal = () => {
                   рекомендации, фото аккумуляторов и ответы на все вопросы в
                   удобном мессенджере.
                 </S.ChoiceDescription>
-              </S.ChoiceOption>
+              </S.ChoiceOption> */}
 
               <S.ChoiceOption onClick={() => handleChoiceSelect("max")}>
                 <S.ChoiceButton>

@@ -13,7 +13,7 @@ export const ModalOverlay = styled.div<{ $isOpen: boolean }>`
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  transition: opacity 0.3s;
+  transition: opacity 0.25s ease;
   ${(props) =>
     !props.$isOpen &&
     css`
@@ -22,7 +22,7 @@ export const ModalOverlay = styled.div<{ $isOpen: boolean }>`
     `};
 `;
 
-export const ModalContent = styled.div`
+export const ModalContent = styled.div<{ $isOpen: boolean }>`
   position: relative;
   background: white;
   border-radius: 1rem;
@@ -31,6 +31,14 @@ export const ModalContent = styled.div`
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transform: scale(0.96) translateY(10px);
+  transition: transform 0.25s ease;
+
+  ${(props) =>
+    props.$isOpen &&
+    css`
+      transform: scale(1) translateY(0);
+    `};
 
   @media (max-width: 768px) {
     width: 95%;

@@ -158,7 +158,7 @@ export const SelectionModal = () => {
   if (isSubmitted) {
     return (
       <S.ModalOverlay $isOpen={form.open} onClick={handleOverlayClick}>
-        <S.ModalContent>
+        <S.ModalContent $isOpen={form.open}>
           <S.CloseButton onClick={closeModal}>
             <X size={20} />
           </S.CloseButton>
@@ -189,7 +189,7 @@ export const SelectionModal = () => {
   if (currentStep === "choice") {
     return (
       <S.ModalOverlay $isOpen={form.open} onClick={handleOverlayClick}>
-        <S.ModalContent>
+        <S.ModalContent $isOpen={form.open}>
           <S.CloseButton onClick={closeModal}>
             <X size={20} />
           </S.CloseButton>
@@ -263,7 +263,7 @@ export const SelectionModal = () => {
 
   return (
     <S.ModalOverlay $isOpen={form.open} onClick={handleOverlayClick}>
-      <S.ModalContent>
+      <S.ModalContent $isOpen={form.open}>
         <S.CloseButton onClick={closeModal}>
           <X size={20} />
         </S.CloseButton>

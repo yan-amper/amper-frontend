@@ -4,12 +4,21 @@ import { useUnit } from "effector-react";
 import * as S from "./styled";
 import { Product, ProductCard, productsModel } from "@/entities";
 import { useEffect } from "react";
+import { Pagination } from "../pagination";
 
 type CatalogProductsProps = {
   products: Product[];
+  totalCount: number;
+  currentPage: number;
+  totalPages: number;
 };
 
-export const CatalogProducts = ({ products }: CatalogProductsProps) => {
+export const CatalogProducts = ({
+  products,
+  totalCount,
+  currentPage,
+  totalPages,
+}: CatalogProductsProps) => {
   const getProductsFx = useUnit(productsModel.getProductsFx);
 
   useEffect(() => {
@@ -20,7 +29,7 @@ export const CatalogProducts = ({ products }: CatalogProductsProps) => {
     <S.ProductsContainer>
       <S.ProductsHeader>
         <S.ProductsTitle>Каталог аккумуляторов</S.ProductsTitle>
-        <S.ProductsCount>Найдено: {products.length} товаров</S.ProductsCount>
+        <S.ProductsCount>Найдено: {totalCount} товаров</S.ProductsCount>
       </S.ProductsHeader>
 
       {products.length === 0 ? (
@@ -31,11 +40,15 @@ export const CatalogProducts = ({ products }: CatalogProductsProps) => {
           </S.NoResultsText>
         </S.NoResults>
       ) : (
-        <S.ProductsGrid>
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </S.ProductsGrid>
+        <>
+          <S.ProductsGrid>
+            {products.map((product, index) => (
+              <ProductCard key={product.id} product={product} index={index} />
+            ))}
+          </S.ProductsGrid>
+
+          <Pagination currentPage={currentPage} totalPages={totalPages} />
+        </>
       )}
     </S.ProductsContainer>
   );

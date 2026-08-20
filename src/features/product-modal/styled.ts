@@ -12,16 +12,18 @@ export const ModalOverlay = styled.div<{ $isOpen: boolean }>`
   justify-content: center;
   z-index: 1000;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
 
   ${({ $isOpen }) =>
     $isOpen &&
     css`
       opacity: 1;
+      pointer-events: auto;
     `}
 `;
 
-export const ModalContent = styled.div`
+export const ModalContent = styled.div<{ $isOpen: boolean }>`
   position: relative;
   background: white;
   border-radius: 1rem;
@@ -31,6 +33,18 @@ export const ModalContent = styled.div`
   height: auto;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   overflow: hidden;
+  opacity: 0;
+  transform: scale(0.96) translateY(10px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+
+  ${({ $isOpen }) =>
+    $isOpen &&
+    css`
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    `}
 
   @media (max-width: 768px) {
     width: 95%;
@@ -75,9 +89,9 @@ export const ModalBody = styled.div<{ $isLoading: boolean }>`
           grid-template-columns: 1fr 1fr;
         `}
 
-  gap: 1rem;
-  padding: 1rem;
-  max-height: calc(90vh - 2rem);
+  gap: 1.5rem;
+  padding: 1.75rem;
+  max-height: calc(90vh - 3.5rem);
   overflow-y: auto;
   overflow-x: hidden;
   align-items: start;
@@ -87,14 +101,14 @@ export const ModalBody = styled.div<{ $isLoading: boolean }>`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #e60000;
+    background-color: #dc2626;
     border-radius: 5px;
   }
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 0.75rem;
+    gap: 1.75rem;
+    padding: 1.25rem;
     padding-bottom: 4rem;
   }
 `;
@@ -114,27 +128,6 @@ export const BatteryImage = styled(Image)`
   @media (max-width: 768px) {
     max-width: 275px;
   }
-`;
-
-export const CardLogo = styled(Image)`
-  width: 100px;
-  height: 50px;
-  position: absolute;
-  bottom: -25px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 4px;
-  z-index: 1;
-`;
-
-export const CardLine = styled.div`
-  width: 100px;
-  height: 5px;
-  position: absolute;
-  bottom: -1px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #fff;
 `;
 
 export const DetailsSection = styled.div`
@@ -235,7 +228,7 @@ export const CurrentPrice = styled.span`
 export const SavingsAmount = styled.span`
   font-size: 1rem;
   font-weight: 600;
-  color: #059669;
+  color: #111827;
 `;
 
 export const ContactSection = styled.div`

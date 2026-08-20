@@ -1,6 +1,6 @@
 "use client";
 
-import { createImagePath, Query } from "@/shared";
+import { createImagePath, Query, useScrollReveal } from "@/shared";
 import * as S from "./styled";
 import { useUnit } from "effector-react";
 import { productsModel } from "../model";
@@ -8,10 +8,12 @@ import { Product } from "../api";
 
 type ProductCardProps = {
   product: Product;
+  index?: number;
 };
 
-export const ProductCard = ({ product }: ProductCardProps) => {
+export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
   const setSelectedProduct = useUnit(productsModel.setSelectedProduct);
+  const { ref, isVisible } = useScrollReveal<HTMLDivElement>();
 
   const onProductClick = () => {
     setSelectedProduct(product);
@@ -19,7 +21,12 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   };
 
   return (
-    <S.BatteryCard key={product.id}>
+    <S.BatteryCard
+      key={product.id}
+      ref={ref}
+      $visible={isVisible}
+      $delay={Math.min(index, 8)}
+    >
       <S.BatteryImageContainer>
         <S.BatteryImage
           width={370}
@@ -27,13 +34,6 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           src={createImagePath(product.image)}
           alt={product.title}
         />
-        <S.CardLogo
-          width={100}
-          height={50}
-          src={"/header-logo.svg"}
-          alt="логотип Ампер"
-        />
-        <S.CardLine />
       </S.BatteryImageContainer>
 
       <S.BatteryContent>

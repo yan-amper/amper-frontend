@@ -11,16 +11,29 @@ import {
   Query,
 } from "@/shared";
 import { createPortal } from "react-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const ProductModal = () => {
   const product = useUnit(productsModel.$selectedProduct);
   const setSelectedProduct = useUnit(productsModel.setSelectedProduct);
   const getCurrentProductData = useUnit(productsModel.getCurrentProductData);
 
+  const [mounted, setMounted] = useState(false);
+  const [displayedProduct, setDisplayedProduct] = useState(product);
+
   const productId = Query.get("product");
   const isOpen = !!productId;
-  const isLoading = !!productId && !product;
+  const isLoading = isOpen && !displayedProduct;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (product) {
+      setDisplayedProduct(product);
+    }
+  }, [product]);
 
   useEffect(() => {
     if (isOpen) {
@@ -38,8 +51,6 @@ export const ProductModal = () => {
     }
   }, [productId, isOpen, product, getCurrentProductData]);
 
-  if (!isOpen) return null;
-
   const onClose = () => setSelectedProduct(null);
 
   const handleOverlayClick = (e: React.MouseEvent) => {
@@ -48,31 +59,26 @@ export const ProductModal = () => {
     }
   };
 
+  if (!mounted) return null;
+
   return createPortal(
     <S.ModalOverlay $isOpen={isOpen} onClick={handleOverlayClick}>
-      <S.ModalContent>
+      <S.ModalContent $isOpen={isOpen}>
         <S.ModalBody $isLoading={isLoading}>
-          {product ? (
+          {displayedProduct ? (
             <>
               <S.ImageSection>
                 <S.BatteryImage
                   width={376}
                   height={376}
-                  src={createImagePath(product.image)}
-                  alt={product.title}
+                  src={createImagePath(displayedProduct.image)}
+                  alt={displayedProduct.title}
                 />
-                <S.CardLogo
-                  width={100}
-                  height={50}
-                  src={"/header-logo.svg"}
-                  alt="логотип Ампер"
-                />
-                <S.CardLine />
               </S.ImageSection>
 
               <S.DetailsSection>
                 <S.BatteryTitleContainer>
-                  <S.BatteryTitle>{product.title}</S.BatteryTitle>
+                  <S.BatteryTitle>{displayedProduct.title}</S.BatteryTitle>
                   <S.CloseButton onClick={onClose}>
                     <X size={20} />
                   </S.CloseButton>
@@ -81,25 +87,26 @@ export const ProductModal = () => {
                 <S.SpecsContainer>
                   <S.SpecItem>
                     <S.SpecLabel>Ёмкость:</S.SpecLabel>
-                    <S.SpecValue>{product.capacity}</S.SpecValue>
+                    <S.SpecValue>{displayedProduct.capacity}</S.SpecValue>
                   </S.SpecItem>
                   <S.SpecItem>
                     <S.SpecLabel>Пусковой ток:</S.SpecLabel>
-                    <S.SpecValue>{product.current}</S.SpecValue>
+                    <S.SpecValue>{displayedProduct.current}</S.SpecValue>
                   </S.SpecItem>
                   <S.SpecItem>
                     <S.SpecLabel>Полярность:</S.SpecLabel>
-                    <S.SpecValue>{product.polarity}</S.SpecValue>
+                    <S.SpecValue>{displayedProduct.polarity}</S.SpecValue>
                   </S.SpecItem>
                   <S.SpecItem>
                     <S.SpecLabel>Габариты:</S.SpecLabel>
                     <S.SpecValue>
-                      {product.longitude}x{product.width}x{product.height}
+                      {displayedProduct.longitude}x{displayedProduct.width}x
+                      {displayedProduct.height}
                     </S.SpecValue>
                   </S.SpecItem>
                   <S.SpecItem>
                     <S.SpecLabel>Изготовитель:</S.SpecLabel>
-                    <S.SpecValue>{product.manufacturer}</S.SpecValue>
+                    <S.SpecValue>{displayedProduct.manufacturer}</S.SpecValue>
                   </S.SpecItem>
                 </S.SpecsContainer>
 
@@ -108,19 +115,21 @@ export const ProductModal = () => {
                     <S.PriceRow>
                       <S.PriceLabel>Обычная цена:</S.PriceLabel>
                       <S.OriginalPrice>
-                        {product.standardPrice} ₽
+                        {displayedProduct.standardPrice} ₽
                       </S.OriginalPrice>
                     </S.PriceRow>
                     <S.PriceRow>
                       <S.PriceLabel>Цена со сдачей:</S.PriceLabel>
                       <S.CurrentPrice>
-                        {product.priceWithChange} ₽
+                        {displayedProduct.priceWithChange} ₽
                       </S.CurrentPrice>
                     </S.PriceRow>
                     <S.PriceRow>
                       <S.PriceLabel>Экономия:</S.PriceLabel>
                       <S.SavingsAmount>
-                        {product.standardPrice - product.priceWithChange} ₽
+                        {displayedProduct.standardPrice -
+                          displayedProduct.priceWithChange}{" "}
+                        ₽
                       </S.SavingsAmount>
                     </S.PriceRow>
                   </S.PriceContainer>

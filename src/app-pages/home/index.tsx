@@ -18,11 +18,11 @@ export const HomePage = async () => {
         <S.Button />
       </S.ButtonContainer>
       <RecommendedBatteries />
-      <S.ButtonContainer>
-        <S.Button $anotherMargin />
-      </S.ButtonContainer>
       <Catalog />
       <PopularBatteries />
+      <S.ButtonContainer>
+        <S.Button />
+      </S.ButtonContainer>
       <Address />
     </>
   );

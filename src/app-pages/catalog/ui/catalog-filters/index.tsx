@@ -50,6 +50,7 @@ export const CatalogFilters = ({ selectedFilters }: CatalogFiltersProps) => {
   const setParam = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set(key, value);
+    params.delete("page");
     router.push(`?${params.toString()}`, { scroll: false });
   };
 

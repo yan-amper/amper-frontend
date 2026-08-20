@@ -36,7 +36,6 @@ export const SectionDivider = styled.div`
 export const ContentGrid = styled.div`
   display: grid;
   gap: 2rem;
-  align-items: start;
 
   @media (min-width: 1024px) {
     grid-template-columns: 1fr 1fr;
@@ -46,16 +45,22 @@ export const ContentGrid = styled.div`
 export const MapContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 1.5rem;
+  height: 100%;
+  min-height: 400px;
 
   @media (max-width: 1024px) {
-    gap: 1.5rem;
+    min-height: 320px;
   }
 `;
 
 export const Map = styled.iframe`
   border-radius: 0.5rem;
   width: 100%;
+  height: 100%;
+  flex: 1;
+  min-height: 320px;
+  border: none;
 `;
 
 export const InfoContainer = styled.div`

@@ -16,8 +16,8 @@ export const PopularBatteries = async () => {
         </S.SectionHeader>
 
         <S.Products>
-          {popularProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {popularProducts.map((product, index) => (
+            <ProductCard key={product.id} product={product} index={index} />
           ))}
         </S.Products>
       </S.Container>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const SelectionButton = styled.button`
-  background: #059669;
+  background: #dc2626;
   color: white;
   padding: 0.5rem 1.5rem;
   border-radius: 0.5rem;
@@ -12,7 +12,7 @@ export const SelectionButton = styled.button`
   font-size: 0.875rem;
 
   &:hover {
-    background: #047857;
+    background: #b91c1c;
     transform: translateY(-1px);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   }

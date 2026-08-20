@@ -16,8 +16,8 @@ export const RecommendedBatteries = async () => {
         </S.SectionHeader>
 
         <S.BatteriesGrid>
-          {recProducts.map((battery) => (
-            <ProductCard key={battery.id} product={battery} />
+          {recProducts.map((battery, index) => (
+            <ProductCard key={battery.id} product={battery} index={index} />
           ))}
         </S.BatteriesGrid>
 

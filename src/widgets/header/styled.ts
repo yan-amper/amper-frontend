@@ -60,18 +60,18 @@ export const PhoneText = styled.a`
 `;
 
 export const AddressButton = styled(Link)`
-  background: #dc2626;
-  color: white;
+  background: transparent;
+  color: #dc2626;
   padding: 0.5rem 1.5rem;
   border-radius: 0.5rem;
-  border: none;
+  border: 1.5px solid #dc2626;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
   font-weight: 500;
   text-decoration: none;
 
   &:hover {
-    background: #b91c1c;
+    background: #fef2f2;
   }
 
   @media (max-width: 768px) {

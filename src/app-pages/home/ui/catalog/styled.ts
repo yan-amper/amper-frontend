@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Section = styled.section`
   padding: 4rem 0;
@@ -43,13 +43,31 @@ export const CatalogGrid = styled.div`
   }
 `;
 
-export const CategoryCard = styled(Link)`
+export const CategoryCard = styled(Link)<{
+  $visible?: boolean;
+  $delay?: number;
+}>`
   background: white;
   border-radius: 0.5rem;
   box-shadow: 0px 10px 20px 0px rgba(8, 9, 9, 0.2);
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.3s;
+  display: block;
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease,
+    box-shadow 0.3s,
+    background 0.3s;
+  transition-delay: ${({ $delay = 0 }) => $delay * 60}ms;
+
+  ${({ $visible }) =>
+    $visible &&
+    css`
+      opacity: 1;
+      transform: translateY(0);
+    `}
 
   &:hover {
     box-shadow: 0px 10px 20px 8px rgba(8, 9, 9, 0.2);

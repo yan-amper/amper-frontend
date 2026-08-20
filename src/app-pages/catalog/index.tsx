@@ -3,11 +3,13 @@ import * as S from "./styled";
 import { CatalogFilters, CatalogProducts, SelectedFilters } from "./ui";
 
 export type CatalogPageProps = {
-  searchParams: SelectedFilters;
+  searchParams: SelectedFilters & { page?: string };
 };
 
+const PAGE_SIZE = 12;
+
 export const CatalogPage = async ({ searchParams }: CatalogPageProps) => {
-  const { capacity, ...selectedFilters } = await searchParams;
+  const { capacity, page, ...selectedFilters } = await searchParams;
 
   let products = (await ProductsApi.getFiltredProduct({
     params: selectedFilters,
@@ -22,11 +24,24 @@ export const CatalogPage = async ({ searchParams }: CatalogPageProps) => {
     });
   }
 
+  const totalCount = products.length;
+  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
+  const currentPage = Math.min(Math.max(Number(page) || 1, 1), totalPages);
+  const pagedProducts = products.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
+
   return (
     <S.ContentContainer>
       <S.MainContent>
         <CatalogFilters selectedFilters={{ capacity, ...selectedFilters }} />
-        <CatalogProducts products={products} />
+        <CatalogProducts
+          products={pagedProducts}
+          totalCount={totalCount}
+          currentPage={currentPage}
+          totalPages={totalPages}
+        />
       </S.MainContent>
     </S.ContentContainer>
   );

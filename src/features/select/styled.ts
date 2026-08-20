@@ -84,7 +84,7 @@ export const OptionsContainer = styled.div<{ $open: boolean }>`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #e60000;
+    background-color: #dc2626;
     border-radius: 5px;
   }
 

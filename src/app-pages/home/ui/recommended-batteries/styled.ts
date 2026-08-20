@@ -41,11 +41,11 @@ export const SectionDivider = styled.div`
 export const BatteriesGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 1.5rem;
   margin-bottom: 1.5rem;
-  justify-content: center;
 
   & > div {
-    max-width: 400px;
+    flex: 0 1 340px;
   }
 `;

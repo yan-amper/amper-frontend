@@ -6,7 +6,7 @@ export const Address = () => (
   <S.Section id="address">
     <S.Container>
       <S.SectionHeader>
-        <S.SectionTitle>Наши магазины</S.SectionTitle>
+        <S.SectionTitle>Наш магазин</S.SectionTitle>
         <S.SectionDivider />
       </S.SectionHeader>
 

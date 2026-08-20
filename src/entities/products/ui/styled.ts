@@ -1,14 +1,27 @@
 import Image from "next/image";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-export const BatteryCard = styled.div`
+export const BatteryCard = styled.div<{ $visible?: boolean; $delay?: number }>`
   display: flex;
   flex-direction: column;
   background: white;
   border-radius: 0.5rem;
   overflow: hidden;
   box-shadow: 0px 10px 20px 0px rgba(8, 9, 9, 0.2);
-  transition: box-shadow 0.3s;
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease,
+    box-shadow 0.3s;
+  transition-delay: ${({ $delay = 0 }) => $delay * 60}ms;
+
+  ${({ $visible }) =>
+    $visible &&
+    css`
+      opacity: 1;
+      transform: translateY(0);
+    `}
 
   &:hover {
     box-shadow: 0px 10px 20px 8px rgba(8, 9, 9, 0.2);
@@ -28,27 +41,6 @@ export const BatteryImage = styled(Image)`
   object-fit: cover;
   border: 3px solid #dc2626;
   border-radius: 10px;
-`;
-
-export const CardLogo = styled(Image)`
-  width: 100px;
-  height: 50px;
-  position: absolute;
-  bottom: 5px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 4px;
-  z-index: 1;
-`;
-
-export const CardLine = styled.div`
-  width: 100px;
-  height: 5px;
-  position: absolute;
-  bottom: 29px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #fff;
 `;
 
 export const BatteryContent = styled.div`

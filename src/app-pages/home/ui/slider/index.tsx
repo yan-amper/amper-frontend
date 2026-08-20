@@ -12,16 +12,19 @@ type SliderProps = {
 
 export const Slider = ({ banners }: SliderProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   const bannersCount = banners.length;
 
   useEffect(() => {
+    if (isPaused) return;
+
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % bannersCount);
-    }, 4000);
+    }, 5000);
 
     return () => clearInterval(timer);
-  }, [currentSlide, bannersCount]);
+  }, [currentSlide, bannersCount, isPaused]);
 
   const prevSlide = () =>
     setCurrentSlide((prev) => (prev - 1 + bannersCount) % bannersCount);
@@ -29,16 +32,19 @@ export const Slider = ({ banners }: SliderProps) => {
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % bannersCount);
 
   return (
-    <S.SliderContainer>
+    <S.SliderContainer
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
       <S.SlideWrapper>
         {banners.map((banner, i) => (
           <S.Slide key={banner.id} $isActive={i === currentSlide}>
             <S.SlideImage
-              width={1600}
-              height={900}
+              fill
+              sizes="(max-width: 1280px) 100vw, 1280px"
               src={createImagePath(banner.image)}
               alt={"акция Ампер"}
-              priority
+              priority={i === 0}
             />
           </S.Slide>
         ))}

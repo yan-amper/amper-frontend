@@ -21,6 +21,10 @@ export const HeaderContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* When a modal locks page scroll, the real scrollbar disappears and this
+     fixed-position header's 100%-wide box grows to fill the reclaimed space,
+     nudging this centered content sideways. Shift it back by half that width. */
+  transform: translateX(calc(var(--scrollbar-width, 0px) / -2));
 `;
 
 export const LogoContainer = styled(Link)`

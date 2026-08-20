@@ -1,6 +1,10 @@
-import { redirect } from "next/navigation";
+import { NotFoundPage } from "@/app-pages";
+import type { Metadata } from "next";
 
-export default function Custom404() {
-  redirect("/");
-  return null;
+export const metadata: Metadata = {
+  title: "Страница не найдена — АМПЕР",
+};
+
+export default function NotFound() {
+  return <NotFoundPage />;
 }

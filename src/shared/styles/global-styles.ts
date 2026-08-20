@@ -16,11 +16,26 @@ export const GlobalStyles = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Lets short pages (like 404) stretch to fill the viewport instead of
+     leaving a gap above the footer on tall screens; pages with content
+     taller than the viewport are unaffected (min-height:auto default).
+     main is itself a column flex container so a page's root element can
+     opt in with flex:1 and reliably fill the remaining height — percentage
+     heights (height:100%) through a flex-grown ancestor aren't dependable
+     across browsers, flex-grow on a direct child is. */
+  body > main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
   html {
     scroll-behavior: smooth;
-    scrollbar-gutter: stable;
   }
 
   button {

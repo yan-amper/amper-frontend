@@ -9,6 +9,7 @@ import {
   formattedPhoneNumber,
   phoneNumber,
   Query,
+  useHideScroll,
 } from "@/shared";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
@@ -35,15 +36,7 @@ export const ProductModal = () => {
     }
   }, [product]);
 
-  useEffect(() => {
-    if (isOpen) {
-      const originalStyle = window.getComputedStyle(document.body).overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = originalStyle;
-      };
-    }
-  }, [isOpen]);
+  useHideScroll(isOpen);
 
   useEffect(() => {
     if (isOpen && !product) {

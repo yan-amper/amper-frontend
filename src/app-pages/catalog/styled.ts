@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 export const ContentContainer = styled.div`
   flex: 1;
-  margin-top: 5rem;
+  margin-top: 100px;
   padding: 2rem 0;
   background: #f9fafb;
 `;

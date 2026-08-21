@@ -57,6 +57,13 @@ export const Heading = styled.h2`
   margin: 2rem 0 0.75rem;
 `;
 
+export const Subheading = styled.h3`
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 1.25rem 0 0.5rem;
+`;
+
 export const Text = styled.p`
   color: var(--text-secondary);
   font-size: 0.9375rem;
@@ -82,6 +89,11 @@ export const List = styled.ul`
 
   li {
     margin-bottom: 0.35rem;
+  }
+
+  strong {
+    color: var(--text-primary);
+    font-weight: 600;
   }
 `;
 

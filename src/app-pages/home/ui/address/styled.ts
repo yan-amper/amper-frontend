@@ -2,42 +2,28 @@
 
 import Image from "next/image";
 import styled from "styled-components";
+import { media } from "@/shared";
 
 export const Section = styled.section`
   padding: 4rem 0;
-  background: white;
+  background: var(--surface);
+
+  ${media.sm} {
+    padding: 2.5rem 0;
+  }
 `;
 
 export const Container = styled.div`
-  max-width: 1280px;
+  max-width: var(--container);
   margin: 0 auto;
-  padding: 0 1rem;
-`;
-
-export const SectionHeader = styled.div`
-  text-align: center;
-  margin-bottom: 3rem;
-`;
-
-export const SectionTitle = styled.h2`
-  font-size: 1.875rem;
-  font-weight: bold;
-  color: #111827;
-  margin-bottom: 1rem;
-`;
-
-export const SectionDivider = styled.div`
-  width: 5rem;
-  height: 0.25rem;
-  background: #dc2626;
-  margin: 0 auto;
+  padding: 0 var(--container-pad);
 `;
 
 export const ContentGrid = styled.div`
   display: grid;
   gap: 2rem;
 
-  @media (min-width: 1024px) {
+  ${media.lgUp} {
     grid-template-columns: 1fr 1fr;
   }
 `;
@@ -45,22 +31,51 @@ export const ContentGrid = styled.div`
 export const MapContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   height: 100%;
   min-height: 400px;
 
-  @media (max-width: 1024px) {
+  ${media.lg} {
     min-height: 320px;
   }
 `;
 
 export const Map = styled.iframe`
-  border-radius: 0.5rem;
+  border-radius: var(--radius-lg);
   width: 100%;
   height: 100%;
   flex: 1;
   min-height: 320px;
-  border: none;
+  border: 1px solid var(--border-default);
+`;
+
+export const MapFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+`;
+
+export const RouteLink = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.125rem;
+  border: 1.5px solid var(--color-brand);
+  border-radius: var(--radius-md);
+  color: var(--color-brand);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  transition:
+    background var(--transition),
+    transform var(--transition);
+
+  &:hover {
+    background: var(--color-brand-soft);
+    transform: translateY(-1px);
+  }
 `;
 
 export const InfoContainer = styled.div`
@@ -73,13 +88,18 @@ export const StoreImage = styled(Image)`
   width: 100%;
   height: 16rem;
   object-fit: cover;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-lg);
+
+  ${media.sm} {
+    height: 12rem;
+  }
 `;
 
 export const ContactCard = styled.div`
-  background: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  background: var(--surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
   padding: 1.5rem;
 `;
 
@@ -95,34 +115,56 @@ export const ContactItem = styled.div`
 `;
 
 export const ContactIcon = styled.div`
-  color: #dc2626;
-  margin-top: 0.25rem;
+  color: var(--color-brand);
+  margin-top: 0.15rem;
   flex-shrink: 0;
 `;
 
 export const ContactContent = styled.div``;
 
 export const ContactTitle = styled.h3`
-  font-weight: bold;
-  color: #111827;
+  font-weight: 700;
+  color: var(--text-primary);
   margin-bottom: 0.25rem;
 `;
 
-export const ContactText = styled.a`
-  color: #6b7280;
+export const ContactText = styled.p`
+  color: var(--text-muted);
   margin: 0;
+`;
+
+/* Телефон раньше красился в тот же серый, что и обычный текст рядом,
+   и по нему было не видно, что это ссылка. */
+export const ContactPhone = styled.a`
+  color: var(--color-brand);
+  font-weight: 700;
+  font-size: 1.125rem;
+  text-decoration: none;
+  transition: color var(--transition);
+
+  &:hover {
+    color: var(--color-brand-hover);
+    text-decoration: underline;
+  }
 `;
 
 export const WorkingHours = styled.div`
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-muted);
   margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-default);
 
   p {
     margin: 0.25rem 0;
   }
 
   strong {
-    color: #111827;
+    color: var(--text-primary);
   }
+`;
+
+export const RatingBadge = styled.iframe`
+  border: none;
+  flex-shrink: 0;
 `;

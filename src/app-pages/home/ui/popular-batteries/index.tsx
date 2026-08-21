@@ -1,28 +1,32 @@
 import { ProductCard, ProductsApi } from "@/entities";
 import * as S from "./styled";
 import { CatalogLink } from "@/features";
+import { HOME_SECTION_LIMIT, ProductGrid, SectionHeading } from "@/shared";
 
 export const PopularBatteries = async () => {
   const popularProducts = await ProductsApi.getPopularProducts();
 
+  if (popularProducts.length === 0) return null;
+
   return (
     <S.Section>
       <S.Container>
-        <S.SectionHeader>
-          <S.SectionTitle href={"/catalog?sort=ASC&popular=true"}>
-            Популярные аккумуляторы
-          </S.SectionTitle>
-          <S.SectionDivider />
-        </S.SectionHeader>
+        <SectionHeading
+          title="Популярные аккумуляторы"
+          subtitle="То, что чаще всего забирают в нашем центре на Мариупольском шоссе."
+        />
 
-        <S.Products>
-          {popularProducts.map((product, index) => (
+        <ProductGrid>
+          {popularProducts.slice(0, HOME_SECTION_LIMIT).map((product, index) => (
             <ProductCard key={product.id} product={product} index={index} />
           ))}
-        </S.Products>
-      </S.Container>
+        </ProductGrid>
 
-      <CatalogLink />
+        <CatalogLink
+          href="/catalog?sort=ASC&popular=true"
+          label="Все популярные"
+        />
+      </S.Container>
     </S.Section>
   );
 };

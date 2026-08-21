@@ -11,6 +11,9 @@ type ProductCardProps = {
   index?: number;
 };
 
+/** Дальше пятой карточки каскад только тормозит появление сетки. */
+const MAX_STAGGER_STEPS = 5;
+
 export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
   const setSelectedProduct = useUnit(productsModel.setSelectedProduct);
   const { ref, isVisible } = useScrollReveal<HTMLDivElement>();
@@ -22,15 +25,15 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
 
   return (
     <S.BatteryCard
-      key={product.id}
       ref={ref}
       $visible={isVisible}
-      $delay={Math.min(index, 8)}
+      $delay={Math.min(index, MAX_STAGGER_STEPS)}
     >
       <S.BatteryImageContainer>
         <S.BatteryImage
           width={370}
           height={370}
+          sizes="(max-width: 550px) 90vw, (max-width: 1024px) 45vw, 300px"
           src={createImagePath(product.image)}
           alt={product.title}
         />
@@ -41,25 +44,25 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
 
         <S.SpecsList>
           <S.SpecItem>
-            <S.SpecLabel>Ёмкость:</S.SpecLabel>
-            <S.SpecValue>{product.capacity}</S.SpecValue>
+            <S.SpecLabel>Ёмкость</S.SpecLabel>
+            <S.SpecValue>{product.capacity} Ач</S.SpecValue>
           </S.SpecItem>
           <S.SpecItem>
-            <S.SpecLabel>Пусковой ток:</S.SpecLabel>
-            <S.SpecValue>{product.current}</S.SpecValue>
+            <S.SpecLabel>Пусковой ток</S.SpecLabel>
+            <S.SpecValue>{product.current} А</S.SpecValue>
           </S.SpecItem>
           <S.SpecItem>
-            <S.SpecLabel>Полярность:</S.SpecLabel>
+            <S.SpecLabel>Полярность</S.SpecLabel>
             <S.SpecValue>{product.polarity}</S.SpecValue>
           </S.SpecItem>
           <S.SpecItem>
-            <S.SpecLabel>Габариты:</S.SpecLabel>
+            <S.SpecLabel>Габариты</S.SpecLabel>
             <S.SpecValue>
-              {product.longitude}x{product.width}x{product.height}
+              {product.longitude}×{product.width}×{product.height} мм
             </S.SpecValue>
           </S.SpecItem>
           <S.SpecItem>
-            <S.SpecLabel>Изготовитель:</S.SpecLabel>
+            <S.SpecLabel>Изготовитель</S.SpecLabel>
             <S.SpecValue>{product.manufacturer}</S.SpecValue>
           </S.SpecItem>
         </S.SpecsList>
@@ -69,9 +72,14 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
             <S.PriceInfo>
               <S.OriginalPrice>{product.standardPrice} ₽</S.OriginalPrice>
               <S.CurrentPrice>{product.priceWithChange} ₽</S.CurrentPrice>
-              <S.PriceNote>при сдаче АКБ {product.capacity}Ач</S.PriceNote>
+              <S.PriceNote>при сдаче АКБ {product.capacity} Ач</S.PriceNote>
             </S.PriceInfo>
-            <S.BuyButton onClick={onProductClick}>Подробнее</S.BuyButton>
+            <S.BuyButton
+              onClick={onProductClick}
+              aria-label={`Подробнее — ${product.title}`}
+            >
+              Подробнее
+            </S.BuyButton>
           </S.PriceContainer>
         </S.PriceSection>
       </S.BatteryContent>

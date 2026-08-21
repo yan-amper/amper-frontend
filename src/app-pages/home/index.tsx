@@ -2,11 +2,12 @@ import { BannersApi } from "@/entities/banners/api";
 import {
   Address,
   Catalog,
+  CtaBand,
+  Hero,
   PopularBatteries,
   RecommendedBatteries,
   Slider,
 } from "./ui";
-import * as S from "./styled";
 
 export const HomePage = async () => {
   const banners = await BannersApi.getBanners();
@@ -14,15 +15,11 @@ export const HomePage = async () => {
   return (
     <>
       <Slider banners={banners} />
-      <S.ButtonContainer>
-        <S.Button />
-      </S.ButtonContainer>
+      <Hero />
       <RecommendedBatteries />
       <Catalog />
       <PopularBatteries />
-      <S.ButtonContainer>
-        <S.Button />
-      </S.ButtonContainer>
+      <CtaBand />
       <Address />
     </>
   );

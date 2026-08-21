@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styled, { keyframes } from "styled-components";
+import { media } from "@/shared";
 
 const fadeIn = keyframes`
   from {
@@ -25,8 +26,16 @@ const pulse = keyframes`
 `;
 
 export const PageContainer = styled.div`
-  min-height: 100vh;
-  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 50%, #fecaca 100%);
+  /* flex: 1, а не min-height: 100vh — страница рендерится внутри <main>,
+     у которого уже есть отступ под фиксированную шапку. 100vh поверх
+     этого гарантированно добавляли лишний скролл на высоту футера. */
+  flex: 1;
+  background: linear-gradient(
+    135deg,
+    var(--color-brand-soft) 0%,
+    var(--color-brand-soft-hover) 50%,
+    var(--color-brand-border) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,17 +43,17 @@ export const PageContainer = styled.div`
 `;
 
 export const LoginCard = styled.div`
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
   padding: 2rem;
   width: 100%;
   max-width: 400px;
   animation: ${fadeIn} 0.6s ease-out;
 
-  @media (max-width: 768px) {
+  ${media.md} {
     padding: 1.5rem;
-    border-radius: 0.75rem;
+    border-radius: var(--radius-lg);
   }
 `;
 
@@ -59,18 +68,18 @@ export const LogoSection = styled.div`
 export const LogoIcon = styled.div`
   width: 3rem;
   height: 3rem;
-  background: #dc2626;
-  border-radius: 0.75rem;
+  background: var(--color-brand);
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.3);
+  box-shadow: var(--shadow-brand);
 `;
 
 export const LogoText = styled.span`
   font-size: 1.5rem;
   font-weight: bold;
-  color: #111827;
+  color: var(--text-primary);
 `;
 
 export const LoginForm = styled.form`
@@ -82,13 +91,13 @@ export const LoginForm = styled.form`
 export const Title = styled.h1`
   font-size: 1.5rem;
   font-weight: bold;
-  color: #111827;
+  color: var(--text-primary);
   text-align: center;
   margin: 0;
 `;
 
 export const Subtitle = styled.p`
-  color: #6b7280;
+  color: var(--text-muted);
   text-align: center;
   margin: 0;
   font-size: 0.875rem;
@@ -102,7 +111,7 @@ export const FormGroup = styled.div`
 
 export const Label = styled.label`
   font-weight: 600;
-  color: #374151;
+  color: var(--text-secondary);
   font-size: 0.875rem;
 `;
 
@@ -116,32 +125,32 @@ export const Input = styled.input<{ $hasError?: boolean; $hasIcon?: boolean }>`
   width: 100%;
   padding: 0.875rem;
   padding-right: ${(props) => (props.$hasIcon ? "3rem" : "0.875rem")};
-  border: 2px solid ${(props) => (props.$hasError ? "#ef4444" : "#e5e7eb")};
-  border-radius: 0.5rem;
+  border: 2px solid ${(props) => (props.$hasError ? "var(--color-danger-border)" : "var(--border-default)")};
+  border-radius: var(--radius-md);
   font-size: 0.875rem;
-  transition: all 0.2s;
-  background: white;
+  transition: all var(--transition);
+  background: var(--surface);
 
   &:focus {
     outline: none;
-    border-color: ${(props) => (props.$hasError ? "#ef4444" : "#dc2626")};
+    border-color: ${(props) => (props.$hasError ? "var(--color-danger-border)" : "var(--color-brand)")};
     box-shadow: 0 0 0 3px
       ${(props) =>
-        props.$hasError ? "rgba(239, 68, 68, 0.1)" : "rgba(220, 38, 38, 0.1)"};
+        props.$hasError ? "var(--focus-ring-danger-color)" : "var(--focus-ring-color)"};
   }
 
   &:disabled {
-    background: #f9fafb;
-    color: #9ca3af;
+    background: var(--surface-muted);
+    color: var(--text-subtle);
     cursor: not-allowed;
   }
 
   &::placeholder {
-    color: #9ca3af;
+    color: var(--text-subtle);
   }
 
   &:hover:not(:disabled) {
-    border-color: ${(props) => (props.$hasError ? "#ef4444" : "#d1d5db")};
+    border-color: ${(props) => (props.$hasError ? "var(--color-danger-border)" : "var(--border-strong)")};
   }
 `;
 
@@ -150,18 +159,18 @@ export const PasswordToggle = styled.button`
   right: 0.75rem;
   background: none;
   border: none;
-  color: #6b7280;
+  color: var(--text-muted);
   cursor: pointer;
   padding: 0.25rem;
-  border-radius: 0.25rem;
-  transition: all 0.2s;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
   display: flex;
   align-items: center;
   justify-content: center;
 
   &:hover:not(:disabled) {
-    color: #374151;
-    background: #f3f4f6;
+    color: var(--text-secondary);
+    background: var(--surface-sunken);
   }
 
   &:disabled {
@@ -171,7 +180,7 @@ export const PasswordToggle = styled.button`
 `;
 
 export const ErrorMessage = styled.span`
-  color: #ef4444;
+  color: var(--color-danger-border);
   font-size: 0.75rem;
   margin-top: 0.25rem;
   display: flex;
@@ -180,21 +189,21 @@ export const ErrorMessage = styled.span`
 `;
 
 export const LoginButton = styled.button`
-  background: #dc2626;
-  color: white;
+  background: var(--color-brand);
+  color: var(--text-on-brand);
   padding: 0.875rem 1.5rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
   border: none;
   font-weight: 600;
   font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition);
   margin-top: 0.5rem;
 
   &:hover:not(:disabled) {
-    background: #b91c1c;
+    background: var(--color-brand-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
   }
 
   &:active:not(:disabled) {
@@ -202,7 +211,7 @@ export const LoginButton = styled.button`
   }
 
   &:disabled {
-    background: #9ca3af;
+    background: var(--text-subtle);
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
@@ -219,16 +228,16 @@ export const BackLink = styled(Link)`
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: #6b7280;
+  color: var(--text-muted);
   text-decoration: none;
   font-size: 0.875rem;
   font-weight: 500;
   padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  transition: all 0.2s;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
 
   &:hover {
-    color: #dc2626;
-    background: #fef2f2;
+    color: var(--color-brand);
+    background: var(--color-brand-soft);
   }
 `;

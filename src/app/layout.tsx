@@ -11,7 +11,13 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Suspense } from "react";
 
-const inter = Inter({ subsets: ["latin"] });
+// cyrillic обязателен: сайт целиком на русском. С одним только "latin"
+// кириллица падала в системный фолбэк, и русский текст рендерился НЕ в Inter —
+// в одном заголовке соседствовали два разных шрифта («Аккумуляторы Bosch»).
+const inter = Inter({
+  subsets: ["latin", "cyrillic"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Аккумулятор автомобильный купить в АКБ центрах АМПЕР, Таганрог",

@@ -1,19 +1,29 @@
+"use client";
+
 import styled from "styled-components";
 
 export const SelectionButton = styled.button`
-  background: #dc2626;
-  color: white;
-  padding: 0.5rem 1.5rem;
-  border-radius: 0.5rem;
+  background: var(--color-brand);
+  color: var(--text-on-brand);
+  padding: 0.625rem 1.5rem;
+  border-radius: var(--radius-md);
   border: none;
   cursor: pointer;
-  transition: all 0.2s;
-  font-weight: 500;
+  transition:
+    background var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
+  font-weight: 600;
   font-size: 0.875rem;
+  white-space: nowrap;
 
   &:hover {
-    background: #b91c1c;
+    background: var(--color-brand-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `;

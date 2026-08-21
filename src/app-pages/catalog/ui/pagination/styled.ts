@@ -7,10 +7,11 @@ const buttonBase = css`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 2.5rem;
-  height: 2.5rem;
+  /* 44×44 — комфортная зона нажатия пальцем (было 40px) */
+  min-width: 2.75rem;
+  height: 2.75rem;
   padding: 0 0.5rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: none;
@@ -27,27 +28,35 @@ export const PaginationNav = styled.nav`
 
 export const PageButton = styled(Link)<{ $active?: boolean }>`
   ${buttonBase}
-  border: 1px solid ${({ $active }) => ($active ? "#dc2626" : "#e5e7eb")};
-  background: ${({ $active }) => ($active ? "#dc2626" : "white")};
-  color: ${({ $active }) => ($active ? "white" : "#374151")};
-  transition: all 0.2s;
+  border: 1px solid
+    ${({ $active }) => ($active ? "var(--color-brand)" : "var(--border-default)")};
+  background: ${({ $active }) =>
+    $active ? "var(--color-brand)" : "var(--surface)"};
+  color: ${({ $active }) =>
+    $active ? "var(--text-on-brand)" : "var(--text-secondary)"};
+  transition:
+    border-color var(--transition),
+    background var(--transition),
+    color var(--transition);
 
   &:hover {
-    border-color: #dc2626;
-    color: ${({ $active }) => ($active ? "white" : "#dc2626")};
+    border-color: var(--color-brand);
+    background: ${({ $active }) =>
+      $active ? "var(--color-brand-hover)" : "var(--color-brand-soft)"};
+    color: ${({ $active }) => ($active ? "var(--text-on-brand)" : "var(--color-brand)")};
   }
 `;
 
 export const PageButtonDisabled = styled.span`
   ${buttonBase}
-  border: 1px solid #e5e7eb;
-  color: #d1d5db;
+  border: 1px solid var(--border-default);
+  color: var(--border-strong);
   cursor: not-allowed;
 `;
 
 export const Ellipsis = styled.span`
   ${buttonBase}
-  color: #9ca3af;
+  color: var(--text-subtle);
   min-width: 1.5rem;
   padding: 0;
 `;

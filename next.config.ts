@@ -1,7 +1,9 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { apiUrl } from "@/shared";
+// Узкий импорт, а не бочонок "@/shared": конфиг компилируется в CJS
+// отдельным проходом и не умеет резолвить .tsx из shared/ui.
+import { apiUrl } from "@/shared/config/variables";
 import type { NextConfig } from "next";
 
 const projectRoot = fs.realpathSync(

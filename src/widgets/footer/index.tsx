@@ -2,7 +2,12 @@ import Image from "next/image";
 import { MapPin, Phone, Clock } from "lucide-react";
 import * as S from "./styled";
 import { BatterySelectionButton } from "@/features";
-import { formattedPhoneNumber, phoneNumber } from "@/shared";
+import {
+  formattedPhoneNumber,
+  phoneNumber,
+  SHOP_ADDRESS,
+  SHOP_HOURS,
+} from "@/shared";
 
 export const Footer = () => (
   <S.FooterStyled>
@@ -11,8 +16,8 @@ export const Footer = () => (
         <S.FooterBrandCol>
           <S.FooterLogo>
             <Image
-              width={150}
-              height={75}
+              width={130}
+              height={50}
               src={"/footer-logo.svg"}
               alt="логотип Ампер"
             />
@@ -27,7 +32,7 @@ export const Footer = () => (
           <S.FooterColTitle>Навигация</S.FooterColTitle>
           <S.FooterLinks>
             <S.FooterLink href="/">Главная</S.FooterLink>
-            <S.FooterLink href="/catalog">Каталог</S.FooterLink>
+            <S.FooterLink href="/catalog?sort=ASC">Каталог</S.FooterLink>
             <S.FooterLink href="/#address">Наш магазин</S.FooterLink>
             <S.FooterButtonLink>
               <BatterySelectionButton />
@@ -46,11 +51,11 @@ export const Footer = () => (
             </S.FooterContactRow>
             <S.FooterContactRow>
               <MapPin size={16} />
-              <span>г. Таганрог, Мариупольское шоссе, д. 1</span>
+              <span>{SHOP_ADDRESS}</span>
             </S.FooterContactRow>
             <S.FooterContactRow>
               <Clock size={16} />
-              <span>Каждый день 8:30&nbsp;–&nbsp;18:30</span>
+              <span>{SHOP_HOURS}</span>
             </S.FooterContactRow>
           </S.FooterContacts>
         </div>
@@ -58,7 +63,10 @@ export const Footer = () => (
         <div>
           <S.FooterColTitle>Мы на связи</S.FooterColTitle>
           <S.FooterMessengers>
-            <S.MessengerLink
+            {/* Telegram скрыт, пока вариант «Подбор в Telegram» закомментирован
+                в selection-modal: иначе футер ведёт на бота, которого нет
+                в основном сценарии. Вернуть — раскомментировать оба места. */}
+            {/* <S.MessengerLink
               href="https://t.me/amper_tgn_bot?start=start"
               target="_blank"
               rel="noopener noreferrer"
@@ -70,7 +78,7 @@ export const Footer = () => (
                 height={22}
               />
               Telegram
-            </S.MessengerLink>
+            </S.MessengerLink> */}
             <S.MessengerLink
               href="https://max.ru/id615426315675_bot"
               target="_blank"
@@ -85,9 +93,11 @@ export const Footer = () => (
 
       <S.FooterBottom>
         <S.FooterCopyright>
-          © {new Date().getFullYear()} Ампер — аккумуляторный центр
+          © {new Date().getFullYear()} Ампер — аккумуляторный центр, г. Таганрог
         </S.FooterCopyright>
-        <S.FooterLegalLink>г. Таганрог</S.FooterLegalLink>
+        <S.FooterLegalLink href="/privacy">
+          Политика конфиденциальности
+        </S.FooterLegalLink>
       </S.FooterBottom>
     </S.FooterContent>
   </S.FooterStyled>

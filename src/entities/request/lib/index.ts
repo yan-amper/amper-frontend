@@ -8,18 +8,20 @@ export const getDeliveryText = (delivery: string) => {
   return delivery === "delivery" ? "С доставкой и установкой" : "Самовывоз";
 };
 
+// Возвращаем токены, а не хексы: цвета статусов теперь живут
+// в одном месте — shared/styles/tokens.ts.
 export const getStatusColor = (status: Request["status"]) => {
   switch (status) {
     case "new":
-      return "#3b82f6";
+      return "var(--status-new)";
     case "in_progress":
-      return "#f59e0b";
+      return "var(--status-progress)";
     case "completed":
-      return "#10b981";
+      return "var(--status-done)";
     case "cancelled":
-      return "#ef4444";
+      return "var(--status-cancelled)";
     default:
-      return "#6b7280";
+      return "var(--status-default)";
   }
 };
 

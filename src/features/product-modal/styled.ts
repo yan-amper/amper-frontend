@@ -1,43 +1,51 @@
+"use client";
+
 import Image from "next/image";
 import styled, { css } from "styled-components";
+import { media } from "@/shared";
 
 export const ModalOverlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(17, 24, 39, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 1rem;
   z-index: 1000;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
+  transition:
+    opacity var(--transition-slow),
+    visibility var(--transition-slow);
 
   ${({ $isOpen }) =>
-    $isOpen &&
+    !$isOpen &&
     css`
-      opacity: 1;
-      pointer-events: auto;
+      opacity: 0;
+      /* Раньше здесь было только pointer-events: none. Оно не убирает
+         элементы из таб-порядка — пользователь на любой странице
+         проваливался табом внутрь невидимой модалки. */
+      visibility: hidden;
     `}
 `;
 
 export const ModalContent = styled.div<{ $isOpen: boolean }>`
   position: relative;
-  background: white;
-  border-radius: 1rem;
+  background: var(--surface);
+  border-radius: var(--radius-xl);
   max-width: 800px;
-  width: 90%;
-  max-height: 90vh;
-  height: auto;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-height: 90dvh;
+  box-shadow: var(--shadow-xl);
   overflow: hidden;
-  opacity: 0;
   transform: scale(0.96) translateY(10px);
+  opacity: 0;
   transition:
-    opacity 0.25s ease,
-    transform 0.25s ease;
+    opacity var(--transition-slow),
+    transform var(--transition-slow);
+
+  &:focus {
+    outline: none;
+  }
 
   ${({ $isOpen }) =>
     $isOpen &&
@@ -46,33 +54,37 @@ export const ModalContent = styled.div<{ $isOpen: boolean }>`
       transform: scale(1) translateY(0);
     `}
 
-  @media (max-width: 768px) {
-    width: 95%;
-    max-height: 80vh;
+  ${media.md} {
+    max-height: 88dvh;
   }
 `;
 
+/* Крестик всегда в одном месте — в правом верхнем углу окна.
+   Раньше на десктопе он стоял в строке заголовка, а на мобиле
+   перепрыгивал в absolute: две разные модели поведения. */
 export const CloseButton = styled.button`
-  background: #f3f4f6;
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  background: var(--surface-sunken);
   border: none;
-  border-radius: 50%;
+  border-radius: var(--radius-pill);
   width: 2.5rem;
   height: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--text-secondary);
   flex-shrink: 0;
   cursor: pointer;
-  transition: all 0.2s;
+  transition:
+    background var(--transition),
+    color var(--transition);
 
   &:hover {
-    background: #e5e7eb;
-  }
-
-  @media (max-width: 768px) {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
+    background: var(--color-brand-soft);
+    color: var(--color-brand);
   }
 `;
 
@@ -83,6 +95,7 @@ export const ModalBody = styled.div<{ $isLoading: boolean }>`
           display: flex;
           justify-content: center;
           align-items: center;
+          min-height: 200px;
         `
       : css`
           display: grid;
@@ -91,25 +104,25 @@ export const ModalBody = styled.div<{ $isLoading: boolean }>`
 
   gap: 1.5rem;
   padding: 1.75rem;
-  max-height: calc(90vh - 3.5rem);
+  max-height: 90dvh;
   overflow-y: auto;
   overflow-x: hidden;
   align-items: start;
 
   &::-webkit-scrollbar {
-    width: 5px;
+    width: 8px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #dc2626;
-    border-radius: 5px;
+    background-color: var(--border-strong);
+    border-radius: var(--radius-pill);
   }
 
-  @media (max-width: 768px) {
+  ${media.md} {
     grid-template-columns: 1fr;
-    gap: 1.75rem;
+    gap: 1.25rem;
     padding: 1.25rem;
-    padding-bottom: 4rem;
+    max-height: 88dvh;
   }
 `;
 
@@ -118,82 +131,90 @@ export const ImageSection = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
+  /* Оставляем место крестику, чтобы он не лёг поверх картинки */
+  padding-top: 1.5rem;
+
+  ${media.md} {
+    padding-top: 2rem;
+  }
+`;
+
+export const ImageFrame = styled.div`
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 1.25rem;
+  background: var(--surface-muted);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+
+  ${media.md} {
+    max-width: 260px;
+    margin: 0 auto;
+  }
 `;
 
 export const BatteryImage = styled(Image)`
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  border: 3px solid #dc2626;
-  border-radius: 10px;
-
-  @media (max-width: 768px) {
-    max-width: 275px;
-  }
 `;
 
 export const DetailsSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  height: auto;
-  max-height: 100%;
-  overflow: hidden;
-  justify-content: space-between;
-`;
-
-export const BatteryTitleContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 5px;
 `;
 
 export const BatteryTitle = styled.h2`
   font-size: 1.25rem;
-  font-weight: bold;
-  color: #111827;
+  font-weight: 700;
+  color: var(--text-primary);
   margin: 0;
-  line-height: 1.2;
+  /* Место под крестик в правом верхнем углу */
+  padding-right: 2.5rem;
 
-  @media (max-width: 768px) {
+  ${media.md} {
     font-size: 1.125rem;
+    padding-right: 0;
   }
 `;
 
-export const SpecsContainer = styled.div`
+export const SpecsContainer = styled.dl`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
 `;
 
 export const SpecItem = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 0.375rem 0;
-  border-bottom: 1px solid #f3f4f6;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-subtle);
 
   &:last-child {
     border-bottom: none;
   }
 `;
 
-export const SpecLabel = styled.span`
+export const SpecLabel = styled.dt`
   font-weight: 500;
-  color: #6b7280;
+  color: var(--text-muted);
   font-size: 0.875rem;
 `;
 
-export const SpecValue = styled.span`
+export const SpecValue = styled.dd`
   font-weight: 600;
-  color: #111827;
+  color: var(--text-primary);
   font-size: 0.875rem;
+  text-align: end;
 `;
 
 export const PriceSection = styled.div`
-  background: #fef2f2;
-  padding: 0.75rem;
-  border-radius: 0.75rem;
-  border: 1px solid #fecaca;
+  background: var(--color-brand-soft);
+  padding: 0.875rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-brand-border);
 `;
 
 export const PriceContainer = styled.div`
@@ -205,42 +226,44 @@ export const PriceContainer = styled.div`
 export const PriceRow = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
+  gap: 0.75rem;
 `;
 
 export const PriceLabel = styled.span`
   font-weight: 500;
-  color: #6b7280;
+  color: var(--text-muted);
+  font-size: 0.875rem;
 `;
 
 export const OriginalPrice = styled.span`
   font-size: 1rem;
-  color: #6b7280;
+  color: var(--text-muted);
   text-decoration: line-through;
 `;
 
 export const CurrentPrice = styled.span`
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #dc2626;
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--color-brand);
 `;
 
 export const SavingsAmount = styled.span`
   font-size: 1rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--color-success);
 `;
 
 export const ContactSection = styled.div`
-  background: #f9fafb;
-  padding: 0.75rem;
-  border-radius: 0.75rem;
+  background: var(--surface-muted);
+  padding: 0.875rem;
+  border-radius: var(--radius-lg);
   text-align: center;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-default);
 `;
 
 export const ContactText = styled.p`
-  color: #6b7280;
+  color: var(--text-muted);
   margin: 0 0 0.5rem 0;
   font-size: 0.875rem;
 `;
@@ -249,22 +272,24 @@ export const PhoneLink = styled.a`
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: #dc2626;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
+  background: var(--color-brand);
+  color: var(--text-on-brand);
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius-md);
   text-decoration: none;
   font-weight: 600;
   font-size: 0.9rem;
-  transition: all 0.2s;
+  transition:
+    background var(--transition),
+    transform var(--transition);
 
   &:hover {
-    background: #b91c1c;
+    background: var(--color-brand-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   }
 `;
 
-export const LoadingTitle = styled.h2`
+export const LoadingTitle = styled.p`
   text-align: center;
+  color: var(--text-muted);
 `;

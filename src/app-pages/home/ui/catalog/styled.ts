@@ -2,35 +2,21 @@
 
 import Link from "next/link";
 import styled, { css } from "styled-components";
+import { media } from "@/shared";
 
 export const Section = styled.section`
   padding: 4rem 0;
-  background: white;
+  background: var(--surface);
+
+  ${media.sm} {
+    padding: 2.5rem 0;
+  }
 `;
 
 export const Container = styled.div`
-  max-width: 1280px;
+  max-width: var(--container);
   margin: 0 auto;
-  padding: 0 1rem;
-`;
-
-export const SectionHeader = styled.div`
-  text-align: center;
-  margin-bottom: 3rem;
-`;
-
-export const SectionTitle = styled.h2`
-  font-size: 1.875rem;
-  font-weight: bold;
-  color: #111827;
-  margin-bottom: 1rem;
-`;
-
-export const SectionDivider = styled.div`
-  width: 5rem;
-  height: 0.25rem;
-  background: #dc2626;
-  margin: 0 auto;
+  padding: 0 var(--container-pad);
 `;
 
 export const CatalogGrid = styled.div`
@@ -38,8 +24,14 @@ export const CatalogGrid = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
 
-  @media (max-width: 768px) {
+  ${media.md} {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* На узких телефонах две колонки оставляли под подпись ~72px:
+     «130-230 Ач» переносилось в три строки. */
+  ${media.xs} {
+    grid-template-columns: 1fr;
   }
 `;
 
@@ -47,9 +39,10 @@ export const CategoryCard = styled(Link)<{
   $visible?: boolean;
   $delay?: number;
 }>`
-  background: white;
-  border-radius: 0.5rem;
-  box-shadow: 0px 10px 20px 0px rgba(8, 9, 9, 0.2);
+  background: var(--surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
   text-decoration: none;
   cursor: pointer;
   display: block;
@@ -58,9 +51,10 @@ export const CategoryCard = styled(Link)<{
   transition:
     opacity 0.5s ease,
     transform 0.5s ease,
-    box-shadow 0.3s,
-    background 0.3s;
-  transition-delay: ${({ $delay = 0 }) => $delay * 60}ms;
+    box-shadow var(--transition),
+    border-color var(--transition),
+    background var(--transition);
+  transition-delay: ${({ $delay = 0 }) => $delay * 45}ms;
 
   ${({ $visible }) =>
     $visible &&
@@ -70,39 +64,64 @@ export const CategoryCard = styled(Link)<{
     `}
 
   &:hover {
-    box-shadow: 0px 10px 20px 8px rgba(8, 9, 9, 0.2);
-    background: #fef2f2;
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-brand-border);
+    background: var(--color-brand-soft);
+    transform: translateY(-4px);
+    transition-delay: 0ms;
   }
 `;
 
 export const CategoryContent = styled.div`
-  padding: 2rem;
+  padding: 2rem 1rem;
   text-align: center;
+
+  ${media.sm} {
+    padding: 1.5rem 0.75rem;
+  }
 `;
 
 export const CategoryIcon = styled.div`
   width: 3rem;
   height: 3rem;
-  background: #fecaca;
-  border-radius: 0.5rem;
+  background: var(--color-brand-soft);
+  border: 1px solid var(--color-brand-border);
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--color-brand);
   margin: 0 auto 1rem;
-  transition: background-color 0.3s;
+  transition:
+    background var(--transition),
+    border-color var(--transition);
 
   ${CategoryCard}:hover & {
-    background: #fca5a5;
+    background: var(--color-brand-accent);
+    border-color: var(--color-brand-accent);
   }
 `;
 
 export const CategoryTitle = styled.h3`
   font-size: 1.125rem;
-  font-weight: bold;
-  color: #111827;
-  transition: color 0.3s;
+  font-weight: 700;
+  color: var(--text-primary);
+  transition: color var(--transition);
+  white-space: nowrap;
 
   ${CategoryCard}:hover & {
-    color: #dc2626;
+    color: var(--color-brand);
   }
+`;
+
+export const CategoryHint = styled.span`
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--text-muted);
+  /* Заголовок держим в одну строку, а подпись переносим свободно —
+     иначе «внедорожники, микроавтобусы» вылезает за плитку. */
+  white-space: normal;
 `;

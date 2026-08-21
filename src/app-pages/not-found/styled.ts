@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import styled, { css, keyframes } from "styled-components";
+import { media } from "@/shared";
 
 const fadeUp = keyframes`
   from {
@@ -22,13 +23,14 @@ export const Section = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Отступ под шапку убран: его теперь даёт <main> через --header-h.
+     Раньше здесь было calc(4rem + 100px) — та же магическая константа
+     в четвёртом месте проекта. */
   padding: 4rem 1rem;
-  padding-top: calc(4rem + 100px);
-  background: #f9fafb;
+  background: var(--surface-muted);
 
-  @media (max-width: 550px) {
+  ${media.sm} {
     padding: 3rem 1rem;
-    padding-top: calc(3rem + 100px);
   }
 `;
 
@@ -45,7 +47,7 @@ export const Stripes = styled.div`
     transparent 34px
   );
 
-  @media (max-width: 768px) {
+  ${media.md} {
     width: 100%;
     inset: -20% -30% -20% auto;
   }
@@ -62,13 +64,13 @@ export const Content = styled.div`
 export const IconBadge = styled.div`
   width: 88px;
   height: 88px;
-  border-radius: 50%;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  border-radius: var(--radius-pill);
+  background: var(--color-brand-soft);
+  border: 1px solid var(--color-brand-border);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #dc2626;
+  color: var(--color-brand);
   margin: 0 auto 1.5rem;
 `;
 
@@ -76,28 +78,28 @@ export const Code = styled.p`
   font-size: 6.5rem;
   line-height: 1;
   font-weight: 800;
-  color: #dc2626;
+  color: var(--color-brand);
   letter-spacing: -0.03em;
   margin-bottom: 0.75rem;
 
-  @media (max-width: 550px) {
+  ${media.sm} {
     font-size: 4.5rem;
   }
 `;
 
 export const Title = styled.h1`
   font-size: 1.75rem;
-  font-weight: bold;
-  color: #111827;
+  font-weight: 700;
+  color: var(--text-primary);
   margin-bottom: 0.75rem;
 
-  @media (max-width: 550px) {
+  ${media.sm} {
     font-size: 1.375rem;
   }
 `;
 
 export const Text = styled.p`
-  color: #6b7280;
+  color: var(--text-muted);
   font-size: 1rem;
   line-height: 1.6;
   max-width: 46ch;
@@ -113,32 +115,40 @@ export const Actions = styled.div`
 `;
 
 const buttonBase = css`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
   padding: 0.75rem 1.75rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
+  border-radius: var(--radius-md);
+  font-weight: 600;
   text-decoration: none;
-  transition: all 0.2s;
+  transition:
+    background var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
 `;
 
 export const PrimaryButton = styled(Link)`
   ${buttonBase}
-  background: #dc2626;
-  color: white;
+  background: var(--color-brand);
+  color: var(--text-on-brand);
 
   &:hover {
-    background: #b91c1c;
+    background: var(--color-brand-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
   }
 `;
 
 export const SecondaryButton = styled(Link)`
   ${buttonBase}
   background: transparent;
-  color: #dc2626;
-  border: 1.5px solid #dc2626;
+  color: var(--color-brand);
+  border: 1.5px solid var(--color-brand);
 
   &:hover {
-    background: #fef2f2;
+    background: var(--color-brand-soft);
+    transform: translateY(-1px);
   }
 `;

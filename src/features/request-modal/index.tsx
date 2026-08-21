@@ -210,7 +210,7 @@ export const RequestModal = ({
                   <S.InfoValue>
                     <a
                       href={`tel:${request.phone}`}
-                      style={{ color: "#dc2626", textDecoration: "none" }}
+                      style={{ color: "var(--color-brand)", textDecoration: "none" }}
                     >
                       {request.phone}
                     </a>

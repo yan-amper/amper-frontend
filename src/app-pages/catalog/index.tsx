@@ -3,7 +3,7 @@ import * as S from "./styled";
 import { CatalogFilters, CatalogProducts, SelectedFilters } from "./ui";
 
 export type CatalogPageProps = {
-  searchParams: SelectedFilters & { page?: string };
+  searchParams: Promise<SelectedFilters & { page?: string }>;
 };
 
 const PAGE_SIZE = 12;
@@ -19,8 +19,8 @@ export const CatalogPage = async ({ searchParams }: CatalogPageProps) => {
   if (capacity) {
     const [min, max] = capacity.split("-").map(Number);
     products = products.filter((product) => {
-      const capacity = +product.capacity;
-      return capacity >= min && capacity <= max;
+      const productCapacity = +product.capacity;
+      return productCapacity >= min && productCapacity <= max;
     });
   }
 
@@ -41,6 +41,7 @@ export const CatalogPage = async ({ searchParams }: CatalogPageProps) => {
           totalCount={totalCount}
           currentPage={currentPage}
           totalPages={totalPages}
+          pageSize={PAGE_SIZE}
         />
       </S.MainContent>
     </S.ContentContainer>

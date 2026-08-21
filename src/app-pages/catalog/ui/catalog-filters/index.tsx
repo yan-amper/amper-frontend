@@ -3,36 +3,12 @@
 import { Select, Option } from "@/features";
 import * as S from "./styled";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { useUnit } from "effector-react";
 import { productsModel, ProductValues } from "@/entities";
-import { CAPACITY_RANGES } from "@/shared";
-
-const filterProperties: {
-  name: ProductValues;
-  title: string;
-  placeholder: string;
-}[] = [
-  {
-    name: "polarity",
-    title: "Полярность",
-    placeholder: "Укажите полярность",
-  },
-  {
-    name: "manufacturer",
-    title: "Изготовитель",
-    placeholder: "Укажите изготовителя",
-  },
-  {
-    name: "current",
-    title: "Сила тока",
-    placeholder: "Укажите силу тока",
-  },
-];
-
-const sortOptions = [
-  { value: "ASC", label: "По возрастанию" },
-  { value: "DESC", label: "По убыванию" },
-];
+import { CAPACITY_RANGES, startRouteLoading } from "@/shared";
+import { ChevronDown, RotateCcw } from "lucide-react";
+import { CHIP_LABELS, filterProperties, sortOptions } from "../filter-config";
 
 export type SelectedFilters = Record<ProductValues | "sort", string>;
 
@@ -42,25 +18,50 @@ export type CatalogFiltersProps = {
 
 export const CatalogFilters = ({ selectedFilters }: CatalogFiltersProps) => {
   const products = useUnit(productsModel.$products);
+  // Опции полярности/изготовителя/тока приходят клиентским запросом.
+  // Раньше до его завершения выпадающий список был просто пустым
+  // белым прямоугольником без объяснения.
+  const isLoadingOptions = useUnit(productsModel.getProductsFx.pending);
+
+  const [collapsed, setCollapsed] = useState(true);
 
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const activeCount = Object.keys(CHIP_LABELS).filter((key) =>
+    searchParams.get(key)
+  ).length;
+
+  const pushParams = (params: URLSearchParams) => {
+    startRouteLoading();
+    const query = params.toString();
+    router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  };
+
   const setParam = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set(key, value);
+    // Смена фильтра меняет и состав выдачи — оставаться на пятой странице
+    // бессмысленно.
     params.delete("page");
-    router.push(`?${params.toString()}`, { scroll: false });
+    pushParams(params);
+  };
+
+  const removeParam = (key: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete(key);
+    params.delete("page");
+    pushParams(params);
   };
 
   const removeParams = () => {
+    startRouteLoading();
     router.replace(pathname, { scroll: false });
   };
 
-  const onSelectChange = (key: string) => (value: string) => {
-    setParam(key, value);
-  };
+  const onSelectChange = (key: string) => (value: string) => setParam(key, value);
+  const onSelectClear = (key: string) => () => removeParam(key);
 
   const getPropertyValues = (key: ProductValues): Option[] => {
     const unique = new Map<string, Option>();
@@ -79,47 +80,86 @@ export const CatalogFilters = ({ selectedFilters }: CatalogFiltersProps) => {
 
   const capacityRanges = CAPACITY_RANGES.map((range) => ({
     value: range,
-    label: `${range} Ah`,
+    label: `${range} Ач`,
   }));
 
   return (
     <S.FiltersContainer>
-      <S.FiltersTitle>Фильтры</S.FiltersTitle>
+      <S.FiltersHeader>
+        <S.FiltersTitle>
+          Фильтры
+          {activeCount > 0 && <S.ActiveCount>{activeCount}</S.ActiveCount>}
+        </S.FiltersTitle>
 
-      <Select
-        title="Ёмкость"
-        value={selectedFilters["capacity"]}
-        options={capacityRanges}
-        placeholder="Укажите емкость"
-        onChange={onSelectChange("capacity")}
-      />
+        <S.ToggleButton
+          type="button"
+          onClick={() => setCollapsed((prev) => !prev)}
+          aria-expanded={!collapsed}
+          aria-controls="catalog-filters-body"
+        >
+          {collapsed ? "Показать" : "Скрыть"}
+          <ChevronDown
+            size={16}
+            aria-hidden="true"
+            style={{
+              transform: collapsed ? "none" : "rotate(180deg)",
+              transition: "transform .2s ease",
+            }}
+          />
+        </S.ToggleButton>
+      </S.FiltersHeader>
 
-      {filterProperties.map((filter) => (
+      <S.FiltersBody id="catalog-filters-body" $collapsed={collapsed}>
         <Select
-          key={filter.name}
-          title={filter.title}
-          value={selectedFilters[filter.name]}
-          options={getPropertyValues(filter.name)}
-          placeholder={filter.placeholder}
-          onChange={onSelectChange(filter.name)}
+          title="Ёмкость"
+          value={selectedFilters["capacity"]}
+          label={
+            selectedFilters["capacity"]
+              ? `${selectedFilters["capacity"]} Ач`
+              : undefined
+          }
+          options={capacityRanges}
+          placeholder="Любая"
+          onChange={onSelectChange("capacity")}
+          onClear={onSelectClear("capacity")}
         />
-      ))}
 
-      <Select
-        title="Сортировка"
-        value={selectedFilters["sort"]}
-        label={
-          sortOptions.find((option) => option.value === selectedFilters["sort"])
-            ?.label
-        }
-        options={sortOptions}
-        placeholder="По умолчанию"
-        onChange={onSelectChange("sort")}
-      />
+        {filterProperties.map((filter) => (
+          <Select
+            key={filter.name}
+            title={filter.title}
+            value={selectedFilters[filter.name]}
+            options={getPropertyValues(filter.name)}
+            placeholder={filter.placeholder}
+            loading={isLoadingOptions}
+            onChange={onSelectChange(filter.name)}
+            onClear={onSelectClear(filter.name)}
+          />
+        ))}
 
-      <S.ButtonGroup>
-        <S.ResetButton onClick={removeParams}>Сбросить фильтры</S.ResetButton>
-      </S.ButtonGroup>
+        <Select
+          title="Сортировка"
+          value={selectedFilters["sort"]}
+          label={
+            sortOptions.find((option) => option.value === selectedFilters["sort"])
+              ?.label
+          }
+          options={sortOptions}
+          placeholder="По умолчанию"
+          onChange={onSelectChange("sort")}
+        />
+
+        <S.ButtonGroup>
+          <S.ResetButton
+            type="button"
+            onClick={removeParams}
+            disabled={activeCount === 0 && !selectedFilters["sort"]}
+          >
+            <RotateCcw size={16} aria-hidden="true" />
+            Сбросить фильтры
+          </S.ResetButton>
+        </S.ButtonGroup>
+      </S.FiltersBody>
     </S.FiltersContainer>
   );
 };

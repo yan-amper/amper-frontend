@@ -4,3 +4,4 @@ export * from "./login";
 export * from "./requests";
 export * from "./admin";
 export * from "./not-found";
+export * from "./privacy";

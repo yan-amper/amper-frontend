@@ -16,7 +16,7 @@ export const NotFoundPage = () => (
       </S.Text>
       <S.Actions>
         <S.PrimaryButton href="/">На главную</S.PrimaryButton>
-        <S.SecondaryButton href="/catalog">
+        <S.SecondaryButton href="/catalog?sort=ASC">
           Смотреть каталог
         </S.SecondaryButton>
       </S.Actions>

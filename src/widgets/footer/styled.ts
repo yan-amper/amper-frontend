@@ -125,6 +125,14 @@ export const FooterContactRow = styled.div`
   gap: 0.6rem;
   color: var(--text-on-dark-muted);
 
+  /* Колонка контактов узкая, и адрес переносился так, что номер дома
+     оставался один на второй строке. pretty распределяет строки без
+     «висячего» последнего слова; где не поддерживается — просто
+     обычный перенос. */
+  span {
+    text-wrap: pretty;
+  }
+
   svg {
     flex-shrink: 0;
     margin-top: 0.15rem;

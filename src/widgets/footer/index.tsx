@@ -95,9 +95,11 @@ export const Footer = () => (
         <S.FooterCopyright>
           © {new Date().getFullYear()} Ампер — аккумуляторный центр, г. Таганрог
         </S.FooterCopyright>
-        <S.FooterLegalLink href="/privacy">
+        {/* Ссылка скрыта, пока страница /privacy отключена
+            (см. src/app/_privacy/page.tsx). Вернуть вместе со страницей. */}
+        {/* <S.FooterLegalLink href="/privacy">
           Политика конфиденциальности
-        </S.FooterLegalLink>
+        </S.FooterLegalLink> */}
       </S.FooterBottom>
     </S.FooterContent>
   </S.FooterStyled>

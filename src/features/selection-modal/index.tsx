@@ -10,7 +10,6 @@ import {
   TriangleAlert,
 } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import * as S from "./styled";
 import {
   formattedPhoneNumber,
@@ -497,13 +496,17 @@ export const SelectionModal = () => {
                   }}
                   aria-invalid={!!errors.consent}
                 />
-                <span>
+                {/* Пока страница /privacy отключена, согласие даётся без
+                    ссылки — иначе чекбокс вёл бы в 404. Вернуть вариант
+                    со ссылкой вместе со страницей. */}
+                <span>Я согласен на обработку персональных данных.</span>
+                {/* <span>
                   Я согласен на обработку персональных данных в соответствии с{" "}
                   <Link href="/privacy" target="_blank">
                     политикой конфиденциальности
                   </Link>
                   .
-                </span>
+                </span> */}
               </S.ConsentRow>
               {errors.consent && (
                 <S.ErrorMessage>{errors.consent}</S.ErrorMessage>

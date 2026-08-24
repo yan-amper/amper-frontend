@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { createClient } from "@supabase/supabase-js";
 import * as S from "./styled";
 import { RequestModal } from "@/features";
 import {
@@ -10,26 +11,38 @@ import {
   Product,
   Request,
 } from "@/entities";
-import { formatDate, SubmitFormReturn, supabase } from "@/shared";
+import { formatDate, SubmitFormReturn } from "@/shared";
 import { CheckCircle, Clock, Home, Truck } from "lucide-react";
+import { AdminSession } from "../admin/types";
 
 type FilterType = "all" | "active" | "completed";
 
 export type RequestsPageProps = {
-  requests: Request[];
-  products: Product[];
+  session: AdminSession;
 };
 
-export default function RequestsPage({
-  requests: initialRequests,
-  products,
-}: RequestsPageProps) {
-  const [requests, setRequests] = useState<Request[]>(initialRequests);
+export default function RequestsPage({ session }: RequestsPageProps) {
+  const { credentials, products } = session;
+
+  /**
+   * Клиент Supabase собирается из реквизитов, которые сервер выдал в ответ
+   * на правильный пароль, и живёт только в памяти этой вкладки. В сборку
+   * он не попадает: обновил страницу — реквизитов нет, логинься заново.
+   *
+   * Ключ нужен в браузере ровно ради вебсокета: realtime по своей природе
+   * идёт из вкладки напрямую в Supabase, серверным он не бывает.
+   */
+  const client = useMemo(
+    () => createClient(session.supabase.url, session.supabase.key),
+    [session.supabase.url, session.supabase.key]
+  );
+
+  const [requests, setRequests] = useState<Request[]>(session.requests);
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
   const [filter, setFilter] = useState<FilterType>("all");
 
   useEffect(() => {
-    const subscription = supabase
+    const subscription = client
       .channel("public:battery_requests")
       .on(
         "postgres_changes",
@@ -54,9 +67,9 @@ export default function RequestsPage({
       .subscribe();
 
     return () => {
-      supabase.removeChannel(subscription);
+      client.removeChannel(subscription);
     };
-  }, []);
+  }, [client]);
 
   const handleRequestClick = (request: Request) => {
     setSelectedRequest(request);
@@ -69,7 +82,7 @@ export default function RequestsPage({
   const handleUpdateRequest = async (
     updatedRequest: Request
   ): Promise<SubmitFormReturn> => {
-    const { error } = await supabase
+    const { error } = await client
       .from("battery_requests")
       .update({
         status: updatedRequest.status,
@@ -195,6 +208,7 @@ export default function RequestsPage({
 
       <RequestModal
         request={selectedRequest}
+        credentials={credentials}
         products={products}
         isOpen={!!selectedRequest}
         onClose={handleCloseModal}

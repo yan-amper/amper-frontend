@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import * as S from "./styled";
 import { loginAction } from "./actions";
+import { AdminSession } from "../admin/types";
 
 type FormData = {
   login: string;
@@ -12,7 +13,12 @@ type FormData = {
 
 type FormErrors = Record<string, string>;
 
-export function LoginPage({ setShow }: { setShow(value: boolean): void }) {
+type LoginPageProps = {
+  /** Отдаём наверх всё, что сервер выдал за правильный пароль. */
+  onSuccess(session: AdminSession): void;
+};
+
+export function LoginPage({ onSuccess }: LoginPageProps) {
   const [isPending, startTransition] = useTransition();
   const [formData, setFormData] = useState<FormData>({
     login: "",
@@ -56,7 +62,7 @@ export function LoginPage({ setShow }: { setShow(value: boolean): void }) {
         const response = await loginAction(formData.login, formData.password);
 
         if (response.ok) {
-          setShow(true);
+          onSuccess(response.session);
         } else {
           setErrors({ form: response.message });
         }

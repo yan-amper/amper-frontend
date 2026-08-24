@@ -1,6 +1,7 @@
 "use server";
 
-import { SubmitFormReturn, supabase } from "@/shared";
+import { SubmitFormReturn } from "@/shared";
+import { supabase } from "@/shared/server";
 import { FormData } from ".";
 import { Bot as MaxBot } from "@maxhub/max-bot-api";
 import { getDeliveryText, getEngineText, getSource } from "@/entities";

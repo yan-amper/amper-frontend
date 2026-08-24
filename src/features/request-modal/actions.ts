@@ -2,11 +2,12 @@
 
 import { Product, Request } from "@/entities";
 import {
+  AdminCredentials,
   createImagePath,
   escapeMarkdownV2,
   SubmitFormReturn,
-  supabase,
 } from "@/shared";
+import { supabase, verifyAdmin } from "@/shared/server";
 import { Bot as MaxBot, ImageAttachment, Keyboard } from "@maxhub/max-bot-api";
 
 async function tgSendPhoto(token: string, chatId: string | number, photo: string, caption: string) {
@@ -33,10 +34,20 @@ async function tgSendMessage(token: string, chatId: string | number, text: strin
   }
 }
 
+/**
+ * Server actions — это публичные HTTP-эндпоинты: их можно дёрнуть напрямую,
+ * минуя интерфейс. Без проверки отсюда можно было бы рассылать сообщения
+ * клиентам магазина через бота. Поэтому первым делом сверяем учётку.
+ */
 export const sendProductsAction = async (
+  credentials: AdminCredentials,
   request: Request,
   products: Product[]
 ): Promise<SubmitFormReturn> => {
+  if (!verifyAdmin(credentials)) {
+    return { ok: false, message: "Нет доступа" };
+  }
+
   const TG_TOKEN = process.env.TG_BOT_TOKEN;
   const maxBot = new MaxBot(process.env.MAX_BOT_TOKEN!);
 

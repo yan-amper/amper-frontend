@@ -1,15 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import RequestsPage, { RequestsPageProps } from "../requests";
+import RequestsPage from "../requests";
 import { LoginPage } from "../login";
+import { AdminSession } from "./types";
 
-export const AdminPage = ({ requests, products }: RequestsPageProps) => {
-  const [show, setShow] = useState(false);
+/**
+ * Раньше сюда пропсами приходили все заявки, загруженные на сервере ДО
+ * какой-либо проверки, а `show` был просто визуальной шторкой поверх уже
+ * отданных данных. Теперь страница стартует пустой, а данные и реквизиты
+ * Supabase появляются только как результат успешного логина.
+ */
+export const AdminPage = () => {
+  const [session, setSession] = useState<AdminSession | null>(null);
 
-  return show ? (
-    <RequestsPage requests={requests} products={products} />
+  return session ? (
+    <RequestsPage session={session} />
   ) : (
-    <LoginPage setShow={setShow} />
+    <LoginPage onSuccess={setSession} />
   );
 };

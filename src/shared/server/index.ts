@@ -7,6 +7,9 @@ import "server-only";
 import { createClient } from "@supabase/supabase-js";
 import { AdminCredentials } from "../types";
 
+export * from "./session";
+export * from "./session-token";
+
 /**
  * Переменные БЕЗ префикса NEXT_PUBLIC_ — Next физически не пустит их
  * в клиентскую сборку.
@@ -23,14 +26,8 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 /**
  * Сверка учётки админа с переменными окружения.
  *
- * Сессий и кук нет по решению владельца: продавец вводит логин и пароль
- * каждый раз. Поэтому клиент держит введённые данные в памяти вкладки
- * и прикладывает их к каждому привилегированному server action —
- * по сути то же самое, что делает браузерный Basic Auth.
- *
- * Каждый server action, который трогает заявки или ботов, ОБЯЗАН начинаться
- * с этой проверки: server actions — это публичные HTTP-эндпоинты, их можно
- * дёрнуть напрямую, минуя интерфейс.
+ * Вызывается ровно один раз за сессию — при логине. Дальше доступ
+ * подтверждает подписанная кука, см. `hasAdminSession`.
  */
 export const verifyAdmin = (credentials?: AdminCredentials): boolean => {
   if (!adminLogin || !adminPassword) {

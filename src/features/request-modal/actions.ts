@@ -1,13 +1,8 @@
 "use server";
 
 import { Product, Request } from "@/entities";
-import {
-  AdminCredentials,
-  createImagePath,
-  escapeMarkdownV2,
-  SubmitFormReturn,
-} from "@/shared";
-import { supabase, verifyAdmin } from "@/shared/server";
+import { createImagePath, escapeMarkdownV2, SubmitFormReturn } from "@/shared";
+import { hasAdminSession, supabase } from "@/shared/server";
 import { Bot as MaxBot, ImageAttachment, Keyboard } from "@maxhub/max-bot-api";
 
 async function tgSendPhoto(token: string, chatId: string | number, photo: string, caption: string) {
@@ -37,14 +32,13 @@ async function tgSendMessage(token: string, chatId: string | number, text: strin
 /**
  * Server actions — это публичные HTTP-эндпоинты: их можно дёрнуть напрямую,
  * минуя интерфейс. Без проверки отсюда можно было бы рассылать сообщения
- * клиентам магазина через бота. Поэтому первым делом сверяем учётку.
+ * клиентам магазина через бота. Поэтому первым делом смотрим куку админа.
  */
 export const sendProductsAction = async (
-  credentials: AdminCredentials,
   request: Request,
   products: Product[]
 ): Promise<SubmitFormReturn> => {
-  if (!verifyAdmin(credentials)) {
+  if (!(await hasAdminSession())) {
     return { ok: false, message: "Нет доступа" };
   }
 

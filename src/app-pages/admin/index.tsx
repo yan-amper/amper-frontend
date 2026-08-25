@@ -1,22 +1,26 @@
-"use client";
-
-import { useState } from "react";
+import { hasAdminSession } from "@/shared/server";
 import RequestsPage from "../requests";
 import { LoginPage } from "../login";
-import { AdminSession } from "./types";
+import { loadAdminData } from "./data";
 
 /**
- * Раньше сюда пропсами приходили все заявки, загруженные на сервере ДО
- * какой-либо проверки, а `show` был просто визуальной шторкой поверх уже
- * отданных данных. Теперь страница стартует пустой, а данные и реквизиты
- * Supabase появляются только как результат успешного логина.
+ * Серверный компонент: заявки и реквизиты Supabase попадают в разметку
+ * только при валидной куке админа. Без неё страница отдаёт форму логина
+ * и ничего больше — ни заявок, ни ключей.
+ *
+ * После успешного входа форма вызывает router.refresh(), страница
+ * перерисовывается уже с кукой и сразу показывает заявки.
  */
-export const AdminPage = () => {
-  const [session, setSession] = useState<AdminSession | null>(null);
+export const AdminPage = async () => {
+  if (!(await hasAdminSession())) return <LoginPage />;
 
-  return session ? (
-    <RequestsPage session={session} />
-  ) : (
-    <LoginPage onSuccess={setSession} />
-  );
+  const session = await loadAdminData();
+
+  // Кука валидна, но данные не пришли: показываем форму с понятной
+  // причиной, а не пустой экран.
+  if (!session) {
+    return <LoginPage initialError="Не удалось загрузить заявки" />;
+  }
+
+  return <RequestsPage session={session} />;
 };

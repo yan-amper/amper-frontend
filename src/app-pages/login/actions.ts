@@ -1,17 +1,7 @@
 "use server";
 
-import { ProductsApi, Request } from "@/entities";
-import {
-  supabase,
-  supabaseKey,
-  supabaseUrl,
-  verifyAdmin,
-} from "@/shared/server";
-import { AdminSession } from "../admin/types";
-
-type LoginResult =
-  | { ok: true; session: AdminSession }
-  | { ok: false; message: string };
+import { startAdminSession, verifyAdmin } from "@/shared/server";
+import { SubmitFormReturn } from "@/shared";
 
 /** Небольшая задержка на неверный пароль — форма логина публичная,
  *  без неё её можно перебирать в тысячи попыток в секунду. */
@@ -20,38 +10,27 @@ const BRUTE_FORCE_DELAY_MS = 700;
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
- * Единственная точка, где заявки и реквизиты Supabase покидают сервер.
- * Пока пароль не сошёлся — не отдаём ничего, даже названия сервиса.
+ * Единственное место, где выдаётся кука админа, и единственное, где вообще
+ * проверяется пароль. Данные отсюда больше не возвращаются: их отрисует
+ * серверный компонент /admin, когда увидит куку.
  */
 export const loginAction = async (
   login: string,
   password: string
-): Promise<LoginResult> => {
-  const credentials = { login, password };
-
-  if (!verifyAdmin(credentials)) {
+): Promise<SubmitFormReturn> => {
+  if (!verifyAdmin({ login, password })) {
     await sleep(BRUTE_FORCE_DELAY_MS);
     return { ok: false, message: "Неправильный логин или пароль" };
   }
 
-  const { data, error } = await supabase
-    .from("battery_requests")
-    .select("*")
-    .returns<Request[]>();
+  const started = await startAdminSession();
 
-  if (error) {
-    return { ok: false, message: "Не удалось загрузить заявки" };
+  if (!started) {
+    return {
+      ok: false,
+      message: "Вход временно недоступен, сообщите разработчику",
+    };
   }
 
-  const products = await ProductsApi.getProducts();
-
-  return {
-    ok: true,
-    session: {
-      credentials,
-      supabase: { url: supabaseUrl, key: supabaseKey },
-      requests: data ?? [],
-      products: products.filter((product) => product.relevance),
-    },
-  };
+  return { ok: true };
 };

@@ -58,8 +58,12 @@ Copy `.env.example` → `.env` and fill in:
 ```
 NEXT_PUBLIC_API_URL=          # Backend base URL (HTTPS)
 NEXT_PUBLIC_PHONE_NUMBER=     # Shop phone (digits only, e.g. 79001234567)
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_KEY=
+NEXT_PUBLIC_YANDEX_ID=        # Yandex.Metrika counter id
+SUPABASE_URL=                 # server-only, no NEXT_PUBLIC_ prefix
+SUPABASE_KEY=                 # server-only, no NEXT_PUBLIC_ prefix
+ADMIN_LOGIN=                  # /admin credentials
+ADMIN_PASSWORD=               # long and random: the login form is public
+ADMIN_SESSION_SECRET=         # 32 random bytes (hex) — signs the admin cookie
 TG_BOT_TOKEN=
 MAX_BOT_TOKEN=
 MAX_SUPABASE_URL=

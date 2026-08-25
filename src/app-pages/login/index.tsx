@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import * as S from "./styled";
 import { loginAction } from "./actions";
-import { AdminSession } from "../admin/types";
 
 type FormData = {
   login: string;
@@ -14,18 +14,21 @@ type FormData = {
 type FormErrors = Record<string, string>;
 
 type LoginPageProps = {
-  /** Отдаём наверх всё, что сервер выдал за правильный пароль. */
-  onSuccess(session: AdminSession): void;
+  /** Причина, по которой страница показала форму, хотя кука была валидна. */
+  initialError?: string;
 };
 
-export function LoginPage({ onSuccess }: LoginPageProps) {
+export function LoginPage({ initialError }: LoginPageProps) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [formData, setFormData] = useState<FormData>({
     login: "",
     password: "",
   });
 
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [errors, setErrors] = useState<FormErrors>(
+    initialError ? { form: initialError } : {}
+  );
   const [showPassword, setShowPassword] = useState(false);
 
   const handleInputChange = (field: keyof FormData, value: string) => {
@@ -62,7 +65,9 @@ export function LoginPage({ onSuccess }: LoginPageProps) {
         const response = await loginAction(formData.login, formData.password);
 
         if (response.ok) {
-          onSuccess(response.session);
+          // Кука уже стоит — просим сервер перерисовать /admin, и он
+          // отдаст заявки вместо этой формы.
+          router.refresh();
         } else {
           setErrors({ form: response.message });
         }

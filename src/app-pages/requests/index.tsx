@@ -22,12 +22,12 @@ export type RequestsPageProps = {
 };
 
 export default function RequestsPage({ session }: RequestsPageProps) {
-  const { credentials, products } = session;
+  const { products } = session;
 
   /**
-   * Клиент Supabase собирается из реквизитов, которые сервер выдал в ответ
-   * на правильный пароль, и живёт только в памяти этой вкладки. В сборку
-   * он не попадает: обновил страницу — реквизитов нет, логинься заново.
+   * Клиент Supabase собирается из реквизитов, которые сервер положил
+   * в разметку только при валидной куке админа. В публичную сборку они
+   * не попадают: без куки страница отдаёт форму логина и больше ничего.
    *
    * Ключ нужен в браузере ровно ради вебсокета: realtime по своей природе
    * идёт из вкладки напрямую в Supabase, серверным он не бывает.
@@ -208,7 +208,6 @@ export default function RequestsPage({ session }: RequestsPageProps) {
 
       <RequestModal
         request={selectedRequest}
-        credentials={credentials}
         products={products}
         isOpen={!!selectedRequest}
         onClose={handleCloseModal}

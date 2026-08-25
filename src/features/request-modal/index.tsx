@@ -11,18 +11,11 @@ import {
   Product,
   Request,
 } from "@/entities";
-import {
-  AdminCredentials,
-  formatDate,
-  SubmitFormReturn,
-  useHideScroll,
-} from "@/shared";
+import { formatDate, SubmitFormReturn, useHideScroll } from "@/shared";
 import { sendProductsAction } from "./actions";
 
 interface RequestModalProps {
   request: Request | null;
-  /** Прикладываются к server action — он публичный и обязан проверять доступ. */
-  credentials: AdminCredentials;
   products: Product[];
   isOpen: boolean;
   onClose: () => void;
@@ -43,7 +36,6 @@ const sendMessageInitial = {
 
 export const RequestModal = ({
   request,
-  credentials,
   products,
   isOpen,
   onClose,
@@ -132,8 +124,7 @@ export const RequestModal = ({
     setSendMessage(sendMessageInitial);
     startTransition(async () => {
       const result = await sendProductsAction(
-        credentials,
-        request,
+              request,
         selectedBatteries
       );
       if (result.ok) {

@@ -21,6 +21,23 @@ export class ProductsApi {
     return data.data.filter((p: Product) => p.relevance);
   }
 
+  /**
+   * Один товар по id — для страницы /product/[slug].
+   *
+   * Бэкенд на этом маршруте отдаёт объект товара НЕ обёрнутым в { data },
+   * в отличие от списочного /products. Проверено на боевом API.
+   *
+   * Несуществующий id возвращает 200 с пустым телом (не 404), поэтому
+   * пустой ответ приходится ловить руками — иначе страница отрендерила бы
+   * карточку из undefined вместо честной 404.
+   */
+  static async getProductById(id: number): Promise<Product | null> {
+    const { data } = await $api.get(`/products/${id}`);
+    return data && typeof data === "object" && "id" in data
+      ? (data as Product)
+      : null;
+  }
+
   static async getFiltredProduct({
     params,
     type,

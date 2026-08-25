@@ -5,6 +5,7 @@ import * as S from "./styled";
 import { useUnit } from "effector-react";
 import { productsModel } from "../model";
 import { Product } from "../api";
+import { buildProductPath } from "../lib";
 
 type ProductCardProps = {
   product: Product;
@@ -28,7 +29,29 @@ export const ProductCard = ({
   const setSelectedProduct = useUnit(productsModel.setSelectedProduct);
   const { ref, isVisible } = useScrollReveal<HTMLDivElement>();
 
-  const onProductClick = () => {
+  const href = buildProductPath(product);
+
+  /**
+   * Под ссылкой лежит настоящий адрес страницы товара, но обычный клик
+   * по-прежнему открывает модалку — она быстрее и не теряет позицию
+   * скролла в каталоге.
+   *
+   * Клик с модификатором (Ctrl/Cmd — «открыть в новой вкладке», Shift —
+   * «в новом окне») и клик средней кнопкой не перехватываем: если человек
+   * целился открыть товар отдельно, отменять переход нельзя.
+   */
+  const onProductClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      event.button !== 0
+    ) {
+      return;
+    }
+
+    event.preventDefault();
     setSelectedProduct(product);
     Query.set("product", product.id.toString());
   };
@@ -59,7 +82,11 @@ export const ProductCard = ({
       </S.BrandBar>
 
       <S.BatteryContent>
-        <S.BatteryName>{product.title}</S.BatteryName>
+        <S.BatteryName>
+          <S.NameLink href={href} onClick={onProductClick}>
+            {product.title}
+          </S.NameLink>
+        </S.BatteryName>
 
         <S.SpecsList>
           <S.SpecItem>
@@ -94,6 +121,7 @@ export const ProductCard = ({
               <S.PriceNote>при сдаче АКБ {product.capacity} Ач</S.PriceNote>
             </S.PriceInfo>
             <S.BuyButton
+              href={href}
               onClick={onProductClick}
               aria-label={`Подробнее — ${product.title}`}
             >

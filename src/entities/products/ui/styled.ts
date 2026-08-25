@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import styled, { css } from "styled-components";
 import { media } from "@/shared";
 
@@ -175,6 +176,20 @@ export const BatteryContent = styled.div`
   padding: 1.25rem;
 `;
 
+/**
+ * Название ведёт на страницу товара. Отдельная ссылка, а не обёртка всей
+ * карточки: внутри карточки уже есть «Подробнее», а вложенные интерактивные
+ * элементы — невалидная разметка и каша для скринридера.
+ */
+export const NameLink = styled(Link)`
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    color: var(--color-brand);
+  }
+`;
+
 export const BatteryName = styled.h3`
   font-size: 1.125rem;
   font-weight: 700;
@@ -249,8 +264,20 @@ export const PriceNote = styled.div`
   color: var(--text-muted);
 `;
 
-export const BuyButton = styled.button`
+/**
+ * «Подробнее» — ссылка, а не кнопка.
+ *
+ * Раньше это был <button>, открывавший модалку: для человека одинаково,
+ * но у товара не было адреса, по которому его мог бы найти поисковик или
+ * который можно кинуть в мессенджер. Теперь под ней настоящий href на
+ * /product/<id>-<слаг>, а обычный клик по-прежнему открывает модалку —
+ * см. onProductClick в ProductCard.
+ */
+export const BuyButton = styled(Link)`
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
   background: var(--color-brand);
   color: var(--text-on-brand);
   padding: 0.625rem 1.25rem;

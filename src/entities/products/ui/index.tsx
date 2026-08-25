@@ -50,6 +50,14 @@ export const ProductCard = ({
         />
       </S.BatteryImageContainer>
 
+      {/* Фирменная подпись под фотографией: красная черта с логотипом
+          посередине. Тот же приём, что у заголовков секций, поэтому
+          в сетке из двенадцати карточек он не начинает кричать —
+          в отличие от рамки вокруг каждого товара. */}
+      <S.BrandBar aria-hidden="true">
+        <S.BrandLogo src="/header-logo.svg" alt="" width={110} height={42} />
+      </S.BrandBar>
+
       <S.BatteryContent>
         <S.BatteryName>{product.title}</S.BatteryName>
 

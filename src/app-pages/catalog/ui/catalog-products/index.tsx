@@ -6,7 +6,7 @@ import { Product, ProductCard, productsModel } from "@/entities";
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { PackageSearch, RotateCcw } from "lucide-react";
-import { ProductGrid, pluralWithCount, startRouteLoading } from "@/shared";
+import { pluralWithCount, startRouteLoading } from "@/shared";
 import { Pagination } from "../pagination";
 import { ActiveFilters } from "../active-filters";
 
@@ -73,11 +73,16 @@ export const CatalogProducts = ({
         </S.NoResults>
       ) : (
         <>
-          <ProductGrid>
+          <S.Grid>
             {products.map((product, index) => (
-              <ProductCard key={product.id} product={product} index={index} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                index={index}
+                compact
+              />
             ))}
-          </ProductGrid>
+          </S.Grid>
 
           <Pagination currentPage={currentPage} totalPages={totalPages} />
         </>

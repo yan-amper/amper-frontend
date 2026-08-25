@@ -109,16 +109,47 @@ export const BatteryCard = styled.div<{
     `}
 `;
 
+/**
+ * Рамки вокруг фотографии больше нет: фон плашки и фон снимков одинаково
+ * белый, и обводка только обозначала границу, которой нечего разделять.
+ * Роль «низа фотографии» взяла на себя фирменная планка.
+ */
 export const BatteryImageContainer = styled.div`
   margin: 1rem 1rem 0;
-  padding: 1.25rem;
+  padding: 0.75rem 1.25rem 1rem;
   overflow: hidden;
-  /* Белый, как фон самих фотографий: на сером «подложка» проступала
-     светлым квадратом вокруг товара — было видно, где кончается
-     фотография и начинается плашка. */
   background: var(--surface);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
+`;
+
+export const BrandBar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 1rem;
+
+  /* Черта разрывается логотипом, а не проходит под ним: так это читается
+     как подпись, а не как товар, перечёркнутый линией. */
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--color-brand);
+  }
+
+  ${media.sm} {
+    gap: 0.5rem;
+    margin: 0 0.75rem;
+  }
+`;
+
+export const BrandLogo = styled(Image)`
+  width: auto;
+  height: 1.125rem;
+
+  ${media.sm} {
+    height: 1rem;
+  }
 `;
 
 /**

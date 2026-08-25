@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import { media } from "@/shared";
+import { media, ProductGrid } from "@/shared";
 
 export const ProductsContainer = styled.div`
   min-height: 70vh;
@@ -101,5 +101,18 @@ export const NoResultsAction = styled.button`
   &:hover {
     background: var(--color-brand-hover);
     transform: translateY(-1px);
+  }
+`;
+
+/**
+ * На телефоне каталог идёт по две карточки в ряд, а не по одной.
+ * Выбор к этому моменту уже сужен фильтрами слева, и в сетке человек
+ * ищет глазами цену и знакомый бренд — характеристики он смотрит в
+ * карточке товара. По одной штуке в ряд 152 товара листать невозможно.
+ */
+export const Grid = styled(ProductGrid)`
+  ${media.sm} {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
   }
 `;

@@ -87,6 +87,15 @@ export const ProductModal = () => {
                     alt={displayedProduct.title}
                   />
                 </S.ImageFrame>
+
+                <S.BrandBar aria-hidden="true">
+                  <S.BrandLogo
+                    src="/header-logo.svg"
+                    alt=""
+                    width={110}
+                    height={42}
+                  />
+                </S.BrandBar>
               </S.ImageSection>
 
               <S.DetailsSection>

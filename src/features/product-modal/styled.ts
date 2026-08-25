@@ -129,7 +129,7 @@ export const ModalBody = styled.div<{ $isLoading: boolean }>`
 export const ImageSection = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   position: relative;
   /* Оставляем место крестику, чтобы он не лёг поверх картинки */
   padding-top: 1.5rem;
@@ -141,13 +141,12 @@ export const ImageSection = styled.div`
 
 export const ImageFrame = styled.div`
   width: 100%;
-  padding: 1.25rem;
+  padding: 0.5rem 1.25rem 1rem;
   /* Белый, как фон самих фотографий: на сером «подложка» проступала
      светлым квадратом вокруг товара — было видно, где кончается
-     фотография и начинается плашка. */
+     фотография и начинается плашка. Рамку убрали вместе с ней:
+     границу обозначает фирменная планка снизу. */
   background: var(--surface);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
   /* Страховка: что бы ни случилось с картинкой, за скруглённые углы
      она не вылезет. */
   overflow: hidden;
@@ -169,6 +168,33 @@ export const ImageFrame = styled.div`
  * Здесь процентной высоты нет вообще, поэтому расхождение движков
  * ни на что не влияет.
  */
+export const BrandBar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--color-brand);
+  }
+
+  ${media.md} {
+    /* width обязателен: auto-поля во флекс-колонке отменяют растяжку,
+       планка схлопывалась до логотипа и черты пропадали. */
+    width: 100%;
+    max-width: 260px;
+    margin: 0 auto;
+  }
+`;
+
+export const BrandLogo = styled(Image)`
+  width: auto;
+  height: 1.5rem;
+`;
+
 export const BatteryImage = styled(Image)`
   display: block;
   width: 100%;

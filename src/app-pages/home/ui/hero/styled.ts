@@ -127,27 +127,6 @@ export const Lead = styled.p`
   }
 `;
 
-export const Slogan = styled(Image)`
-  display: block;
-  width: 100%;
-  max-width: 21rem;
-  height: auto;
-  margin: 2rem 0;
-  /* Белый фон картинки исчезает на светлой подложке, чёрный и красный
-     остаются как есть. */
-  mix-blend-mode: multiply;
-
-  ${media.lg} {
-    max-width: 18rem;
-    margin: 1.5rem 0;
-  }
-
-  ${media.sm} {
-    max-width: 15rem;
-    margin: 1.25rem 0;
-  }
-`;
-
 export const Actions = styled.div`
   display: flex;
   align-items: center;

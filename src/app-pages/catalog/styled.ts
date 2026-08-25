@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import styled from "styled-components";
 import { media } from "@/shared";
 
@@ -29,4 +30,36 @@ export const MainContent = styled.div`
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
+`;
+
+export const Breadcrumbs = styled.nav`
+  max-width: var(--container);
+  margin: 0 auto 1.25rem;
+  padding: 0 var(--container-pad);
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  color: var(--text-subtle);
+
+  ${media.sm} {
+    margin-bottom: 1rem;
+    font-size: 0.8125rem;
+  }
+`;
+
+export const Crumb = styled(Link)`
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--transition);
+
+  &:hover {
+    color: var(--color-brand);
+    text-decoration: underline;
+  }
+`;
+
+export const CrumbCurrent = styled.span`
+  color: var(--text-primary);
+  font-weight: 500;
 `;

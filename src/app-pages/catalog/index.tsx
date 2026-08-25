@@ -1,3 +1,4 @@
+import { ChevronRight } from "lucide-react";
 import { Product, ProductsApi } from "@/entities";
 import * as S from "./styled";
 import { CatalogFilters, CatalogProducts, SelectedFilters } from "./ui";
@@ -34,6 +35,15 @@ export const CatalogPage = async ({ searchParams }: CatalogPageProps) => {
 
   return (
     <S.ContentContainer>
+      {/* Из каталога на главную вела только шапка с логотипом — способ
+          рабочий, но неочевидный: по логотипу догадается не каждый.
+          Крошки заодно показывают, где человек находится. */}
+      <S.Breadcrumbs aria-label="Хлебные крошки">
+        <S.Crumb href="/">Главная</S.Crumb>
+        <ChevronRight size={14} aria-hidden="true" />
+        <S.CrumbCurrent aria-current="page">Каталог</S.CrumbCurrent>
+      </S.Breadcrumbs>
+
       <S.MainContent>
         <CatalogFilters selectedFilters={{ capacity, ...selectedFilters }} />
         <CatalogProducts

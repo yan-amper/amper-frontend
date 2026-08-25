@@ -1,19 +1,19 @@
 import { ArrowRight } from "lucide-react";
 import { ProductCard, ProductsApi } from "@/entities";
 import * as S from "./styled";
-import { HOME_SECTION_LIMIT, SectionHeading } from "@/shared";
+import { HOME_SLIDER_LIMIT, SectionHeading } from "@/shared";
 
-export const RecommendedBatteries = async () => {
-  const recProducts = await ProductsApi.getRecommendedProducts();
+export const PopularBatteries = async () => {
+  const popularProducts = await ProductsApi.getPopularProducts();
 
   // Пустой список раньше давал секцию из одного заголовка и красной черты.
-  if (recProducts.length === 0) return null;
+  if (popularProducts.length === 0) return null;
 
   return (
     <S.Section>
       <S.Container>
         <SectionHeading
-          title="Рекомендуемые аккумуляторы"
+          title="Популярные аккумуляторы"
           action={
             <S.HeadingLink href="/catalog?sort=ASC">
               Весь каталог
@@ -23,10 +23,10 @@ export const RecommendedBatteries = async () => {
         />
 
         <S.Rail>
-          {recProducts.slice(0, HOME_SECTION_LIMIT).map((battery, index) => (
+          {popularProducts.slice(0, HOME_SLIDER_LIMIT).map((product, index) => (
             <ProductCard
-              key={battery.id}
-              product={battery}
+              key={product.id}
+              product={product}
               index={index}
               compact
             />

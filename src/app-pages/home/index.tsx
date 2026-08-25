@@ -1,10 +1,10 @@
-import { Address, Benefits, Catalog, Hero, RecommendedBatteries } from "./ui";
+import { Address, Benefits, Catalog, Hero, PopularBatteries } from "./ui";
 
 export const HomePage = () => (
   <>
     <Hero />
     <Benefits />
-    <RecommendedBatteries />
+    <PopularBatteries />
     <Catalog />
     <Address />
   </>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import styled from "styled-components";
-import { media, ProductGrid } from "@/shared";
+import { HOME_SECTION_LIMIT, media, ProductGrid } from "@/shared";
 
 export const Section = styled.section`
   padding: 4rem 0;
@@ -50,12 +50,24 @@ export const HeadingLink = styled(Link)`
  * тач-экране всё равно никто не нажимает.
  */
 export const Rail = styled(ProductGrid)`
+  /* Десктоп — ровно один ряд из четырёх карточек. Всё, что грузится сверх
+     этого, живёт только в мобильной ленте: пятая карточка ушла бы во
+     второй ряд одна и смотрелась бы как ошибка. */
+  ${media.mdUp} {
+    > *:nth-child(n + ${HOME_SECTION_LIMIT + 1}) {
+      display: none;
+    }
+  }
+
   ${media.md} {
-    /* grid-template-columns из ProductGrid перебиваем на дорожки по 50%:
-       ровно две карточки в экран, третья выглядывает только при прокрутке. */
+    /* grid-template-columns из ProductGrid перебиваем на дорожки по 42%:
+       две карточки в экран и край третьей за ними. Этот выглядывающий
+       кусок — единственное, что сообщает, что ленту можно листать:
+       ровно две карточки в ширину экрана читались как обычная сетка,
+       и до прокрутки никто не догадывался. */
     grid-template-columns: none;
     grid-auto-flow: column;
-    grid-auto-columns: calc(50% - 0.5rem);
+    grid-auto-columns: 42%;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;

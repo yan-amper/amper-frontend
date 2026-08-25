@@ -32,12 +32,26 @@ pnpm dev        # http://localhost:3000
 
 ## Переменные окружения
 
+Префикс `NEXT_PUBLIC_` означает «положить в браузерный бандл». Всё, что ниже отмечено как серверное, этот префикс получать не должно — иначе ключ уедет в публичную сборку.
+
+**Публичные:**
+
 | Переменная | Описание |
 |-----------|---------|
+| `NEXT_PUBLIC_SITE_URL` | Канонический домен сайта, без слэша на конце |
 | `NEXT_PUBLIC_API_URL` | URL бэкенда (HTTPS) |
 | `NEXT_PUBLIC_PHONE_NUMBER` | Телефон магазина (цифры без +, напр. `79001234567`) |
-| `NEXT_PUBLIC_SUPABASE_URL` | URL Supabase проекта |
-| `NEXT_PUBLIC_SUPABASE_KEY` | Anon key Supabase |
+| `NEXT_PUBLIC_YANDEX_ID` | Счётчик Яндекс.Метрики |
+
+**Серверные** (в браузер не попадают):
+
+| Переменная | Описание |
+|-----------|---------|
+| `SUPABASE_URL` | URL Supabase проекта |
+| `SUPABASE_KEY` | Ключ Supabase |
+| `ADMIN_LOGIN` | Логин админки `/admin` |
+| `ADMIN_PASSWORD` | Пароль админки — длинный и случайный: форма логина публичная |
+| `ADMIN_SESSION_SECRET` | 32 случайных байта hex, подписывают куку админки |
 | `TG_BOT_TOKEN` | Токен Telegram-бота |
 | `MAX_BOT_TOKEN` | Токен Max-бота |
 | `MAX_SUPABASE_URL` | Supabase URL для бота |
@@ -68,8 +82,9 @@ src/
 
 - **Стили** — styled-components с SSR-реестром. Стили живут в `styled.ts` рядом с компонентом, импортируются как `import * as S from "./styled"`.
 - **Стейт** — Effector. Сторы в `model/store.ts`, хук `useUnit`.
-- **HTTP** — Axios-клиент в `shared/clients/query.ts`. Голый `fetch` не используется.
-- **БД** — Supabase (`shared/config/supabase.ts`).
+- **HTTP** — Axios-инстанс `$api` в `shared/api`. (`shared/clients/query.ts` — это не HTTP, а хелпер для чтения и записи searchParams.)
+- **БД** — Supabase. Клиент и вся работа с секретами — в `shared/server/`, модуль закрыт импортом `server-only` и в браузер не попадает.
+- **Админка** — вход по `ADMIN_LOGIN`/`ADMIN_PASSWORD`, дальше подписанная HMAC-кука; см. `shared/server/session-token.ts`.
 - **Иконки** — lucide-react.
 - **Боты** — Telegraf (Telegram) + @maxhub/max-bot-api (Max).
 

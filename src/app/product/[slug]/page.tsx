@@ -153,7 +153,7 @@ const Page = async ({ params }: PageProps) => {
         // Названия товаров приходят из чужой базы: экранируем «<», чтобы
         // строка вроде "</script>" в названии не закрыла тег досрочно.
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLd).replace(/</g, "\u003c"),
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
       <ProductPage product={product} />

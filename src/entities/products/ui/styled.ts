@@ -112,16 +112,25 @@ export const BatteryCard = styled.div<{
 export const BatteryImageContainer = styled.div`
   margin: 1rem 1rem 0;
   padding: 1.25rem;
-  aspect-ratio: 1;
   overflow: hidden;
-  background: var(--surface-muted);
+  /* Белый, как фон самих фотографий: на сером «подложка» проступала
+     светлым квадратом вокруг товара — было видно, где кончается
+     фотография и начинается плашка. */
+  background: var(--surface);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
 `;
 
+/**
+ * Квадрат держит картинка, а не контейнер — см. подробный разбор
+ * в модалке товара: связка «aspect-ratio на родителе + height: 100%
+ * на картинке» разъезжается в WebKit, и на айфонах фото сползало вниз.
+ */
 export const BatteryImage = styled(Image)`
+  display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 1;
   /* contain, а не cover: у товарной фотографии нельзя срезать края.
      В модалке товара всегда было contain — в карточке cover, и один
      и тот же аккумулятор выглядел по-разному в списке и в карточке. */

@@ -141,11 +141,16 @@ export const ImageSection = styled.div`
 
 export const ImageFrame = styled.div`
   width: 100%;
-  aspect-ratio: 1;
   padding: 1.25rem;
-  background: var(--surface-muted);
+  /* Белый, как фон самих фотографий: на сером «подложка» проступала
+     светлым квадратом вокруг товара — было видно, где кончается
+     фотография и начинается плашка. */
+  background: var(--surface);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
+  /* Страховка: что бы ни случилось с картинкой, за скруглённые углы
+     она не вылезет. */
+  overflow: hidden;
 
   ${media.md} {
     max-width: 260px;
@@ -153,9 +158,22 @@ export const ImageFrame = styled.div`
   }
 `;
 
+/**
+ * Квадрат задаёт сама картинка, а не рамка.
+ *
+ * Было наоборот: aspect-ratio висел на рамке, а картинка тянулась
+ * height: 100%. В Chrome это работало, а в WebKit (весь iOS, включая
+ * Chrome и браузер Телеграма на айфоне) процентная высота внутри
+ * aspect-ratio-блока считается иначе — картинка получалась выше
+ * контентной области, съезжала вниз и закрывала нижнюю границу рамки.
+ * Здесь процентной высоты нет вообще, поэтому расхождение движков
+ * ни на что не влияет.
+ */
 export const BatteryImage = styled(Image)`
+  display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 1;
   object-fit: contain;
 `;
 

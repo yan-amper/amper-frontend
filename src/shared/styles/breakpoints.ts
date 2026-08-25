@@ -34,5 +34,10 @@ export const media = {
   tablet: `@media (max-width: ${bp.lg}px) and (min-width: ${bp.md + 1}px)`,
   /** десктоп: от lg и шире */
   lgUp: `@media (min-width: ${bp.lg}px)`,
+  /**
+   * Низкое окно: панель фильтров каталога в него не помещается целиком.
+   * Единственный запрос по высоте на весь сайт — отсюда и явное имя.
+   */
+  shortViewport: `@media (max-height: 760px)`,
   mdUp: `@media (min-width: ${bp.md + 1}px)`,
 } as const;

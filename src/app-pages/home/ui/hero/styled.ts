@@ -38,8 +38,8 @@ export const Section = styled.section`
   );
 
   ${media.lg} {
-    /* На планшете и телефоне фото становится обычным блоком, и порядок
-       задаётся флексом: сначала фото, потом текст. */
+    /* Порядок задаётся флексом: фото стоит в разметке последним,
+       а показывается первым. */
     display: flex;
     flex-direction: column;
     background: var(--surface);
@@ -108,8 +108,8 @@ export const Title = styled.h1`
   }
 
   ${media.sm} {
-    font-size: 1.875rem;
-    margin-bottom: 0.875rem;
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
   }
 `;
 
@@ -121,20 +121,9 @@ export const Lead = styled.p`
   font-size: 1.0625rem;
   color: var(--text-secondary);
   max-width: 40ch;
-  margin-bottom: 0.5rem;
 
   ${media.sm} {
     font-size: 0.9375rem;
-  }
-`;
-
-export const Note = styled.p`
-  font-size: 1rem;
-  color: var(--text-muted);
-  max-width: 40ch;
-
-  ${media.sm} {
-    font-size: 0.875rem;
   }
 `;
 
@@ -293,15 +282,38 @@ export const Photo = styled.div`
     pointer-events: none;
   }
 
+  /* На планшете и телефоне фото занимает верх секции во всю ширину,
+     но не обрывается прямой линией: низ уходит в белый, и заголовок
+     начинается прямо из этой растушёвки. Раскладка «текст слева,
+     фото справа» на 390px не живёт — от кадра остаётся огрызок
+     шириной 170px, в котором не читается ни вывеска, ни здание. */
   ${media.lg} {
-    position: static;
+    /* relative, а не static: снизу лежит собственная растушёвка,
+       и ей нужен этот блок как система координат. */
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
     width: auto;
-    /* Над заголовком, а не под кнопками: полоса фото внизу секции
-       читалась как случайно оторвавшийся кусок. */
     order: -1;
+    margin-bottom: -2.5rem;
 
     &::before {
       display: none;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 45%;
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.7) 55%,
+        var(--surface) 100%
+      );
+      pointer-events: none;
     }
   }
 `;
@@ -321,6 +333,6 @@ export const PhotoImage = styled(Image)`
   }
 
   ${media.sm} {
-    max-height: 12.5rem;
+    max-height: 13rem;
   }
 `;

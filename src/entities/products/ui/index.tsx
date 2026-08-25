@@ -9,12 +9,22 @@ import { Product } from "../api";
 type ProductCardProps = {
   product: Product;
   index?: number;
+  /**
+   * Узкая колонка (слайдер главной по две карточки в ряд на телефоне):
+   * характеристики скрываются, остаётся название, цена и кнопка.
+   * На десктопе карточка выглядит как обычно.
+   */
+  compact?: boolean;
 };
 
 /** Дальше пятой карточки каскад только тормозит появление сетки. */
 const MAX_STAGGER_STEPS = 5;
 
-export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
+export const ProductCard = ({
+  product,
+  index = 0,
+  compact = false,
+}: ProductCardProps) => {
   const setSelectedProduct = useUnit(productsModel.setSelectedProduct);
   const { ref, isVisible } = useScrollReveal<HTMLDivElement>();
 
@@ -28,6 +38,7 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
       ref={ref}
       $visible={isVisible}
       $delay={Math.min(index, MAX_STAGGER_STEPS)}
+      $compact={compact}
     >
       <S.BatteryImageContainer>
         <S.BatteryImage

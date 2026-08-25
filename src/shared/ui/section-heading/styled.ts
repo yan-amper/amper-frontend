@@ -1,15 +1,16 @@
 "use client";
 
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { media } from "../../styles/breakpoints";
 
-export const Header = styled.div`
-  text-align: center;
-  margin-bottom: 3rem;
-
-  ${media.sm} {
-    margin-bottom: 2rem;
-  }
+export const TitleRow = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 1rem;
+  /* Отступ до черты живёт здесь, а не на самом <h2>: иначе при появлении
+     ссылки справа она съезжает вниз вместе с маргином заголовка. */
+  margin-bottom: 1rem;
 `;
 
 export const Title = styled.h2`
@@ -17,7 +18,6 @@ export const Title = styled.h2`
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--text-primary);
-  margin-bottom: 1rem;
 
   ${media.sm} {
     font-size: 1.5rem;
@@ -41,4 +41,31 @@ export const Divider = styled.div`
   border-radius: var(--radius-pill);
   background: var(--color-brand);
   margin: 0 auto;
+`;
+
+export const Header = styled.div<{ $hasAction?: boolean }>`
+  text-align: center;
+  margin-bottom: 3rem;
+
+  ${media.sm} {
+    margin-bottom: 2rem;
+  }
+
+  ${({ $hasAction }) =>
+    $hasAction &&
+    css`
+      text-align: left;
+
+      ${TitleRow} {
+        justify-content: space-between;
+      }
+
+      ${Divider} {
+        margin-left: 0;
+      }
+
+      ${Subtitle} {
+        margin-left: 0;
+      }
+    `}
 `;

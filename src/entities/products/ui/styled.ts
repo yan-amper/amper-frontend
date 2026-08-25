@@ -4,7 +4,11 @@ import Image from "next/image";
 import styled, { css } from "styled-components";
 import { media } from "@/shared";
 
-export const BatteryCard = styled.div<{ $visible?: boolean; $delay?: number }>`
+export const BatteryCard = styled.div<{
+  $visible?: boolean;
+  $delay?: number;
+  $compact?: boolean;
+}>`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -43,6 +47,66 @@ export const BatteryCard = styled.div<{ $visible?: boolean; $delay?: number }>`
     transform: translateY(-4px);
     transition-delay: 0ms;
   }
+
+  /* Компактный вид — только под планшет и телефон, где карточка стоит
+     в колонке шириной ~160px. Список из пяти характеристик там ломается
+     на переносы: «242×175×190 мм» не помещается в строку с подписью.
+     Оставляем то, по чему выбирают в витрине: фото, название, цену
+     и кнопку — остальное открывается в модалке по «Подробнее».
+     Стили ссылаются на дочерние компоненты через функцию-интерполяцию:
+     на момент инициализации модуля они ещё не объявлены. */
+  ${({ $compact }) =>
+    $compact &&
+    css`
+      ${media.md} {
+        ${BatteryImageContainer} {
+          margin: 0.625rem 0.625rem 0;
+          padding: 0.75rem;
+        }
+
+        ${BatteryContent} {
+          padding: 0.75rem;
+        }
+
+        ${BatteryName} {
+          font-size: 0.9375rem;
+          margin-bottom: 0.75rem;
+          /* Длинные названия обрезаем двумя строками с многоточием,
+             иначе соседние карточки в слайдере разной высоты. */
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        ${SpecsList} {
+          display: none;
+        }
+
+        ${PriceSection} {
+          padding-top: 0.75rem;
+        }
+
+        ${PriceContainer} {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 0.5rem;
+        }
+
+        ${CurrentPrice} {
+          font-size: 1.125rem;
+        }
+
+        ${PriceNote} {
+          font-size: 0.75rem;
+        }
+
+        ${BuyButton} {
+          width: 100%;
+          padding: 0.5rem 0.75rem;
+        }
+      }
+    `}
 `;
 
 export const BatteryImageContainer = styled.div`

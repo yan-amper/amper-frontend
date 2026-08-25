@@ -27,6 +27,11 @@ export const CAPACITY_RANGES = [
  * (text-wrap: pretty в футере), а не невидимые U+00A0 в исходнике.
  */
 export const SHOP_ADDRESS = "г. Таганрог, Мариупольское шоссе, д. 1";
+/**
+ * Короткая форма для первого экрана: город там уже назван в заголовке,
+ * а полный адрес в одну строку с режимом работы не помещался и переносился.
+ */
+export const SHOP_STREET = "Мариупольское шоссе, 1";
 export const SHOP_HOURS = "Каждый день 8:30 – 18:30";
 export const SHOP_MAP_URL =
   "https://yandex.ru/maps/?text=" +

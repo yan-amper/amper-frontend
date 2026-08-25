@@ -1,25 +1,32 @@
 "use client";
 
-import { Bike, Car, CarFront, Caravan, Bus, Truck } from "lucide-react";
+import {
+  Car,
+  CarFront,
+  CarTaxiFront,
+  Caravan,
+  Bus,
+  Truck,
+  ArrowRight,
+} from "lucide-react";
+import { useUnit } from "effector-react";
 import * as S from "./styled";
 import { CAPACITY_RANGES, SectionHeading, useScrollReveal } from "@/shared";
+import { appState } from "@/entities";
 
+/**
+ * Иконки идут по возрастанию «габарита» машины — подписей под ёмкостями
+ * больше нет, и размер силуэта остался единственной подсказкой.
+ * Мотоцикла в списке нет специально: мото-аккумуляторами магазин
+ * не торгует, а иконка велосипеда обещала обратное.
+ */
 const CAPACITY_ICONS: Record<string, typeof Car> = {
-  "35-42": Bike,
-  "45-50": Car,
-  "55-65": CarFront,
+  "35-42": Car,
+  "45-50": CarFront,
+  "55-65": CarTaxiFront,
   "70-85": Caravan,
   "90-110": Bus,
   "130-230": Truck,
-};
-
-const CAPACITY_HINTS: Record<string, string> = {
-  "35-42": "мото и мини-авто",
-  "45-50": "малолитражки",
-  "55-65": "легковые",
-  "70-85": "кроссоверы",
-  "90-110": "внедорожники, микроавтобусы",
-  "130-230": "грузовики и спецтехника",
 };
 
 type CapacityTileProps = {
@@ -41,32 +48,47 @@ const CapacityTile = ({ capacity, index }: CapacityTileProps) => {
       $visible={isVisible}
       $delay={index}
     >
-      <S.CategoryContent>
-        <S.CategoryIcon>
-          <Icon size={24} />
-        </S.CategoryIcon>
-        <S.CategoryTitle>
-          {capacity} Ач
-          <S.CategoryHint>{CAPACITY_HINTS[capacity]}</S.CategoryHint>
-        </S.CategoryTitle>
-      </S.CategoryContent>
+      <S.CategoryIcon>
+        <Icon size={24} aria-hidden="true" />
+      </S.CategoryIcon>
+      <S.CategoryTitle>{capacity} Ач</S.CategoryTitle>
     </S.CategoryCard>
   );
 };
 
-export const Catalog = () => (
-  <S.Section>
-    <S.Container>
-      <SectionHeading
-        title="Каталог по ёмкости"
-        subtitle="Не знаете нужную ёмкость — начните с типа машины или воспользуйтесь подбором."
-      />
+export const Catalog = () => {
+  const setForm = useUnit(appState.setForm);
 
-      <S.CatalogGrid>
-        {CAPACITY_RANGES.map((capacity, index) => (
-          <CapacityTile key={capacity} capacity={capacity} index={index} />
-        ))}
-      </S.CatalogGrid>
-    </S.Container>
-  </S.Section>
-);
+  return (
+    <S.Section>
+      <S.Container>
+        <SectionHeading title="Аккумуляторы по ёмкости" />
+
+        <S.CatalogGrid>
+          {CAPACITY_RANGES.map((capacity, index) => (
+            <CapacityTile key={capacity} capacity={capacity} index={index} />
+          ))}
+        </S.CatalogGrid>
+
+        {/* Подписи «легковые / кроссоверы» из плиток убраны, и тем, кто
+            ёмкость не знает, теперь нужен явный выход — вот он.
+            Заодно это последняя точка входа в подбор перед адресом. */}
+        <S.CtaPlate type="button" onClick={() => setForm({ open: true })}>
+          <S.CtaIcon>
+            <CarFront size={24} aria-hidden="true" />
+          </S.CtaIcon>
+          <S.CtaText>
+            <S.CtaTitle>Не знаете, какая ёмкость нужна?</S.CtaTitle>
+            <S.CtaSubtitle>
+              Скажите марку и год машины — подберём АКБ и назовём цену с учётом
+              сдачи старого
+            </S.CtaSubtitle>
+          </S.CtaText>
+          <S.CtaArrow>
+            <ArrowRight size={22} aria-hidden="true" />
+          </S.CtaArrow>
+        </S.CtaPlate>
+      </S.Container>
+    </S.Section>
+  );
+};

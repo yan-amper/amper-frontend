@@ -42,3 +42,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Исходники фото — тяжёлые, в сборку не нужны
+originals/

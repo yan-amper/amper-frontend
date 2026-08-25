@@ -3,6 +3,10 @@
 import styled from "styled-components";
 
 export const SelectionButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   background: var(--color-brand);
   color: var(--text-on-brand);
   padding: 0.625rem 1.5rem;

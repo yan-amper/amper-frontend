@@ -86,13 +86,13 @@ export const InfoContainer = styled.div`
 
 export const StoreImage = styled(Image)`
   width: 100%;
-  height: 16rem;
+  height: auto;
+  /* Кадр и так снят под 16:9 — второй раз резать его контейнером незачем,
+     иначе от полок с аккумуляторами остаётся полоса. */
+  aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: var(--radius-lg);
-
-  ${media.sm} {
-    height: 12rem;
-  }
+  border: 1px solid var(--border-default);
 `;
 
 export const ContactCard = styled.div`

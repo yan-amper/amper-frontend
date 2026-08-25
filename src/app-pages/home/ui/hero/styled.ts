@@ -241,7 +241,11 @@ export const MetaItem = styled.li`
 export const Photo = styled.div`
   position: absolute;
   top: 0;
-  right: 0;
+  /* Не 0, а внутреннее поле контейнера: правый край фотографии встаёт
+     на ту же вертикаль, что и правый край плашек и карточек ниже.
+     С нулём фото выходило за них на 16px — мелочь, но заметная,
+     потому что весь остальной контент строго по одной линии. */
+  right: var(--container-pad);
   bottom: 0;
   width: 56%;
   z-index: 0;

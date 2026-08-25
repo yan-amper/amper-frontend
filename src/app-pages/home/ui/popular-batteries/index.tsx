@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { ProductCard, ProductsApi } from "@/entities";
 import * as S from "./styled";
 import { HOME_SLIDER_LIMIT, SectionHeading } from "@/shared";
+import { Rail } from "./rail";
 
 export const PopularBatteries = async () => {
   const popularProducts = await ProductsApi.getPopularProducts();
@@ -22,7 +23,7 @@ export const PopularBatteries = async () => {
           }
         />
 
-        <S.Rail>
+        <Rail>
           {popularProducts.slice(0, HOME_SLIDER_LIMIT).map((product, index) => (
             <ProductCard
               key={product.id}
@@ -31,7 +32,7 @@ export const PopularBatteries = async () => {
               compact
             />
           ))}
-        </S.Rail>
+        </Rail>
       </S.Container>
     </S.Section>
   );

@@ -85,3 +85,17 @@ export const Rail = styled(ProductGrid)`
     }
   }
 `;
+
+export const ScrollTrack = styled.div`
+  height: 3px;
+  margin-top: 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--border-default);
+  overflow: hidden;
+`;
+
+export const ScrollThumb = styled.div`
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--color-brand);
+`;

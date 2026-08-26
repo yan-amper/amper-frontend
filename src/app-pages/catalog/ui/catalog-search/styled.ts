@@ -4,22 +4,14 @@ import styled, { css } from "styled-components";
 import { media } from "@/shared";
 
 export const Form = styled.form`
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
   margin-bottom: 1.25rem;
 
   ${media.sm} {
     margin-bottom: 1rem;
   }
-`;
-
-export const Field = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex: 1;
-  min-width: 0;
 `;
 
 export const IconSlot = styled.span`
@@ -29,12 +21,6 @@ export const IconSlot = styled.span`
   align-items: center;
   color: var(--text-subtle);
   pointer-events: none;
-
-  /* На узких телефонах лупа съедает те пиксели, из-за которых подсказка
-     не помещается. Лупа при этом есть на кнопке рядом. */
-  ${media.xs} {
-    display: none;
-  }
 `;
 
 export const Input = styled.input<{ $hasValue?: boolean }>`
@@ -89,9 +75,6 @@ export const Input = styled.input<{ $hasValue?: boolean }>`
     font-size: 1rem; /* меньше 16px — iOS зумит страницу при фокусе */
   }
 
-  ${media.xs} {
-    padding-left: 1rem;
-  }
 `;
 
 export const Clear = styled.button`
@@ -114,54 +97,5 @@ export const Clear = styled.button`
   &:hover {
     background: var(--surface-sunken);
     color: var(--text-primary);
-  }
-`;
-
-export const Submit = styled.button`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  flex-shrink: 0;
-  height: 46px;
-  padding: 0 1.25rem;
-  border: none;
-  border-radius: var(--radius-md);
-  background: var(--color-brand);
-  color: var(--text-on-brand);
-  font-family: inherit;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background var(--transition),
-    transform var(--transition);
-
-  &:hover {
-    background: var(--color-brand-hover);
-    transform: translateY(-1px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  ${media.sm} {
-    height: 44px;
-    padding: 0 1rem;
-  }
-
-  /* На узких телефонах поле важнее подписи: остаётся квадратная кнопка
-     с лупой, текст уходит. Порог 400, а не 340: именно подпись «Найти»
-     отъедала у поля те 60 пикселей, на которых подсказка обрывалась. */
-  ${media.xs} {
-    width: 44px;
-    padding: 0;
-  }
-`;
-
-export const SubmitLabel = styled.span`
-  ${media.xs} {
-    display: none;
   }
 `;

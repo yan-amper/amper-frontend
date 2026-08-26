@@ -15,8 +15,12 @@ import { startRouteLoading } from "@/shared";
  * лишь пролистав все страницы выдачи.
  *
  * Выдача обновляется сама, через паузу после последней набранной буквы.
- * Кнопка и Enter никуда не делись: они отправляют запрос немедленно,
- * не дожидаясь паузы.
+ * Кнопки «Найти» нет: раз поиск идёт сам, она обещала бы действие,
+ * которое уже произошло. Enter при этом отправляет запрос немедленно,
+ * не дожидаясь паузы, и обрабатывается он здесь же, в keydown, а не
+ * отправкой формы: у формы без submit-кнопки поведение по Enter
+ * различается от движка к движку, а так оно одинаковое везде
+ * (проверено в Chromium и WebKit).
  *
  * Запрос живёт в адресе (`?q=`), как и остальные фильтры, — ссылкой можно
  * поделиться. Но пишется он через replace, а не push: иначе набранное
@@ -100,34 +104,30 @@ export const CatalogSearch = () => {
 
   return (
     <S.Form role="search" onSubmit={onSubmit}>
-      <S.Field>
-        <S.IconSlot aria-hidden="true">
-          <Search size={18} />
-        </S.IconSlot>
+      <S.IconSlot aria-hidden="true">
+        <Search size={18} />
+      </S.IconSlot>
 
-        <S.Input
-          ref={inputRef}
-          type="search"
-          value={value}
-          onChange={(event) => setValue(event.target.value)}
-          /* Без примеров вроде «Mutlu, Serie-3»: на телефоне подсказка
-              обрезалась на середине и заканчивалась двоеточием в пустоту. */
-          placeholder="Поиск по названию"
-          aria-label="Поиск по названию аккумулятора"
-          $hasValue={!!value}
-        />
+      <S.Input
+        ref={inputRef}
+        type="search"
+        value={value}
+        onChange={(event) => setValue(event.target.value)}
+        onKeyDown={(event) => {
+          if (event.key !== "Enter") return;
+          event.preventDefault();
+          submit(value);
+        }}
+        placeholder="Поиск: Mutlu, 60Ah"
+        aria-label="Поиск по названию аккумулятора"
+        $hasValue={!!value}
+      />
 
-        {value && (
-          <S.Clear type="button" onClick={onClear} aria-label="Очистить поиск">
-            <X size={16} aria-hidden="true" />
-          </S.Clear>
-        )}
-      </S.Field>
-
-      <S.Submit type="submit">
-        <Search size={18} aria-hidden="true" />
-        <S.SubmitLabel>Найти</S.SubmitLabel>
-      </S.Submit>
+      {value && (
+        <S.Clear type="button" onClick={onClear} aria-label="Очистить поиск">
+          <X size={16} aria-hidden="true" />
+        </S.Clear>
+      )}
     </S.Form>
   );
 };

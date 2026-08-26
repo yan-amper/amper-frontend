@@ -1,14 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Search, X } from "lucide-react";
 import * as S from "./styled";
 import { startRouteLoading } from "@/shared";
-
-/** Пауза перед запросом: печатать «аккумулятор» и дёргать роутер
- *  на каждую букву — двенадцать переходов вместо одного. */
-const DEBOUNCE_MS = 350;
 
 /**
  * Поиск по названию товара.
@@ -18,6 +14,11 @@ const DEBOUNCE_MS = 350;
  * живут только в названии. До поиска найти конкретную марку можно было
  * лишь пролистав все страницы выдачи.
  *
+ * Запрос уходит по нажатию кнопки или Enter, а не по таймеру во время
+ * набора. Каждый запрос здесь — переход и рендер страницы на сервере;
+ * дёргать его на каждую букву значит гонять полсотни лишних кругов
+ * и показывать мигающую выдачу тому, кто ещё не дописал слово.
+ *
  * Запрос живёт в адресе (`?q=`), как и остальные фильтры: ссылкой можно
  * поделиться, «назад» возвращает предыдущую выдачу.
  */
@@ -25,59 +26,89 @@ export const CatalogSearch = () => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const queryParam = searchParams.get("q") ?? "";
   const [value, setValue] = useState(queryParam);
 
-  // Параметр может измениться мимо этого поля — «сбросить фильтры»,
-  // крестик на чипсе, кнопка «назад». Поле обязано это отражать.
-  useEffect(() => setValue(queryParam), [queryParam]);
+  /**
+   * Поле подхватывает адрес, только когда тот сменился помимо поля:
+   * крестик на чипсе, «сбросить фильтры», кнопка «назад».
+   *
+   * Слепая синхронизация на каждый рендер и была тем самым багом
+   * с исчезающей буквой: ответ сервера приходил уже после того, как
+   * человек набрал следующий символ, и затирал его старым значением
+   * из адреса.
+   */
+  const lastSubmitted = useRef(queryParam);
 
   useEffect(() => {
-    if (value.trim() === queryParam) return;
+    if (queryParam === lastSubmitted.current) return;
+    lastSubmitted.current = queryParam;
+    setValue(queryParam);
+  }, [queryParam]);
 
-    const timer = setTimeout(() => {
-      const params = new URLSearchParams(searchParams.toString());
+  const submit = (next: string) => {
+    const query = next.trim();
+    if (query === queryParam) return;
 
-      if (value.trim()) params.set("q", value.trim());
-      else params.delete("q");
+    const params = new URLSearchParams(searchParams.toString());
 
-      // Новый запрос — новая выдача: оставаться на пятой странице,
-      // которой в ней может не быть, бессмысленно.
-      params.delete("page");
+    if (query) params.set("q", query);
+    else params.delete("q");
 
-      startRouteLoading();
-      const query = params.toString();
-      router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
-    }, DEBOUNCE_MS);
+    // Новый запрос — новая выдача: оставаться на пятой странице,
+    // которой в ней может не быть, бессмысленно.
+    params.delete("page");
 
-    return () => clearTimeout(timer);
-  }, [value, queryParam, pathname, router, searchParams]);
+    lastSubmitted.current = query;
+    startRouteLoading();
+    const search = params.toString();
+    router.push(search ? `${pathname}?${search}` : pathname, { scroll: false });
+  };
+
+  const onSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    submit(value);
+  };
+
+  const onClear = () => {
+    setValue("");
+    // Очистка — действие однозначное, подтверждать его кнопкой незачем.
+    submit("");
+    inputRef.current?.focus();
+  };
 
   return (
-    <S.Form role="search" onSubmit={(e) => e.preventDefault()}>
-      <S.IconSlot aria-hidden="true">
-        <Search size={18} />
-      </S.IconSlot>
+    <S.Form role="search" onSubmit={onSubmit}>
+      <S.Field>
+        <S.IconSlot aria-hidden="true">
+          <Search size={18} />
+        </S.IconSlot>
 
-      <S.Input
-        type="search"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="Поиск по названию: Mutlu, Serie-3, 60Ah"
-        aria-label="Поиск по названию аккумулятора"
-        $hasValue={!!value}
-      />
+        <S.Input
+          ref={inputRef}
+          type="search"
+          value={value}
+          onChange={(event) => setValue(event.target.value)}
+          /* Без примеров вроде «Mutlu, Serie-3»: на телефоне подсказка
+              обрезалась на середине и заканчивалась двоеточием в пустоту. */
+          placeholder="Поиск по названию"
+          aria-label="Поиск по названию аккумулятора"
+          $hasValue={!!value}
+        />
 
-      {value && (
-        <S.Clear
-          type="button"
-          onClick={() => setValue("")}
-          aria-label="Очистить поиск"
-        >
-          <X size={16} aria-hidden="true" />
-        </S.Clear>
-      )}
+        {value && (
+          <S.Clear type="button" onClick={onClear} aria-label="Очистить поиск">
+            <X size={16} aria-hidden="true" />
+          </S.Clear>
+        )}
+      </S.Field>
+
+      <S.Submit type="submit">
+        <Search size={18} aria-hidden="true" />
+        <S.SubmitLabel>Найти</S.SubmitLabel>
+      </S.Submit>
     </S.Form>
   );
 };

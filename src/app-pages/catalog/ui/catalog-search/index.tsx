@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Search, X } from "lucide-react";
 import * as S from "./styled";
@@ -14,14 +14,18 @@ import { startRouteLoading } from "@/shared";
  * живут только в названии. До поиска найти конкретную марку можно было
  * лишь пролистав все страницы выдачи.
  *
- * Запрос уходит по нажатию кнопки или Enter, а не по таймеру во время
- * набора. Каждый запрос здесь — переход и рендер страницы на сервере;
- * дёргать его на каждую букву значит гонять полсотни лишних кругов
- * и показывать мигающую выдачу тому, кто ещё не дописал слово.
+ * Выдача обновляется сама, через паузу после последней набранной буквы.
+ * Кнопка и Enter никуда не делись: они отправляют запрос немедленно,
+ * не дожидаясь паузы.
  *
- * Запрос живёт в адресе (`?q=`), как и остальные фильтры: ссылкой можно
- * поделиться, «назад» возвращает предыдущую выдачу.
+ * Запрос живёт в адресе (`?q=`), как и остальные фильтры, — ссылкой можно
+ * поделиться. Но пишется он через replace, а не push: иначе набранное
+ * слово оставляло бы в истории по записи на каждую паузу, и «назад»
+ * пришлось бы жать столько же раз, сколько было пауз.
  */
+/** Пауза после последней буквы. Меньше — и запрос уходит посреди слова. */
+const DEBOUNCE_MS = 500;
+
 export const CatalogSearch = () => {
   const pathname = usePathname();
   const router = useRouter();
@@ -48,27 +52,42 @@ export const CatalogSearch = () => {
     setValue(queryParam);
   }, [queryParam]);
 
-  const submit = (next: string) => {
-    const query = next.trim();
-    if (query === queryParam) return;
+  const submit = useCallback(
+    (next: string) => {
+      const query = next.trim();
+      if (query === queryParam) return;
 
-    const params = new URLSearchParams(searchParams.toString());
+      const params = new URLSearchParams(searchParams.toString());
 
-    if (query) params.set("q", query);
-    else params.delete("q");
+      if (query) params.set("q", query);
+      else params.delete("q");
 
-    // Новый запрос — новая выдача: оставаться на пятой странице,
-    // которой в ней может не быть, бессмысленно.
-    params.delete("page");
+      // Новый запрос — новая выдача: оставаться на пятой странице,
+      // которой в ней может не быть, бессмысленно.
+      params.delete("page");
 
-    lastSubmitted.current = query;
-    startRouteLoading();
-    const search = params.toString();
-    router.push(search ? `${pathname}?${search}` : pathname, { scroll: false });
-  };
+      lastSubmitted.current = query;
+      startRouteLoading();
+      const search = params.toString();
+      router.replace(search ? `${pathname}?${search}` : pathname, {
+        scroll: false,
+      });
+    },
+    [pathname, queryParam, router, searchParams]
+  );
+
+  // Автоматическая отправка после паузы в наборе.
+  useEffect(() => {
+    if (value.trim() === queryParam) return;
+
+    const timer = setTimeout(() => submit(value), DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+  }, [value, queryParam, submit]);
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
+    // Кнопка и Enter не ждут паузу — таймер выше снимется сам,
+    // когда запрос уже уедет и значения сравняются.
     submit(value);
   };
 

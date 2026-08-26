@@ -137,7 +137,6 @@ SUPABASE_URL  SUPABASE_KEY
 ADMIN_LOGIN  ADMIN_PASSWORD   # форма логина публичная: пароль длинный и случайный
 ADMIN_SESSION_SECRET          # 32 случайных байта hex, подписывает куку
 TG_BOT_TOKEN  MAX_BOT_TOKEN
-MAX_SUPABASE_URL  MAX_SUPABASE_KEY
 MAX_ADMIN_IDS                 # id админов через запятую
 ```
 

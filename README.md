@@ -54,8 +54,6 @@ pnpm dev        # http://localhost:3000
 | `ADMIN_SESSION_SECRET` | 32 случайных байта hex, подписывают куку админки |
 | `TG_BOT_TOKEN` | Токен Telegram-бота |
 | `MAX_BOT_TOKEN` | Токен Max-бота |
-| `MAX_SUPABASE_URL` | Supabase URL для бота |
-| `MAX_SUPABASE_KEY` | Supabase key для бота |
 | `MAX_ADMIN_IDS` | ID администраторов через запятую |
 
 ## Архитектура

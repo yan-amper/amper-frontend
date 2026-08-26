@@ -9,6 +9,7 @@ import { PackageSearch, RotateCcw } from "lucide-react";
 import { pluralWithCount, startRouteLoading } from "@/shared";
 import { Pagination } from "../pagination";
 import { ActiveFilters } from "../active-filters";
+import { CatalogSearch } from "../catalog-search";
 
 type CatalogProductsProps = {
   products: Product[];
@@ -53,6 +54,8 @@ export const CatalogProducts = ({
               : `Найдено ${pluralWithCount(totalCount, ["товар", "товара", "товаров"])}`}
         </S.ProductsCount>
       </S.ProductsHeader>
+
+      <CatalogSearch />
 
       <ActiveFilters />
 

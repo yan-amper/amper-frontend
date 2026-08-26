@@ -29,8 +29,10 @@ export const CatalogFilters = ({ selectedFilters }: CatalogFiltersProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const activeCount = Object.keys(CHIP_LABELS).filter((key) =>
-    searchParams.get(key)
+  // q сюда не входит: поиск живёт над выдачей, а не в этой панели,
+  // и счётчик «Фильтры (2)» на нём вводил бы в заблуждение.
+  const activeCount = Object.keys(CHIP_LABELS).filter(
+    (key) => key !== "q" && searchParams.get(key)
   ).length;
 
   const pushParams = (params: URLSearchParams) => {

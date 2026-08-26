@@ -21,6 +21,7 @@ export const sortOptions = [
  * отдельной кнопкой бессмысленно.
  */
 export const CHIP_LABELS: Record<string, string> = {
+  q: "Поиск",
   capacity: "Ёмкость",
   polarity: "Полярность",
   manufacturer: "Изготовитель",
@@ -30,6 +31,7 @@ export const CHIP_LABELS: Record<string, string> = {
 };
 
 export const formatChipValue = (key: string, value: string): string => {
+  if (key === "q") return `«${value}»`;
   if (key === "capacity") return `${value} Ач`;
   if (key === "current") return `${value} А`;
   if (key === "recommended") return "Рекомендуемые";

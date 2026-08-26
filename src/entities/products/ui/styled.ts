@@ -78,6 +78,16 @@ export const BatteryCard = styled.div<{
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
+          /* Страховка от жёсткого обреза: слово длиннее колонки должно
+             переноситься, а не уезжать под край без многоточия. */
+          overflow-wrap: break-word;
+
+          /* На 320px колонка ýже слова «Аккумулятор» (95 против 102),
+             и первая строка резалась по букве. Кегль на один шаг меньше
+             возвращает слово в строку целиком. */
+          ${media.xxs} {
+            font-size: 0.8125rem;
+          }
         }
 
         ${SpecsList} {

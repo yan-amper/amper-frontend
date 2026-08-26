@@ -4,13 +4,13 @@ import * as S from "./styled";
 import { CatalogFilters, CatalogProducts, SelectedFilters } from "./ui";
 
 export type CatalogPageProps = {
-  searchParams: Promise<SelectedFilters & { page?: string }>;
+  searchParams: Promise<SelectedFilters & { page?: string; q?: string }>;
 };
 
 const PAGE_SIZE = 12;
 
 export const CatalogPage = async ({ searchParams }: CatalogPageProps) => {
-  const { capacity, page, ...selectedFilters } = await searchParams;
+  const { capacity, page, q, ...selectedFilters } = await searchParams;
 
   let products = (await ProductsApi.getFiltredProduct({
     params: selectedFilters,
@@ -23,6 +23,20 @@ export const CatalogPage = async ({ searchParams }: CatalogPageProps) => {
       const productCapacity = +product.capacity;
       return productCapacity >= min && productCapacity <= max;
     });
+  }
+
+  /**
+   * Поиск по названию — простое вхождение подстроки, без учёта регистра.
+   * Только по названию: если гонять запрос ещё и по габаритам с током,
+   * «60» вытащит и 600 А, и 260 мм. В названии и так есть и бренд,
+   * и ёмкость, и полярность.
+   */
+  const query = q?.trim().toLowerCase();
+
+  if (query) {
+    products = products.filter((product) =>
+      product.title.toLowerCase().includes(query)
+    );
   }
 
   const totalCount = products.length;

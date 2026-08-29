@@ -232,10 +232,11 @@ export const SelectionModal = () => {
                   />
                   Подбор на сайте
                 </S.ChoiceButton>
-                <S.ChoiceTitle>Быстро и удобно</S.ChoiceTitle>
+                <S.ChoiceTitle>Оставьте заявку — мы перезвоним</S.ChoiceTitle>
                 <S.ChoiceDescription>
-                  Заполните форму прямо на сайте. Наш специалист перезвонит вам
-                  и подберет идеальный аккумулятор для вашего автомобиля.
+                  Заполните короткую форму прямо на сайте. Менеджер уточнит
+                  детали и подберёт подходящий аккумулятор для вашего
+                  автомобиля.
                 </S.ChoiceDescription>
               </S.ChoiceOption>
 
@@ -272,10 +273,11 @@ export const SelectionModal = () => {
                   />
                   Подбор в Макс
                 </S.ChoiceButton>
-                <S.ChoiceTitle>Персональный консультант</S.ChoiceTitle>
+                <S.ChoiceTitle>Карточки товаров прямо в MAX</S.ChoiceTitle>
                 <S.ChoiceDescription>
-                  Общайтесь с нашим ботом в мессенджере Макс. Получите
-                  персональные рекомендации и ответы на все вопросы.
+                  Получите готовые варианты аккумуляторов с фото,
+                  характеристиками и ценами прямо в чате. Останется только
+                  выбрать подходящий.
                 </S.ChoiceDescription>
               </S.ChoiceOption>
             </S.ChoiceContainer>
@@ -337,10 +339,7 @@ export const SelectionModal = () => {
               )}
             </S.FormGroup>
 
-            <S.FormGroup
-              role="radiogroup"
-              aria-labelledby="engine-type-label"
-            >
+            <S.FormGroup role="radiogroup" aria-labelledby="engine-type-label">
               <S.Label as="span" id="engine-type-label">
                 Тип двигателя *
               </S.Label>
